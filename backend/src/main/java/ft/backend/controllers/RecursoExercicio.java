@@ -18,9 +18,9 @@ import ft.backend.repositories.*;
 public class RecursoExercicio {
     
     @Autowired
-    RepositorioExercicios rep_exercicios;
+    ExercicioDAO rep_exercicios;
     @Autowired
-    RepositorioTreinadores rep_treinadores;
+    TreinadorDAO rep_treinadores;
 
     @GetMapping(value = "/todos")
     public List<Exercicio> getAll(){

@@ -7,35 +7,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ft.backend.repositories.*;
 import ft.backend.entities.*;
 
 @RestController
-@RequestMapping(value = "/rest/utilizadores")
-public class RecursoUtilizador {
+@RequestMapping(value = "/rest/treinos")
+public class RecursoTreino {
     
     @Autowired
-    UtilizadorDAO rep_users;
+    TreinoDAO tDao;
 
     @GetMapping(value = "/todos")
-    public List<Utilizador> getAll(){
-        
-        return rep_users.findAll();
-    }
-
-    @GetMapping(value = "/user")
-    public List<Utilizador> getUser(@RequestParam String nome){
-        return rep_users.findByJavardice(nome);
+    public List<Treino> getAll(){
+        return tDao.findAll();
     }
 
     @PostMapping(value = "/carregar")
-    public List<Utilizador> persiste(@RequestBody final Utilizador ut){
+    public String persiste(@RequestBody Treino t){
 
-        rep_users.save(ut);
-        return rep_users.findAll();
-    } 
+        tDao.save(t);
+
+        return "{\"great\":\"Success\"}";
+    }
 
 }

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import ft.backend.entities.Exercicio;
 
-public interface RepositorioExercicios extends JpaRepository<Exercicio,Integer>{
+public interface ExercicioDAO extends JpaRepository<Exercicio,Integer>{
     
 }

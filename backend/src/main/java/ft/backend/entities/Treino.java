@@ -1,16 +1,3 @@
-/**
- * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
- * 
- * This is an automatic generated file. It will be regenerated every time 
- * you generate persistence class.
- * 
- * Modifying its content may cause the program not work, or your work may lost.
- */
-
-/**
- * Licensee: Nuno Costa(Universidade do Minho)
- * License Type: Academic
- */
 package ft.backend.entities;
 
 import java.io.Serializable;
@@ -22,25 +9,6 @@ public class Treino implements Serializable {
 	public Treino() {
 	}
 	
-	/* private java.util.Set this_getSet (int key) {
-		if (key == ORMConstants.KEY_TREINO_BLOCOS_EXERCICIOS) {
-			return ORM_blocos_exercicios;
-		}
-		else if (key == ORMConstants.KEY_TREINO_AVALIACOES_TREINO) {
-			return ORM_avaliacoes_treino;
-		}
-		
-		return null;
-	} */
-	
-	/* @Transient	
-	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
-		public java.util.Set getSet(int key) {
-			return this_getSet(key);
-		}
-		
-	}; */
-	
 	@Column(name="ID", nullable=false, length=10)	
 	@Id	
 	@GeneratedValue(generator="TREINO_ID_GENERATOR")	
@@ -49,12 +17,12 @@ public class Treino implements Serializable {
 	
 	@ManyToOne(targetEntity=Treinador.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID") }, foreignKey=@ForeignKey(name="FKTreino416635"))	
+	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable = true) }, foreignKey=@ForeignKey(name="FKTreino416635"))	
 	private Treinador criador_t;
 	
 	@ManyToOne(targetEntity=Utilizador.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns(value={ @JoinColumn(name="UtilizadorID", referencedColumnName="ID") }, foreignKey=@ForeignKey(name="FKTreino370037"))	
+	@JoinColumns(value={ @JoinColumn(name="UtilizadorID", referencedColumnName="ID", nullable = true) }, foreignKey=@ForeignKey(name="FKTreino370037"))	
 	private Utilizador criador_u;
 	
 	@Column(name="Nome", nullable=true, length=1024)	
@@ -79,15 +47,15 @@ public class Treino implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private java.util.Date data_criacao;
 	
-	@OneToMany(targetEntity=Bloco.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=false) })	
+	@OneToMany(targetEntity=Bloco.class,cascade = {CascadeType.ALL})	
+	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set ORM_blocos_exercicios = new java.util.HashSet();
 	
-	@OneToMany(targetEntity=Avaliacao.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=false) })	
+	@OneToMany(targetEntity=Avaliacao_Treino.class,cascade = {CascadeType.ALL})	
+	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set ORM_avaliacoes_treino = new java.util.HashSet();
 	
@@ -159,28 +127,22 @@ public class Treino implements Serializable {
 		return data_criacao;
 	}
 	
-	private void setORM_Blocos_exercicios(java.util.Set value) {
+	public void setORM_Blocos_exercicios(java.util.Set value) {
 		this.ORM_blocos_exercicios = value;
 	}
 	
-	private java.util.Set getORM_Blocos_exercicios() {
+	public java.util.Set getORM_Blocos_exercicios() {
 		return ORM_blocos_exercicios;
 	}
 	
-	/* @Transient	
-	public final BlocoSetCollection blocos_exercicios = new BlocoSetCollection(this, _ormAdapter, ORMConstants.KEY_TREINO_BLOCOS_EXERCICIOS, ORMConstants.KEY_MUL_ONE_TO_MANY);
-	 */
-	private void setORM_Avaliacoes_treino(java.util.Set value) {
+	public void setORM_Avaliacoes_treino(java.util.Set value) {
 		this.ORM_avaliacoes_treino = value;
 	}
 	
-	private java.util.Set getORM_Avaliacoes_treino() {
+	public java.util.Set getORM_Avaliacoes_treino() {
 		return ORM_avaliacoes_treino;
 	}
 	
-	/* @Transient	
-	public final AvaliacaoSetCollection avaliacoes_treino = new AvaliacaoSetCollection(this, _ormAdapter, ORMConstants.KEY_TREINO_AVALIACOES_TREINO, ORMConstants.KEY_MUL_ONE_TO_MANY);
-	 */
 	public void setCriador_u(Utilizador value) {
 		this.criador_u = value;
 	}

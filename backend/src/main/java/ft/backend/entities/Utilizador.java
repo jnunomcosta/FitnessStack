@@ -22,24 +22,24 @@ public class Utilizador implements Serializable {
 	@Column(name="Password", nullable=true, length=1024)	
 	private String password;
 	
-	@Column(name="Idade", nullable=false, length=10)	
+	@Column(name="Idade", nullable=true, length=10)	
 	private int idade;
 	
-	@Column(name="Peso", nullable=false)	
+	@Column(name="Peso", nullable=true)	
 	private float peso;
 	
 	@Column(name="Nome", nullable=true, length=1024)	
 	private String nome;
 	
-	@Column(name="Altura", nullable=false)	
+	@Column(name="Altura", nullable=true)	
 	private float altura;
 	
-	@Column(name="Genero", nullable=false, length=1)	
+	@Column(name="Genero", nullable=true, length=1)	
 	private boolean genero;
 
 	@OneToMany(targetEntity=Marcacao.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="UtilizadorID", nullable=false) })	
+	@JoinColumns({ @JoinColumn(name="UtilizadorID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set ORM_agenda = new java.util.HashSet();
 	

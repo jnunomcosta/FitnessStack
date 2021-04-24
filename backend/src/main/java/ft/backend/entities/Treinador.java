@@ -1,16 +1,3 @@
-/**
- * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
- * 
- * This is an automatic generated file. It will be regenerated every time 
- * you generate persistence class.
- * 
- * Modifying its content may cause the program not work, or your work may lost.
- */
-
-/**
- * Licensee: Nuno Costa(Universidade do Minho)
- * License Type: Academic
- */
 package ft.backend.entities;
 
 import java.io.Serializable;
@@ -29,6 +16,8 @@ public class Treinador implements Serializable {
 		
 		return null;
 	} */
+
+	
 	
 	/* @Transient	
 	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
@@ -65,11 +54,11 @@ public class Treinador implements Serializable {
 	@Column(name="Genero", nullable=false, length=1)	
 	private boolean genero;
 	
-	@OneToMany(targetEntity=Avaliacao.class)	
-	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="TreinadorID", nullable=false) })	
+	@OneToMany(targetEntity=Avaliacao_Treinador.class, cascade = {CascadeType.ALL})	
+	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="TreinadorID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set ORM_avaliacoes_t = new java.util.HashSet();
+	private java.util.Set<Avaliacao_Treinador> ORM_avaliacoes_t = new java.util.HashSet();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -139,19 +128,19 @@ public class Treinador implements Serializable {
 		return genero;
 	}
 	
-	private void setORM_Avaliacoes_t(java.util.Set value) {
+	public void setORM_Avaliacoes_t(java.util.Set<Avaliacao_Treinador> value) {
 		this.ORM_avaliacoes_t = value;
 	}
 	
-	private java.util.Set getORM_Avaliacoes_t() {
+	public java.util.Set<Avaliacao_Treinador> getORM_Avaliacoes_t() {
 		return ORM_avaliacoes_t;
 	}
 	
 	/* @Transient	
 	public final AvaliacaoSetCollection avaliacoes_t = new AvaliacaoSetCollection(this, _ormAdapter, ORMConstants.KEY_TREINADOR_AVALIACOES_T, ORMConstants.KEY_MUL_ONE_TO_MANY);
-	
+	 */
 	public String toString() {
 		return String.valueOf(getID());
-	} */
+	} 
 	
 }

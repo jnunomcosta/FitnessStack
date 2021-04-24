@@ -17,7 +17,7 @@ import ft.backend.entities.*;
 public class RecursoTreinador {
     
     @Autowired
-    RepositorioTreinadores rep_treinadores;
+    TreinadorDAO rep_treinadores;
 
     @GetMapping(value = "/todos")
     public List<Treinador> getAll(){
