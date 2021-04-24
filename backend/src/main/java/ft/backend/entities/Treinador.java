@@ -9,24 +9,6 @@ public class Treinador implements Serializable {
 	public Treinador() {
 	}
 	
-	/* private java.util.Set this_getSet (int key) {
-		if (key == ORMConstants.KEY_TREINADOR_AVALIACOES_T) {
-			return ORM_avaliacoes_t;
-		}
-		
-		return null;
-	} */
-
-	
-	
-	/* @Transient	
-	org.orm.util.ORMAdapter _ormAdapter = new org.orm.util.AbstractORMAdapter() {
-		public java.util.Set getSet(int key) {
-			return this_getSet(key);
-		}
-		
-	}; */
-	
 	@Column(name="ID", nullable=false, length=10)	
 	@Id	
 	@GeneratedValue(generator="TREINADOR_ID_GENERATOR")	

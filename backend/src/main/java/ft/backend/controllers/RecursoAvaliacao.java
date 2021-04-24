@@ -23,6 +23,8 @@ public class RecursoAvaliacao {
     Avaliacao_TreinoDAO rep_eval_treino;
     @Autowired
     TreinadorDAO rep_trainers;
+    @Autowired
+    TreinoDAO rep_treino;
 
     @GetMapping(value = "/treinadores/todos")
     public List<Avaliacao_Treinador> getAll_aval_treinadores(){
@@ -43,6 +45,19 @@ public class RecursoAvaliacao {
         a.setClassificacao(obj.getFloat("classificacao"));a.setComentario(obj.getString("comentario"));
         tre.getORM_Avaliacoes_t().add(a);
         rep_trainers.save(tre);
+
+        return "{\"great\":\"Success\"}";
+    }
+
+    @PostMapping(value = "/treinos/carregar")
+    public String persiste_treinos(@RequestBody String t){
+        JSONObject obj = new JSONObject(t);
+        
+        Treino tre = rep_treino.getOne(obj.getInt("treino"));
+        Avaliacao_Treino a = new Avaliacao_Treino();
+        a.setClassificacao(obj.getFloat("classificacao"));a.setComentario(obj.getString("comentario"));
+        tre.getORM_Avaliacoes_treino().add(a);
+        rep_treino.save(tre);
 
         return "{\"great\":\"Success\"}";
     }

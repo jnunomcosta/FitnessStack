@@ -48,16 +48,14 @@ public class Treino implements Serializable {
 	private java.util.Date data_criacao;
 	
 	@OneToMany(targetEntity=Bloco.class,cascade = {CascadeType.ALL})	
-	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set ORM_blocos_exercicios = new java.util.HashSet();
+	private java.util.Set<Bloco> ORM_blocos_exercicios = new java.util.HashSet();
 	
 	@OneToMany(targetEntity=Avaliacao_Treino.class,cascade = {CascadeType.ALL})	
-	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set ORM_avaliacoes_treino = new java.util.HashSet();
+	private java.util.Set<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.HashSet();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -131,7 +129,7 @@ public class Treino implements Serializable {
 		this.ORM_blocos_exercicios = value;
 	}
 	
-	public java.util.Set getORM_Blocos_exercicios() {
+	public java.util.Set<Bloco> getORM_Blocos_exercicios() {
 		return ORM_blocos_exercicios;
 	}
 	
@@ -139,7 +137,7 @@ public class Treino implements Serializable {
 		this.ORM_avaliacoes_treino = value;
 	}
 	
-	public java.util.Set getORM_Avaliacoes_treino() {
+	public java.util.Set<Avaliacao_Treino> getORM_Avaliacoes_treino() {
 		return ORM_avaliacoes_treino;
 	}
 	
