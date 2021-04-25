@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ft.backend.repositories.*;
+import io.jsonwebtoken.*;
 import ft.backend.entities.*;
 
 @RestController
@@ -28,6 +29,7 @@ public class RecursoAvaliacao {
 
     @GetMapping(value = "/treinadores/todos")
     public List<Avaliacao_Treinador> getAll_aval_treinadores(){
+        
         return rep_eval.findAll();
     }
 
