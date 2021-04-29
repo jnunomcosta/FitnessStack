@@ -1,9 +1,5 @@
 <template>
   <v-app>
-    <div id="nav" class="text-center">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">Exemplo de Consumo da API</router-link>
-    </div>
     <router-view />
   </v-app>
 </template>

@@ -1,16 +1,24 @@
 <template>
   <div class="home">
-    <HelloWorld/>
+    <NavBar />
+    <h1 style="padding: 100px; text-align: center">Bem-vindo ao Fitness Stack!</h1>
+    <Footer />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
+
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld
-  }
-}
+    NavBar,
+    Footer,
+  },
+  created() {
+    document.title = "Fitness Stack";
+  },
+};
 </script>
