@@ -18,20 +18,44 @@
 
       <!-- Large screens -->
       <div class="hidden-sm-and-down mr-4">
-        <v-btn
-          v-for="item in menu"
-          :key="item.icon"
-          :to="item.link"
-          tile
-          text
-          small
-          class="mr-1 py-8"
-        >
-          <v-icon v-if="item.icon == 'account'" dense style="margin-right: 5px"
-            >mdi-{{ item.icon }}</v-icon
-          >
-          {{ item.title }}
-        </v-btn>
+          <v-icon dense style="margin-right: 5px"
+            >mdi-{{ icon_account[0].icon }}</v-icon
+            >
+             <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="#000314"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                 Perfil
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="item2 in items"
+                  :key="item2.title"
+                  :to="item2.link"
+                >
+                  <v-list-item-title>{{ item2.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          <v-btn
+            v-for="item in menu"
+            :key="item.icon"
+            :to="item.link"
+            tile
+            text
+            small
+            class="mr-1 py-8"
+            >
+            <v-icon v-if="item.icon == 'account'" dense style="margin-right: 5px"
+              >mdi-{{ item.icon }}</v-icon
+            >
+            {{ item.title }}
+          </v-btn>
       </div>
 
       <!-- Small screens -->
@@ -61,11 +85,18 @@
 export default {
   data() {
     return {
+      icon_account:[ {icon:"account"}],
       menu: [
-        { icon: "home", title: "Home", link: "/" },
+        //{ icon: "account", title: "Perfil", link: "/perfil" },
+        { icon: "information", title: "Agenda", link: "/agenda" },
+        { icon: "information", title: "Treinadores", link: "/treinadores" },
         { icon: "information", title: "Sobre", link: "/about" },
-        { icon: "account", title: "Login", link: "/login" }, 
       ],
+      items: [
+        { title: "progresso", link: "/Progresso" },
+        { title: "informacoes", link: "/informacoes" },
+      ],
+
     };
   },
   methods: {
