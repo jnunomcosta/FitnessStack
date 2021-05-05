@@ -20,6 +20,7 @@
                     <v-text-field
                       label="Nome de Utilizador"
                       name="Username"
+                      v-model="input.username"
                       prepend-icon="mdi-account"
                       type="text"
                       color="#f95738"
@@ -28,6 +29,7 @@
                       id="password"
                       label="Palavra-Passe"
                       name="password"
+                      v-model="input.password"
                       prepend-icon="mdi-lock"
                       type="password"
                       color="#f95738"
@@ -37,7 +39,7 @@
                     Esqueceu-se da password? <a href="#">Clique aqui</a>
                   </h3>-->
                   <div class="text-center my-16">
-                    <v-btn :href="'/PaginaInicial_User'" rounded color="#f95738" dark>Login</v-btn>
+                    <v-btn v-on:click="login()" rounded color="#f95738" dark>Login</v-btn>
                   </div>
                 </v-card-text>
               </v-col>
@@ -82,6 +84,7 @@
                     <v-text-field
                       label="Nome Completo*"
                       name="Name"
+                      v-model="input_register.nome"
                       prepend-icon="mdi-account"
                       type="text"
                       color="#f95738"
@@ -98,7 +101,7 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          v-model="date"
+                          v-model="input_register.date"
                           label="Data de Nascimento*"
                           prepend-icon="mdi-calendar"
                           readonly
@@ -109,7 +112,7 @@
                         ></v-text-field>
                       </template>
                       <v-date-picker
-                        v-model="date"
+                        v-model="input_register.date"
                         no-title
                         scrollable
                         color="#7189ff"
@@ -121,7 +124,7 @@
                         <v-btn
                           text
                           color="#f95738"
-                          @click="$refs.menu.save(date)"
+                          @click="$refs.menu.save(input_register.date)"
                         >
                           OK
                         </v-btn>
@@ -130,6 +133,7 @@
                     <v-text-field
                       label="Email*"
                       name="Email"
+                      v-model="input_register.email"
                       prepend-icon="mdi-email"
                       type="text"
                       color="#f95738"
@@ -138,6 +142,7 @@
                     <v-text-field
                       label="Nome de Utilizador*"
                       name="Username"
+                      v-model="input_register.username"
                       prepend-icon="mdi-account-lock"
                       type="text"
                       color="#f95738"
@@ -147,6 +152,7 @@
                       id="password"
                       label="Palavra-Passe*"
                       name="password"
+                      v-model="input_register.password"
                       prepend-icon="mdi-lock"
                       type="password"
                       color="#f95738"
@@ -178,7 +184,7 @@
                             <v-col cols="12">
                               <v-subheader>Peso (kg)</v-subheader>
                               <v-slider
-                                v-model="sliderPeso"
+                                v-model="input_register.peso"
                                 class="align-center"
                                 :max="maxPeso"
                                 :min="minPeso"
@@ -187,7 +193,7 @@
                               >
                                 <template v-slot:append>
                                   <v-text-field
-                                    v-model="sliderPeso"
+                                    v-model="input_register.peso"
                                     class="mt-0 pt-0"
                                     hide-details
                                     single-line
@@ -201,7 +207,7 @@
                             <v-col cols="12">
                               <v-subheader>Altura (cm)</v-subheader>
                               <v-slider
-                                v-model="sliderAltura"
+                                v-model="input_register.altura"
                                 class="align-center"
                                 :max="maxAltura"
                                 :min="minAltura"
@@ -210,7 +216,7 @@
                               >
                                 <template v-slot:append>
                                   <v-text-field
-                                    v-model="sliderAltura"
+                                    v-model="input_register.altura"
                                     class="mt-0 pt-0"
                                     hide-details
                                     single-line
@@ -224,6 +230,7 @@
                             <v-col cols="12" center>
                               <v-select
                                 :items="['Masculino', 'Feminino']"
+                                v-model="input_register.genero"
                                 label="Género"
                                 color="#7189ff"
                                 required
@@ -237,8 +244,8 @@
                         <v-btn
                           color="#7189ff"
                           text
-                          @click="dialog = false"
-                          :href="'/'"
+                          v-on:click="registar()"
+                          
                         >
                           Registar
                         </v-btn>
@@ -259,6 +266,7 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
+import axios from 'axios';
 
 export default {
   name: "Login",
@@ -270,16 +278,87 @@ export default {
     document.title = "Fitness Stack";
   },
   data: () => ({
+    input: {
+            username: "",
+            password: ""
+        },
+    input_register: {
+            username: "",
+            password: "",
+            email: "",
+            nome: "",
+            idade: 2,
+            peso: 70,
+            altura: 170, 
+            genero: ""
+        },
     step: 1,
-    date: new Date().toISOString().substr(0, 10),
+    //date: new Date().toISOString().substr(0, 10),
     menu: false,
     dialog: false,
     minPeso: 30,
     maxPeso: 200,
-    sliderPeso: 70,
     minAltura: 100,
     maxAltura: 250,
-    sliderAltura: 170,
   }),
+  methods: {
+      login() {
+          if(this.input.username != "" && this.input.password != "") {
+              console.log("1");
+              console.log(this.input.password);
+              var loginInfo = {
+                email: this.input.username,
+                password: this.input.password
+              }
+              axios
+                .post('http://localhost:4576/api/login/user', loginInfo)
+                .then(response => { 
+                  console.log(response);
+                  const status = JSON.parse(response.status);
+                  //redirect logic
+                  if (status == '200')
+                    this.$router.push('/PaginaInicial_User');
+                 // else self.$router.push('/Login');
+                  //console.log(response);
+                  //redirect("/PaginaInicial_User");
+                  //  this.variavelRecebidaDaAPI = response.data.bpi
+                })
+                .finally(() => this.loading = false)
+  
+          } else {
+              console.log("A username and password must be present");
+          }
+      },
+      registar(){
+        var registoInfo = {
+            email: this.input_register.username,
+            password: this.input_register.password,
+            //username: "",
+            nome: this.input_register.nome,
+            idade: this.input_register.idade,
+            peso: this.input_register.peso,
+            altura: this.input_register.altura, 
+            genero: this.input_register.genero=="Masculino"
+          }
+          if(this.input_register.username != "" && this.input_register.password != "" && this.input_register.nome != "" 
+          && this.input_register.idade != 0 && this.input_register.peso != 0 && this.input_register.altura != 0 && this.input_register.genero != "") {
+              axios
+                .post('http://localhost:4576/api/register/user', registoInfo)
+                .then(response => { 
+                  console.log(registoInfo)
+                  console.log(response);
+                  //const status = JSON.parse(response.status);
+                  //redirect logic
+                  //if (status == '200')
+                    ////this.$router.push('/');
+                })
+                .finally(() => this.loading = false)
+  
+          } else {
+              console.log(registoInfo)
+              console.log("A username and password must be present");
+          }
+      }
+  }
 };
 </script>

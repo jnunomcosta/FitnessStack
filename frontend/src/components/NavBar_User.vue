@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <v-app-bar color="#40444b" elevate-on-scroll dark fixed>
+    <v-app-bar color="#000314" elevate-on-scroll dark fixed>
       <div class="d-flex align-center">
         <router-link to="/PaginaInicial_User">
           <v-img
