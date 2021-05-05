@@ -1,6 +1,6 @@
 <template>
   <div class="notFound">
-    <v-app-bar color="#40444b" elevate-on-scroll dark>
+    <v-app-bar color="#000314" elevate-on-scroll dark>
       <div class="d-flex align-center">
         <router-link to="/">
           <v-img
@@ -16,20 +16,20 @@
     </v-app-bar>
     <v-container>
       <v-row>
-        <v-col class="text-center my-16 py-16" cols="12" md="6">
-          <p class="display-1 font-weight-bold" style="color: #f95738">
+        <v-col class="text-center mt-16 pt-16" cols="12" md="6">
+          <h1 style="color: #7189ff;font-size: 40px">
             Perdeu-se?
-          </p>
+          </h1>
           <div class="my-10 mx-16">
             <p>Não foi possível encontrar a página. Lamentamos o transtorno.</p>
           </div>
-          <v-btn rounded color="#f95738" dark :href="'/'">Voltar à Home</v-btn>
+          <v-btn rounded color="#7189ff" dark :href="'/'">Voltar à Home</v-btn>
         </v-col>
         <v-col cols="12" md="6">
           <v-img
             :src="require('../assets/page_not_found.png')"
             contain
-            height="100%"
+            height="90%"
           />
         </v-col>
       </v-row>
