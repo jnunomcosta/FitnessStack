@@ -3,36 +3,24 @@ package ft.backend.beans;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
+import ft.backend.entities.Utilizador;
 import ft.backend.repositories.UtilizadorDAO;
 
-@Configurable
+@Service
 public class gestao_utilizadores {
-/*
+    
     @Autowired
-    static UtilizadorDAO uDao; 
+    UtilizadorDAO uDao; 
 
-    @Autowired
-    private UtilizadorDAO utilizadorDAO;
- 
-    @PostConstruct
-    private void init() {
-       uDao = this.utilizadorDAO;
+    public Utilizador loginUser(String email, String password){
+        return uDao.findUtilizador_Email_Password(email, password);
     }
 
-    @Bean
-    public static String loginUser(String email, String password){
-
-        //decrypt password
-        uDao.findUtilizador_Email_Password(email, password);
-        
-        //if(u==null){
-        //    return "Mau dia";
-        //}
-        
-        return "Bum dia";
-    }*/
+    public boolean registerUser(Utilizador u){
+        uDao.save(u);
+        return true;
+    }
 
 }
