@@ -31,9 +31,11 @@ public class Exercicio implements Serializable {
 	
 	@Column(name="Descricao", nullable=true, length=2048)	
 	private String descricao;
-	
-	@Column(name="Conteudo_media", nullable=true, columnDefinition = "LONGBLOB")	
-	private byte[] conteudo_media;
+
+	@OneToMany(targetEntity=ConteudoMedia.class,cascade = {CascadeType.ALL})	
+	@JoinColumns({ @JoinColumn(name="ExercicioID", nullable=true) })	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set<ConteudoMedia> ORM_conteudoMedia = new java.util.HashSet();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -79,20 +81,20 @@ public class Exercicio implements Serializable {
 		return descricao;
 	}
 	
-	public void setConteudo_media(byte[] value) {
-		this.conteudo_media = value;
-	}
-	
-	public byte[] getConteudo_media() {
-		return conteudo_media;
-	}
-	
 	public void setCriador_exercicio(Treinador value) {
 		this.criador_exercicio = value;
 	}
 	
 	public Treinador getCriador_exercicio() {
 		return criador_exercicio;
+	}
+
+	private void setORM_ConteudoMedia(java.util.Set<ConteudoMedia> value) {
+		this.ORM_conteudoMedia = value;
+	}
+	
+	private java.util.Set<ConteudoMedia> getORM_ConteudoMedia() {
+		return this.ORM_conteudoMedia;
 	}
 	
 	public String toString() {

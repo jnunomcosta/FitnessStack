@@ -31,7 +31,10 @@ public class RegisterController {
         Utilizador u = new Utilizador();
         u.setEmail(pl.getEmail());u.setPassword(pl.getPassword());u.setNome(pl.getNome());
         u.setAltura(pl.getAltura());u.setGenero(pl.getGenero());u.setPeso(pl.getPeso());
-        u.setIdade(pl.getIdade());
+
+        //DATA ESTA A NULL SEMPRE
+
+        u.setDataNascimento(pl.getDataNascimento());u.setUsername(pl.getUsername());
         gestao_utilizadores.registerUser(u);
 
         RespostaRegister ret = new RespostaRegister();
@@ -46,7 +49,10 @@ public class RegisterController {
         Treinador u = new Treinador();
         u.setEmail(pl.getEmail());u.setPassword(pl.getPassword());u.setNome(pl.getNome());
         u.setAltura(pl.getAltura());u.setGenero(pl.getGenero());u.setPeso(pl.getPeso());
-        u.setIdade(pl.getIdade());
+
+        //DATA ESTA A NULL SEMPRE
+
+        u.setDataNascimento(pl.getDataNascimento());u.setUsername(pl.getUsername());
         gestao_treinadores.registerTreinador(u);
 
         RespostaRegister ret = new RespostaRegister();

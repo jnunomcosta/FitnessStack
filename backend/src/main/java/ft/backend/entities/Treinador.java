@@ -21,13 +21,17 @@ public class Treinador implements Serializable {
 	@Column(name="Password", nullable=true, length=1024)	
 	private String password;
 	
-	@Column(name="Idade", nullable=false, length=10)	
-	private int idade;
+	//@Column(name="Idade", nullable=false, length=10)	
+	//private int idade;
+
+	@Column(name="DataNascimento", nullable=true)	
+	@Temporal(TemporalType.DATE)	
+	private java.util.Date data_nascimento;
 	
 	@Column(name="Peso", nullable=false)	
 	private float peso;
 	
-	@Column(name="Nome", nullable=true, length=2048)	
+	@Column(name="Nome", nullable=true, length=1024)	
 	private String nome;
 	
 	@Column(name="Altura", nullable=false)	
@@ -35,6 +39,9 @@ public class Treinador implements Serializable {
 	
 	@Column(name="Genero", nullable=false, length=1)	
 	private boolean genero;
+
+	@Column(name="Username", nullable=true, length=255)	
+	private String username;
 	
 	@OneToMany(targetEntity=Avaliacao_Treinador.class, cascade = {CascadeType.ALL})	
 	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
@@ -70,12 +77,12 @@ public class Treinador implements Serializable {
 		return password;
 	}
 	
-	public void setIdade(int value) {
-		this.idade = value;
+	public void setDataNascimento(java.util.Date value) {
+		this.data_nascimento = value;
 	}
 	
-	public int getIdade() {
-		return idade;
+	public java.util.Date getDataNascimento() {
+		return this.data_nascimento;
 	}
 	
 	public void setPeso(float value) {
@@ -108,6 +115,14 @@ public class Treinador implements Serializable {
 	
 	public boolean getGenero() {
 		return genero;
+	}
+
+	public void setUsername(String value) {
+		this.username = value;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 	
 	public void setORM_Avaliacoes_t(java.util.Set<Avaliacao_Treinador> value) {

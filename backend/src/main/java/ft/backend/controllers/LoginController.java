@@ -35,13 +35,13 @@ public class LoginController {
 
         //VER A CENA DA PASSWORD!
 
-        Utilizador u = gu.loginUser(pl.getEmail(), pl.getPassword());
+        Utilizador u = gu.loginUser(pl.getUsername(), pl.getPassword());
         if(u==null){
             return ResponseEntity.badRequest().body(null);
         }
 
         Map<String, Object> claims = new HashMap<>();
-        String token = 'U' +  Jwts.builder().setClaims(claims).setSubject(pl.getEmail()).setIssuedAt(new Date(System.currentTimeMillis()))
+        String token = 'U' +  Jwts.builder().setClaims(claims).setSubject(pl.getUsername()).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) //valido por 10h
                 .signWith(SignatureAlgorithm.HS256, "augustooooo").compact();
 
@@ -56,13 +56,13 @@ public class LoginController {
 
         //VER A CENA DA PASSWORD!
 
-        Treinador u = gt.loginTreinador(pl.getEmail(), pl.getPassword());
+        Treinador u = gt.loginTreinador(pl.getUsername(), pl.getPassword());
         if(u==null){
             return ResponseEntity.badRequest().body(null);
         }
 
         Map<String, Object> claims = new HashMap<>();
-        String token = 'T' +  Jwts.builder().setClaims(claims).setSubject(pl.getEmail())
+        String token = 'T' +  Jwts.builder().setClaims(claims).setSubject(pl.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) //valido por 10h
                 .signWith(SignatureAlgorithm.HS256, "augustooooo").compact();

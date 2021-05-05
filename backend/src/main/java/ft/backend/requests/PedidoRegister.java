@@ -7,14 +7,23 @@ public class PedidoRegister implements Serializable{
     private String email;
     private String password;
     private String nome;
-    private int idade;
+	
+    private java.util.Date data;
+
     private float peso;
     private float altura;
     private boolean genero;
+    private String username;
 
     public PedidoRegister() {
     }
     
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
     public boolean getGenero() {
         return genero;
     }
@@ -36,11 +45,11 @@ public class PedidoRegister implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public int getIdade() {
-        return idade;
+    public java.util.Date getDataNascimento() {
+        return this.data;
     }
-    public void setIdade(int idade) {
-        this.idade = idade;
+    public void setIdade(java.util.Date data) {
+        this.data = data;
     }
     public float getPeso() {
         return peso;
@@ -57,9 +66,5 @@ public class PedidoRegister implements Serializable{
     public void setGenero(boolean genero) {
         this.genero = genero;
     }
-
-    
-
-
 
 }

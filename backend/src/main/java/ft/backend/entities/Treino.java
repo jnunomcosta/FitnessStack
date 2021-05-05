@@ -56,7 +56,7 @@ public class Treino implements Serializable {
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.HashSet();
-	
+
 	private void setID(int value) {
 		this.ID = value;
 	}

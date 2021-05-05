@@ -14,8 +14,10 @@ public class gestao_utilizadores {
     @Autowired
     UtilizadorDAO uDao; 
 
-    public Utilizador loginUser(String email, String password){
-        return uDao.findUtilizador_Email_Password(email, password);
+    public Utilizador loginUser(String username,String password){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        //verificar se a password e correta
+        return u;
     }
 
     public boolean registerUser(Utilizador u){

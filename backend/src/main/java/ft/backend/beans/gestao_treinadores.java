@@ -12,8 +12,10 @@ public class gestao_treinadores {
     @Autowired
     TreinadorDAO tDao;
 
-    public Treinador loginTreinador(String email, String password){
-        return tDao.findTreinador_Email_Password(email, password);
+    public Treinador loginTreinador(String username, String password){
+        Treinador t = tDao.findTreinador_Username(username);
+        //Verificar a password aqui
+        return t;
     }
 
     public boolean registerTreinador(Treinador u){
