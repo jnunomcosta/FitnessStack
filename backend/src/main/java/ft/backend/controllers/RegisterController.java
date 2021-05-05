@@ -1,9 +1,5 @@
 package ft.backend.controllers;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ft.backend.beans.gestao_treinadores;
+import ft.backend.beans.gestao_utilizadores;
+import ft.backend.entities.Treinador;
 import ft.backend.entities.Utilizador;
-import ft.backend.repositories.UtilizadorDAO;
 import ft.backend.requests.PedidoRegister;
 import ft.backend.responses.RespostaRegister;
 
@@ -23,7 +21,9 @@ import ft.backend.responses.RespostaRegister;
 public class RegisterController {
     
     @Autowired
-    UtilizadorDAO uDao;
+    gestao_utilizadores gestao_utilizadores;
+    @Autowired
+    gestao_treinadores gestao_treinadores;
 
     @PostMapping(value = "/user")
     public ResponseEntity<RespostaRegister> register_utilizador(@RequestBody PedidoRegister pl){
@@ -31,12 +31,29 @@ public class RegisterController {
         Utilizador u = new Utilizador();
         u.setEmail(pl.getEmail());u.setPassword(pl.getPassword());u.setNome(pl.getNome());
         u.setAltura(pl.getAltura());u.setGenero(pl.getGenero());u.setPeso(pl.getPeso());
-        uDao.save(u);
+        u.setIdade(pl.getIdade());
+        gestao_utilizadores.registerUser(u);
 
         RespostaRegister ret = new RespostaRegister();
         ret.setSucess(true);
 
         return ResponseEntity.ok().body(ret);
     }
+
+    @PostMapping(value = "/treinador")
+    public ResponseEntity<RespostaRegister> register_treinador(@RequestBody PedidoRegister pl){
+
+        Treinador u = new Treinador();
+        u.setEmail(pl.getEmail());u.setPassword(pl.getPassword());u.setNome(pl.getNome());
+        u.setAltura(pl.getAltura());u.setGenero(pl.getGenero());u.setPeso(pl.getPeso());
+        u.setIdade(pl.getIdade());
+        gestao_treinadores.registerTreinador(u);
+
+        RespostaRegister ret = new RespostaRegister();
+        ret.setSucess(true);
+
+        return ResponseEntity.ok().body(ret);
+    }
+    
 
 }

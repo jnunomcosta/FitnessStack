@@ -7,7 +7,7 @@
           <v-window-item :value="1">
             <v-row class="mt-10">
               <v-col cols="12" md="8">
-                <v-card-text class="mt-12">
+                <v-card-text class="mt-16 pt-10" style="margin-bottom: 180px">
                   <h1 class="text-center display-2" style="color: #f95738">
                     Entre no Fitness Stack
                   </h1>
@@ -116,7 +116,7 @@
                       >
                         <v-spacer></v-spacer>
                         <v-btn text color="#f95738" @click="menu = false">
-                          Cancel
+                          Cancelar
                         </v-btn>
                         <v-btn
                           text
@@ -183,6 +183,7 @@
                                 :max="maxPeso"
                                 :min="minPeso"
                                 hide-details
+                                color="#7189ff"
                               >
                                 <template v-slot:append>
                                   <v-text-field
@@ -205,6 +206,7 @@
                                 :max="maxAltura"
                                 :min="minAltura"
                                 hide-details
+                                color="#7189ff"
                               >
                                 <template v-slot:append>
                                   <v-text-field
@@ -223,6 +225,7 @@
                               <v-select
                                 :items="['Masculino', 'Feminino']"
                                 label="Género"
+                                color="#7189ff"
                                 required
                               ></v-select>
                             </v-col>
@@ -232,7 +235,7 @@
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
-                          color="blue darken-1"
+                          color="#7189ff"
                           text
                           @click="dialog = false"
                           :href="'/'"
