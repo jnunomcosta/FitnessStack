@@ -37,7 +37,7 @@
                     Esqueceu-se da password? <a href="#">Clique aqui</a>
                   </h3>-->
                   <div class="text-center my-16">
-                    <v-btn rounded color="#f95738" dark>Login</v-btn>
+                    <v-btn :href="'/PaginaInicial_User'" rounded color="#f95738" dark>Login</v-btn>
                   </div>
                 </v-card-text>
               </v-col>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
+import PaginaInicial_User from '../views/User/PaginaInicial_User.vue'
 
 
 Vue.use(VueRouter)
@@ -27,6 +28,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/PaginaInicial_User',
+    name: 'PaginaInicial_User',
+    component: PaginaInicial_User
   },
   {
     // path: "*",
