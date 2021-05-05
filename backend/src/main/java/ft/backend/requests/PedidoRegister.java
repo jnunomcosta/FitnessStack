@@ -48,7 +48,7 @@ public class PedidoRegister implements Serializable{
     public java.util.Date getDataNascimento() {
         return this.data;
     }
-    public void setIdade(java.util.Date data) {
+    public void setDataNascimento(java.util.Date data) {
         this.data = data;
     }
     public float getPeso() {

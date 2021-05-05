@@ -35,7 +35,7 @@ public class Exercicio implements Serializable {
 	@OneToMany(targetEntity=ConteudoMedia.class,cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="ExercicioID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<ConteudoMedia> ORM_conteudoMedia = new java.util.HashSet();
+	private java.util.Set<ConteudoMedia> ORM_conteudoMedia = new java.util.HashSet<>();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -89,11 +89,11 @@ public class Exercicio implements Serializable {
 		return criador_exercicio;
 	}
 
-	private void setORM_ConteudoMedia(java.util.Set<ConteudoMedia> value) {
+	public void setORM_ConteudoMedia(java.util.Set<ConteudoMedia> value) {
 		this.ORM_conteudoMedia = value;
 	}
 	
-	private java.util.Set<ConteudoMedia> getORM_ConteudoMedia() {
+	public java.util.Set<ConteudoMedia> getORM_ConteudoMedia() {
 		return this.ORM_conteudoMedia;
 	}
 	
