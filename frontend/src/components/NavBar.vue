@@ -62,7 +62,6 @@ export default {
   data() {
     return {
       menu: [
-        { icon: "home", title: "Home", link: "/" },
         { icon: "information", title: "Sobre", link: "/about" },
         { icon: "account", title: "Login", link: "/login" },
       ],

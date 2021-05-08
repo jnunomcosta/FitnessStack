@@ -1,7 +1,19 @@
 <template>
-  <div class="home">
+  <div class="homeUser">
     <NavBar />
-    <h1 style="padding: 100px; text-align: center">Bem-vindo ao Fitness Stack!</h1>
+    <div>
+      <h1 style="padding: 100px; text-align: center">
+        Bem-vindo ao Fitness Stack!
+      </h1>
+      <v-container
+        ><div style="padding: 100px" class="text-center">
+          <v-row align="center" justify="space-around">
+            <v-btn x-large color="#f95738" dark href="/treinos/criar"> Criar treino </v-btn>
+            <v-btn x-large color="#f95738" dark href="/treinos"> Procurar treino </v-btn>
+          </v-row>
+        </div>
+      </v-container>
+    </div>
     <Footer />
   </div>
 </template>
@@ -12,7 +24,7 @@ import NavBar from "@/components/NavBar_User.vue";
 import Footer from "@/components/Footer.vue";
 
 export default {
-  name: "Home",
+  name: "HomeUser",
   components: {
     NavBar,
     Footer,
@@ -22,3 +34,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.homeUser {
+  background-color: #d3d3d2;
+}
+</style>

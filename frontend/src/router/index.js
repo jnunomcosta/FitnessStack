@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
 import PaginaInicial_User from '../views/User/PaginaInicial_User.vue'
+import ProcurarTreino from '../views/User/ProcurarTreino.vue'
+import CriarTreino from '../views/User/CriarTreino.vue'
 
 
 Vue.use(VueRouter)
@@ -33,6 +35,16 @@ const routes = [
     path: '/PaginaInicial_User',
     name: 'PaginaInicial_User',
     component: PaginaInicial_User
+  },
+  {
+    path: '/treinos',
+    name: 'ProcurarTreino',
+    component: ProcurarTreino
+  },
+  {
+    path: '/treinos/criar',
+    name: 'CriarTreino',
+    component: CriarTreino
   },
   {
     // path: "*",

@@ -1,18 +1,18 @@
 <template>
-  <div class="home">
+  <div class="criarTreino">
     <NavBar />
-    <h1 style="padding: 100px; text-align: center">Bem-vindo ao Fitness Stack!</h1>
+    <h1 style="padding: 100px; text-align: center">Criar Treino page!</h1>
     <Footer />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "@/components/NavBar_User.vue";
 import Footer from "@/components/Footer.vue";
 
 export default {
-  name: "Home",
+  name: "Criar_Treino",
   components: {
     NavBar,
     Footer,
@@ -22,10 +22,3 @@ export default {
   },
 };
 </script>
-
-
-<style>
-.home {
-  background-color: #d3d3d2;
-}
-</style>

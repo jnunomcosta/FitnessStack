@@ -27,11 +27,28 @@
           small
           class="mr-1 py-8"
         >
-          <v-icon v-if="item.icon == 'account'" dense style="margin-right: 5px"
-            >mdi-{{ item.icon }}</v-icon
-          >
           {{ item.title }}
         </v-btn>
+        
+        <v-menu>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn tile text small class="mr-1 py-8" v-bind="attrs" v-on="on">
+              <v-icon dense style="margin-right: 5px">mdi-account</v-icon>
+              Perfil
+              <v-icon dense>mdi-menu-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-for="item in items" :key="item.icon" :to="item.link">
+              <v-icon dense color="black" style="margin-right: 5px"
+                >mdi-{{ item.icon }}</v-icon
+              >
+              <v-list-item-title>{{
+                item.title.toUpperCase()
+              }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
 
       <!-- Small screens -->
@@ -43,6 +60,14 @@
         </template>
         <v-list>
           <v-list-item v-for="item in menu" :key="item.icon" :to="item.link">
+            <v-icon dense color="black" style="margin-right: 5px"
+              >mdi-{{ item.icon }}</v-icon
+            >
+            <v-list-item-title>{{
+              item.title.toUpperCase()
+            }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-for="item in items" :key="item.icon" :to="item.link">
             <v-icon dense color="black" style="margin-right: 5px"
               >mdi-{{ item.icon }}</v-icon
             >
@@ -62,9 +87,14 @@ export default {
   data() {
     return {
       menu: [
-        { icon: "home", title: "Home", link: "/" },
+        { icon: "calendar", title: "Agenda", link: "/agenda" },
+        { icon: "weight-lifter", title: "Treinadores", link: "/treinadores" },
         { icon: "information", title: "Sobre", link: "/about" },
-        { icon: "account", title: "Login", link: "/login" }, 
+      ],
+      items: [
+        { icon: "chart-line", title: "Progresso", link: "/progresso" },
+        { icon: "clipboard-account", title: "Informações", link: "/informacoes" },
+        { icon: "logout", title: "Sair", link: "/" },
       ],
     };
   },

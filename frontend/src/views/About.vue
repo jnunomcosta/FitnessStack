@@ -2,7 +2,7 @@
   <div class="about text-center">
     <NavBar />
 
-    <h1 class="mt-16">Exemplo de Consumo da API</h1>
+    <h1 style="padding: 100px">Exemplo de Consumo da API</h1>
     <p v-if="loading">A carregar...</p>
     <p v-if="error">Há erros...</p>
     <p>{{ variavelRecebidaDaAPI }}</p>
