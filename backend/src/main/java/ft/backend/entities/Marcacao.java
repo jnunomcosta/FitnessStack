@@ -2,6 +2,7 @@ package ft.backend.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name="Marcacao")
@@ -20,10 +21,14 @@ public class Marcacao implements Serializable {
 	@JoinColumns(value={ @JoinColumn(name="TreinoID", referencedColumnName="ID", nullable=false) }, foreignKey=@ForeignKey(name="FKMarcacao343781"))	
 	private Treino treino;
 	
-	@Column(name="Data_hora", nullable=true)	
+	@Column(name="Data", nullable=true)	
 	@Temporal(TemporalType.DATE)	
-	private java.util.Date data_hora;
-	
+	private java.util.Date data;
+
+	@Column(name="Hora", nullable=true)	
+	@Temporal(TemporalType.TIME)	
+	private java.util.Date hora;
+
 	private void setID(int value) {
 		this.ID = value;
 	}
@@ -36,12 +41,20 @@ public class Marcacao implements Serializable {
 		return getID();
 	}
 	
-	public void setData_hora(java.util.Date value) {
-		this.data_hora = value;
+	public void setData(java.util.Date value) {
+		this.data = value;
 	}
 	
-	public java.util.Date getData_hora() {
-		return data_hora;
+	public java.util.Date getData() {
+		return data;
+	}
+
+	public void setHora(java.util.Date value) {
+		this.hora = value;
+	}
+	
+	public java.util.Date getHora() {
+		return hora;
 	}
 	
 	public void setTreino(Treino value) {

@@ -44,7 +44,7 @@ public class Utilizador implements Serializable {
 	@Column(name="Username", nullable=true, length=512)	
 	private String username;
 
-	@OneToMany(targetEntity=Marcacao.class)	
+	@OneToMany(targetEntity=Marcacao.class,cascade = {CascadeType.ALL})	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="UtilizadorID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -118,11 +118,11 @@ public class Utilizador implements Serializable {
 		return genero;
 	}
 
-	private void setORM_Agenda(java.util.Set value) {
+	public void setORM_Agenda(java.util.Set value) {
 		this.ORM_agenda = value;
 	}
 	
-	private java.util.Set getORM_Agenda() {
+	public java.util.Set getORM_Agenda() {
 		return ORM_agenda;
 	}
 

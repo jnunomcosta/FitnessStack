@@ -26,5 +26,4 @@ public class ExercicioController {
         return ResponseEntity.ok().body("{\"great\":\"Success\"}");
     } 
 
-
 }
