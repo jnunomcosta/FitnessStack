@@ -1,5 +1,10 @@
 package ft.backend.controllers;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ft.backend.beans.gestao_treinadores;
 import ft.backend.beans.gestao_utilizadores;
 import ft.backend.entities.Treinador;
 import ft.backend.entities.Utilizador;
-import ft.backend.requests.PedidoRegister;
 import ft.backend.responses.RespostaRegister;
 
 @RestController
@@ -22,44 +25,55 @@ public class RegisterController {
     
     @Autowired
     gestao_utilizadores gestao_utilizadores;
-    @Autowired
-    gestao_treinadores gestao_treinadores;
 
     @PostMapping(value = "/user")
-    public ResponseEntity<RespostaRegister> register_utilizador(@RequestBody PedidoRegister pl){
-
+    public ResponseEntity<RespostaRegister> register_utilizador(@RequestBody String pl){
         Utilizador u = new Utilizador();
-        u.setEmail(pl.getEmail());u.setPassword(pl.getPassword());u.setNome(pl.getNome());
-        u.setAltura(pl.getAltura());u.setGenero(pl.getGenero());u.setPeso(pl.getPeso());
+        JSONObject obj = new JSONObject(pl);
 
-        //DATA ESTA A NULL SEMPRE
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date dn = df.parse(obj.getString("data"),new ParsePosition(0));
 
-        u.setDataNascimento(pl.getDataNascimento());u.setUsername(pl.getUsername());
-        gestao_utilizadores.registerUser(u);
+
+        u.setEmail(obj.getString("email"));u.setPassword(obj.getString("password"));
+        u.setNome(obj.getString("nome"));u.setAltura(obj.getFloat("altura"));
+        u.setGenero(obj.getBoolean("genero"));u.setPeso(obj.getFloat("peso"));
+        u.setDataNascimento(dn);u.setUsername(obj.getString("username"));
 
         RespostaRegister ret = new RespostaRegister();
-        ret.setSucess(true);
 
+        if(!gestao_utilizadores.registerUser(u)){
+            ret.setSucess(false);
+            return ResponseEntity.badRequest().body(ret);
+        }
+
+        ret.setSucess(true);
         return ResponseEntity.ok().body(ret);
     }
 
     @PostMapping(value = "/treinador")
-    public ResponseEntity<RespostaRegister> register_treinador(@RequestBody PedidoRegister pl){
-
+    public ResponseEntity<RespostaRegister> register_treinador(@RequestBody String pl){
         Treinador u = new Treinador();
-        u.setEmail(pl.getEmail());u.setPassword(pl.getPassword());u.setNome(pl.getNome());
-        u.setAltura(pl.getAltura());u.setGenero(pl.getGenero());u.setPeso(pl.getPeso());
+        JSONObject obj = new JSONObject(pl);
 
-        //DATA ESTA A NULL SEMPRE
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date dn = df.parse(obj.getString("data"),new ParsePosition(0));
 
-        u.setDataNascimento(pl.getDataNascimento());u.setUsername(pl.getUsername());
-        gestao_treinadores.registerTreinador(u);
+        u.setEmail(obj.getString("email"));u.setPassword(obj.getString("password"));
+        u.setNome(obj.getString("nome"));u.setAltura(obj.getFloat("altura"));
+        u.setGenero(obj.getBoolean("genero"));u.setPeso(obj.getFloat("peso"));
+        u.setDataNascimento(dn);u.setUsername(obj.getString("username"));
+        gestao_utilizadores.registerTreinador(u);
 
         RespostaRegister ret = new RespostaRegister();
-        ret.setSucess(true);
 
+        if(!gestao_utilizadores.registerTreinador(u)){
+            ret.setSucess(false);
+            return ResponseEntity.badRequest().body(ret);
+        }
+
+        ret.setSucess(true);
         return ResponseEntity.ok().body(ret);
     }
-    
 
 }

@@ -19,22 +19,15 @@ public class gestao_treinos {
     ExercicioDAO eDao;
     @Autowired
     TreinadorDAO treinadorDao;
-    
-    public void criaExercicio(String exercicio){
-        JSONObject obj = new JSONObject(exercicio);
 
-        int id_treinador = obj.getInt("criador_exercicio");
+    public void criaExercicio(Exercicio e, int id_treinador, JSONArray media){
         Treinador ttt = treinadorDao.getOne(id_treinador);
+        e.setCriador_exercicio(ttt);
 
-        Exercicio e = new Exercicio();
-        e.setCriador_exercicio(ttt);e.setNome(obj.getString("nome"));e.setDescricao("descricao");
-        e.setDuracao_media(obj.getFloat("duracao_media"));e.setMaterial_necessario(obj.getString("material_necessario"));
-        
         Set<ConteudoMedia> medias = new HashSet<>();
-        JSONArray media = obj.getJSONArray("conteudo_media");
         for(int i = 0;i < media.length();i++){
             ConteudoMedia c = new ConteudoMedia();
-            c.setConteudo(DatatypeConverter.parseBase64Binary(media.getString(0)));
+            c.setConteudo(DatatypeConverter.parseBase64Binary(media.getString(i)));
             medias.add(c);
         }
         e.setORM_ConteudoMedia(medias);
@@ -52,7 +45,6 @@ public class gestao_treinos {
         return tDao.findAllTreinos();
 
     }
-
 
     public boolean comentar(int id, Avaliacao_Treino at){
         boolean b = false;

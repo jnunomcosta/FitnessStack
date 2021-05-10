@@ -1,9 +1,6 @@
-package ft.backend.controllers;
+package ft.backend.controllers.recursos;
 
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.http.ResponseEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,23 +15,21 @@ import ft.backend.entities.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/rest/treinos")
-public class RecursoTreino {
+@RequestMapping(value = "/rest/treinadores")
+public class RecursoTreinador {
     
     @Autowired
-    TreinoDAO tDao;
+    TreinadorDAO rep_treinadores;
 
     @GetMapping(value = "/todos")
-    public List<Treino> getAll(){
-        return tDao.findAll();
+    public List<Treinador> getAll(){
+        return rep_treinadores.findAll();
     }
 
     @PostMapping(value = "/carregar")
-    public String persiste(@RequestBody Treino t){
-
-        tDao.save(t);
-
+    public String persiste(@RequestBody Treinador t){
+        rep_treinadores.save(t);
         return "{\"great\":\"Success\"}";
     }
-
+    
 }
