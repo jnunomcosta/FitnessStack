@@ -6,6 +6,7 @@ import NotFound from '../views/NotFound.vue'
 import PaginaInicial_User from '../views/User/PaginaInicial_User.vue'
 import ProcurarTreino from '../views/User/ProcurarTreino.vue'
 import CriarTreino from '../views/User/CriarTreino.vue'
+import Perfil from '../views/User/Perfil.vue'
 
 
 Vue.use(VueRouter)
@@ -45,6 +46,11 @@ const routes = [
     path: '/treinos/criar',
     name: 'CriarTreino',
     component: CriarTreino
+  },
+  {
+    path: '/perfil',
+    name: 'Perfil',
+    component: Perfil
   },
   {
     // path: "*",
