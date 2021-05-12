@@ -34,19 +34,19 @@ public class TreinoController {
 
         if(id.isPresent()){
             res.add(gt.pesquisarTreino(id.get()));
-            
         }
-        else res=gt.pesquisarTreino();  
+        else res = gt.pesquisarTreino();  
 
         return ResponseEntity.ok().body(res);
     }
 
     @PostMapping(value = "/comentar")
     public ResponseEntity<RespostaOk> comentar(@RequestParam int IdTreino, @RequestBody Avaliacao_Treino s){
-    
+
         if(gt.comentar(IdTreino, s) == true){
             return ResponseEntity.ok().body(new RespostaOk());
         }
+
         return ResponseEntity.badRequest().body(null);
     }
 
