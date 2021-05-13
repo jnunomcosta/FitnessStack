@@ -28,6 +28,7 @@
         ></v-data-table>
       </v-card>
     </v-container>
+    <CriarTreino />
     <Footer />
   </div>
 </template>
@@ -36,12 +37,14 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_User.vue";
 import Footer from "@/components/Footer.vue";
+import CriarTreino from "@/components/CriarTreino.vue";
 
 export default {
   name: "ProcurarTreino",
   components: {
     NavBar,
     Footer,
+    CriarTreino
   },
   created() {
     document.title = "Fitness Stack";

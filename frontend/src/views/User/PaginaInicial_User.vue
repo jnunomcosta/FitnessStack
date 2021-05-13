@@ -8,7 +8,7 @@
       <v-container
         ><div style="padding: 100px" class="text-center">
           <v-row align="center" justify="space-around">
-            <v-btn x-large color="#f95738" dark href="/treinos/criar"> Criar treino </v-btn>
+            <!--<v-btn x-large color="#f95738" dark href="/treinos/criar"> Criar treino </v-btn>-->
             <v-btn x-large color="#f95738" dark href="/treinos"> Procurar treino </v-btn>
           </v-row>
         </div>
