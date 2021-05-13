@@ -221,7 +221,7 @@
               <v-spacer></v-spacer>
               Meta: 70kg
             </v-card-title>
-            <div>
+            <div style="margin-left: 50px; margin-right: 50px">
               <br />
               <v-progress-linear
                 color="#f95738"

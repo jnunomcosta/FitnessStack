@@ -7,6 +7,7 @@ import PaginaInicial_User from '../views/User/PaginaInicial_User.vue'
 import ProcurarTreino from '../views/User/ProcurarTreino.vue'
 import CriarTreino from '../views/User/CriarTreino.vue'
 import Perfil from '../views/User/Perfil.vue'
+import Treinadores from '../views/User/Treinadores.vue'
 
 
 Vue.use(VueRouter)
@@ -51,6 +52,11 @@ const routes = [
     path: '/perfil',
     name: 'Perfil',
     component: Perfil
+  },
+  {
+    path: '/treinadores',
+    name: 'Treinadores',
+    component: Treinadores
   },
   {
     // path: "*",
