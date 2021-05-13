@@ -16,4 +16,7 @@ public interface UtilizadorDAO extends JpaRepository<Utilizador,Integer> {
     @Query(value = "SELECT * FROM Utilizador u WHERE u.username = :username",nativeQuery = true)
     public Utilizador findUtilizador_Username(@Param("username") String email);
 
+    @Query(value = "SELECT * FROM Utilizador u WHERE u.email = :email",nativeQuery = true)
+    public Utilizador findUtilizador_Email(@Param("email") String email);
+
 }

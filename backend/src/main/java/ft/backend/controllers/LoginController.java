@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ft.backend.beans.gestao_treinadores;
 import ft.backend.beans.gestao_utilizadores;
 import ft.backend.entities.*;
 import ft.backend.requests.PedidoLogin;
@@ -27,8 +26,6 @@ public class LoginController {
 
     @Autowired
     gestao_utilizadores gu;
-    @Autowired 
-    gestao_treinadores gt;
     
     @PostMapping(value = "/user")
     public ResponseEntity<RespostaLogin> login_utilizador(@RequestBody PedidoLogin pl){
@@ -56,7 +53,7 @@ public class LoginController {
 
         //VER A CENA DA PASSWORD!
 
-        Treinador u = gt.loginTreinador(pl.getUsername(), pl.getPassword());
+        Treinador u = gu.loginTreinador(pl.getUsername(), pl.getPassword());
         if(u==null){
             return ResponseEntity.badRequest().body(null);
         }

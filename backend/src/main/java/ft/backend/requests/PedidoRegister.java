@@ -7,9 +7,7 @@ public class PedidoRegister implements Serializable{
     private String email;
     private String password;
     private String nome;
-	
-    private java.util.Date data;
-
+    private String nascimento;
     private float peso;
     private float altura;
     private boolean genero;
@@ -45,11 +43,11 @@ public class PedidoRegister implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public java.util.Date getDataNascimento() {
-        return this.data;
+    public String getDataNascimento() {
+        return this.nascimento;
     }
-    public void setIdade(java.util.Date data) {
-        this.data = data;
+    public void setDataNascimento(String data) {
+        this.nascimento = data;
     }
     public float getPeso() {
         return peso;

@@ -1,4 +1,4 @@
-package ft.backend.controllers;
+package ft.backend.controllers.recursos;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ft.backend.repositories.*;
-import io.jsonwebtoken.*;
 import ft.backend.entities.*;
 
 @RestController

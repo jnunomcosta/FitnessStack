@@ -1,4 +1,4 @@
-package ft.backend.controllers;
+package ft.backend.controllers.recursos;
 
 import java.util.List;
 
