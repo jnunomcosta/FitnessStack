@@ -2,7 +2,7 @@
   <div class="navbar">
     <v-app-bar color="#000314" elevate-on-scroll dark fixed>
       <div class="d-flex align-center">
-        <router-link to="/PaginaInicial_User">
+        <router-link to="/perfil">
           <v-img
             alt="Fitness Stack Logo"
             class="shrink mr-2 ml-8"
@@ -28,27 +28,9 @@
           class="mr-1 py-8"
         >
           {{ item.title }}
+          <v-icon v-if="item.icon == 'logout'" class="ml-2">mdi-{{ item.icon }}
+        </v-icon>
         </v-btn>
-        
-        <v-menu>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn tile text small class="mr-1 py-8" v-bind="attrs" v-on="on">
-              <v-icon dense style="margin-right: 5px">mdi-account</v-icon>
-              Perfil
-              <v-icon dense>mdi-menu-down</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item v-for="item in items" :key="item.icon" :to="item.link">
-              <v-icon dense color="black" style="margin-right: 5px"
-                >mdi-{{ item.icon }}</v-icon
-              >
-              <v-list-item-title>{{
-                item.title.toUpperCase()
-              }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
       </div>
 
       <!-- Small screens -->
@@ -67,14 +49,7 @@
               item.title.toUpperCase()
             }}</v-list-item-title>
           </v-list-item>
-          <v-list-item v-for="item in items" :key="item.icon" :to="item.link">
-            <v-icon dense color="black" style="margin-right: 5px"
-              >mdi-{{ item.icon }}</v-icon
-            >
-            <v-list-item-title>{{
-              item.title.toUpperCase()
-            }}</v-list-item-title>
-          </v-list-item>
+        
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -87,14 +62,8 @@ export default {
   data() {
     return {
       menu: [
-        { icon: "calendar", title: "Agenda", link: "/agenda" },
-        { icon: "weight-lifter", title: "Treinadores", link: "/treinadores" },
         { icon: "information", title: "Sobre", link: "/about" },
-      ],
-      items: [
-        { icon: "chart-line", title: "Progresso", link: "/progresso" },
-        { icon: "clipboard-account", title: "Informações", link: "/informacoes" },
-        { icon: "logout", title: "Sair", link: "/" },
+        { icon: "logout", title: "Logout", link: "/" },
       ],
     };
   },

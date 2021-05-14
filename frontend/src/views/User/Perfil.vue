@@ -1,193 +1,185 @@
 <template>
-  <div class="homeUser">
+  <div class="profile">
     <NavBar />
     <div>
-      <v-row style="margin-left: 100px; margin-top: 100px; margin-right: 100px; margin-bottom: 25px">
+      <v-row
+        style="
+          margin-left: 75px;
+          margin-top: 100px;
+          margin-right: 25px;
+          margin-bottom: 25px;
+        "
+      >
         <v-col cols="12" md="2">
+          <SideBar />
           <v-card style="text-align: center">
-          
-             <div class="mx-auto text-center">
-            <v-avatar class="mt-4" size="150" >
-               <v-img src="https://picsum.photos/200"></v-img>
-            </v-avatar>
-             </div>
+            <div class="mx-auto text-center">
+              <v-avatar class="mt-4" size="150">
+                <v-img src="https://picsum.photos/200"></v-img>
+              </v-avatar>
+            </div>
             <v-card-title class="justify-center">Xana</v-card-title>
             <v-card-subtitle> xanareigada </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            <p>Email</p> 
-            <v-row class="justify-center">
-              <v-col cols="12" md="4">
-                <v-dialog v-model="dialog" persistent max-width="400px">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      height="25"
-                      width="20"
-                      color="white"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="#f95738"> mdi-account-edit-outline </v-icon>
+            <div class="mt-4 body-2">xana@gmail.com</div>
+            <v-container class="justify-center">
+              <v-dialog v-model="dialog1" persistent max-width="400px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="#f95738"
+                    dark
+                    small
+                    class="mb-1"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dense> mdi-account-edit-outline </v-icon>
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Alterar nome de utilizador</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="12">
+                          Digite o novo nome de utilizador.
+                          <v-text-field
+                            color="#f95738"
+                            prepend-icon="mdi-account-lock"
+                            label="Nome de Utilizador"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#f95738" text @click="dialog1 = false">
+                      Sair
                     </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <span class="headline">Alterar username</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="12">
-                            Digite o novo username.
-                            <v-text-field
-                            
-                              placeholder="username"
-                              required
-                            ></v-text-field>
-                            
-                          </v-col>
-                        </v-row>
-                      </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="#f95738" text @click="dialog1 = false">
-                        Sair
-                      </v-btn>
-                      <v-btn color="#f95738" text @click="dialog1 = false">
-                        Atualizar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-col>
-
-              <v-col cols="12" md="4">
-                <v-dialog v-model="dialog" persistent max-width="400px">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      height="25"
-                      color="white"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="#f95738"> mdi-email-edit-outline  </v-icon>
+                    <v-btn color="#f95738" text @click="dialog1 = false">
+                      Atualizar
                     </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <span class="headline">Alterar email</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="12">
-                            Digite o novo email.
-                            <v-text-field
-                              
-                              placeholder="40"
-                              required
-                            ></v-text-field>
-                            
-                          </v-col>
-                        </v-row>
-                      </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="#f95738" text @click="dialog2 = false">
-                        Sair
-                      </v-btn>
-                      <v-btn color="#f95738" text @click="dialog2 = false">
-                        Atualizar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-col>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
 
-              <v-col cols="12" md="4">
-                <v-dialog v-model="dialog" persistent max-width="400px">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      height="25"
-                      color="white"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="#f95738"> mdi-lock-reset</v-icon>
+              <v-dialog v-model="dialog2" persistent max-width="400px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="#f95738"
+                    dark
+                    small
+                    class="ml-1 mb-1"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dense> mdi-email-edit-outline </v-icon>
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Alterar email</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="12">
+                          Digite o novo email.
+                          <v-text-field
+                            color="#f95738"
+                            prepend-icon="mdi-email"
+                            label="Email"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#f95738" text @click="dialog2 = false">
+                      Sair
                     </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <span class="headline">Alterar password</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="12">
-                            Digite a password antiga.
-                            <v-text-field
-                             required
-                            ></v-text-field>
-                            Digite a password nova.
-                            <v-text-field
-                              placeholder="40"
-                              required
-                            ></v-text-field>
-                            
-                          </v-col>
-                        </v-row>
-                      </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="#f95738" text @click="dialog3 = false">
-                        Sair
-                      </v-btn>
-                      <v-btn color="#f95738" text @click="dialog3 = false">
-                        Atualizar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-col>
+                    <v-btn color="#f95738" text @click="dialog2 = false">
+                      Atualizar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
 
-            </v-row>
-          
-
-
-
-
-
-
-
-
-
-
-           </v-card>
-          
-          
-          
+              <v-dialog v-model="dialog3" persistent max-width="400px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="#f95738"
+                    dark
+                    class="ml-1 mb-1"
+                    small
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dense> mdi-lock-reset</v-icon>
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Alterar palavra-passe</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" md="12">
+                          Digite a palavra-passe antiga.
+                          <v-text-field
+                            color="#f95738"
+                            prepend-icon="mdi-lock"
+                            label="Palavra-Passe Antiga"
+                            required
+                          ></v-text-field>
+                          Digite a palavra-passe nova.
+                          <v-text-field
+                            color="#f95738"
+                            prepend-icon="mdi-lock-question"
+                            label="Palavra-Passe Nova"
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#f95738" text @click="dialog3 = false">
+                      Sair
+                    </v-btn>
+                    <v-btn color="#f95738" text @click="dialog3 = false">
+                      Atualizar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-container>
+          </v-card>
         </v-col>
 
         <v-col cols="12" md="5">
           <v-card>
             <v-card-title
               >Peso atual: 80kg
-              <v-dialog v-model="dialog" persistent max-width="300px">
+              <v-dialog v-model="dialog4" persistent max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     class="mx-4"
-                    height="25"
-                    color="white"
+                    color="#f95738"
+                    small
                     dark
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <v-icon color="#f95738"> mdi-lead-pencil </v-icon>
+                    <v-icon dense>mdi-lead-pencil</v-icon>
                   </v-btn>
                 </template>
                 <v-card>
@@ -195,17 +187,16 @@
                     <span class="headline">Atualizar peso</span>
                   </v-card-title>
                   <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            placeholder="40"
-                            required
-                          ></v-text-field>
-                          kg
-                        </v-col>
-                      </v-row>
-                    </v-container>
+                    <v-text-field
+                      color="#f95738"
+                      type="number"
+                      :max="maxPeso"
+                      :min="minPeso"
+                      label="Peso (kg)"
+                      required
+                    >
+                      ></v-text-field
+                    >
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
@@ -232,143 +223,146 @@
             </div>
             <v-card-text>
               <v-row>
-              <v-col cols="12" md="6">
-                <p>Altura</p>
-                
-              <p>
-                Percentagem de massa gorda
-                <v-dialog v-model="dialog" persistent max-width="500px">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="mx-4"
-                      height="25"
-                      color="white"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="#f95738"> mdi-lead-pencil </v-icon>
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <span class="headline">Atualizar percentagem de massa gorda</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
-                              placeholder="40"
-                              required
-                            ></v-text-field>
-                            %
-                          </v-col>
-                        </v-row>
-                      </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="#f95738" text @click="dialog5 = false">
-                        Sair
-                      </v-btn>
-                      <v-btn color="#f95738" text @click="dialog5 = false">
-                        Atualizar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </p>
-              
-              <p>
-                Percentagem massa muscular
-                <v-dialog v-model="dialog" persistent max-width="500px">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      class="mx-4"
-                      height="25"
-                      color="white"
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon color="#f95738"> mdi-lead-pencil </v-icon>
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <span class="headline">Atualizar percentagem massa muscular</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field
-                              placeholder="40"
-                              required
-                            ></v-text-field>
-                            %
-                          </v-col>
-                        </v-row>
-                      </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="#f95738" text @click="dialog6 = false">
-                        Sair
-                      </v-btn>
-                      <v-btn color="#f95738" text @click="dialog6 = false">
-                        Atualizar
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </p>
-              </v-col>
-              
                 <v-col cols="12" md="6">
-                <p>IMC</p>
-                <p>IMC ideal</p>
+                  <p>Altura</p>
+
+                  <p>
+                    Percentagem de massa gorda
+                    <v-dialog v-model="dialog5" persistent max-width="500px">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="mx-4"
+                          color="#f95738"
+                          small
+                          dark
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon dense> mdi-lead-pencil </v-icon>
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline"
+                            >Atualizar % de massa gorda</span
+                          >
+                        </v-card-title>
+                        <v-card-text>
+                          <v-text-field
+                            color="#f95738"
+                            type="number"
+                            :max="maxPercentagem"
+                            :min="minPercentagem"
+                            label="Massa gorda (%)"
+                            required
+                          ></v-text-field>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="#f95738" text @click="dialog5 = false">
+                            Sair
+                          </v-btn>
+                          <v-btn color="#f95738" text @click="dialog5 = false">
+                            Atualizar
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </p>
+
+                  <p>
+                    Percentagem de massa muscular
+                    <v-dialog v-model="dialog6" persistent max-width="500px">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="mx-4"
+                          color="#f95738"
+                          small
+                          dark
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon dense> mdi-lead-pencil </v-icon>
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline"
+                            >Atualizar % de massa muscular</span
+                          >
+                        </v-card-title>
+                        <v-card-text>
+                          <v-text-field
+                            color="#f95738"
+                            type="number"
+                            :max="maxPercentagem"
+                            :min="minPercentagem"
+                            label="Massa muscular (%)"
+                            required
+                          ></v-text-field>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="#f95738" text @click="dialog6 = false">
+                            Sair
+                          </v-btn>
+                          <v-btn color="#f95738" text @click="dialog6 = false">
+                            Atualizar
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </p>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                  <p>IMC</p>
+                  <p>IMC ideal</p>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
 
-          
           <v-card class="mt-4">
-            <v-card-title class="justify-center"> Os meus treinos </v-card-title>
-             <v-divider class="mx-4"></v-divider>
-          <v-row>
-            <v-col cols="12" md="4">
-              <v-list-item two-line>
-                <v-list-item-content>
-                  <v-list-item-title>Total de horas de treino</v-list-item-title>
-                  <v-list-item-subtitle>12</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-list-item two-line>
-                <v-list-item-content>
-                  <v-list-item-title>Média de minutos</v-list-item-title>
-                  <v-list-item-title>por treino</v-list-item-title>
-                  <v-list-item-subtitle>1</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-list-item two-line >
-                <v-list-item-content>
-                  <v-list-item-title>Média de minutos de treino</v-list-item-title>
-                  <v-list-item-title>por dia</v-list-item-title>
-                  <v-list-item-subtitle>10</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-col>
-          </v-row>
+            <v-card-title class="justify-center">
+              Os meus treinos
+            </v-card-title>
+            <v-divider class="mx-4"></v-divider>
+            <v-row>
+              <v-col cols="12" md="4">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >Total de horas de treino</v-list-item-title
+                    >
+                    <v-list-item-subtitle>12</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title>Média de minutos</v-list-item-title>
+                    <v-list-item-title>por treino</v-list-item-title>
+                    <v-list-item-subtitle>1</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >Média de minutos de treino</v-list-item-title
+                    >
+                    <v-list-item-title>por dia</v-list-item-title>
+                    <v-list-item-subtitle>10</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
           </v-card>
-         
-           <!-- <v-card class="mt-4">
+
+          <!-- <v-card class="mt-4">
             <v-card-title class="justify-center"> Os meus treinos </v-card-title>
             <v-divider class="mx-4"></v-divider>
             <v-card-subtitle>Total de horas de treino</v-card-subtitle>
@@ -378,9 +372,10 @@
             >
           </v-card>  -->
 
-
           <v-card class="mt-7">
-            <v-card-title class="justify-center"> Categorias de treinos </v-card-title>
+            <v-card-title class="justify-center">
+              Categorias de treinos
+            </v-card-title>
             <v-divider class="mx-4"></v-divider>
             <div id="chart">
               <apexchart
@@ -393,14 +388,12 @@
             </div>
           </v-card>
         </v-col>
-        
-
-
-
 
         <v-col cols="12" md="5">
-          <v-card class=" mx-auto text-center">
-            <v-card-title class="justify-center">Peso e Massa Muscular</v-card-title>
+          <v-card class="mx-auto text-center">
+            <v-card-title class="justify-center"
+              >Peso e Massa Muscular</v-card-title
+            >
             <v-divider class="mx-4"></v-divider>
             <div id="chart">
               <apexchart
@@ -411,9 +404,11 @@
               ></apexchart>
             </div>
           </v-card>
-        
-         <v-card class="mt-4">
-            <v-card-title class="justify-center">Minutos por treino</v-card-title>
+
+          <v-card class="mt-4">
+            <v-card-title class="justify-center"
+              >Minutos por treino</v-card-title
+            >
             <v-divider class="mx-4"></v-divider>
             <div width="300" height="300">
               <apexchart
@@ -424,7 +419,7 @@
               ></apexchart>
             </div>
           </v-card>
-          </v-col>
+        </v-col>
       </v-row>
     </div>
     <Footer />
@@ -434,14 +429,14 @@
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_User.vue";
-import Footer from "@/components/Footer.vue";
+import SideBar from "@/components/SideBar_User.vue";
 import VueApexCharts from "vue-apexcharts";
 
 export default {
   name: "Progresso",
   components: {
     NavBar,
-    Footer,
+    SideBar,
     apexchart: VueApexCharts,
   },
   created() {
@@ -619,6 +614,10 @@ export default {
         },
       },
     },
+    minPeso: 30,
+    maxPeso: 200,
+    minPercentagem: 0,
+    maxPercentagem: 100,
   }),
 };
 </script>
@@ -627,7 +626,7 @@ export default {
 
 
 <style>
-.homeUser {
+.profile {
   background-color: #d3d3d2;
 }
 </style>

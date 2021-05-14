@@ -3,9 +3,11 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
-import PaginaInicial_User from '../views/User/PaginaInicial_User.vue'
-import ProcurarTreino from '../views/User/ProcurarTreino.vue'
 import Perfil from '../views/User/Perfil.vue'
+import Agenda from '../views/User/Agenda.vue'
+import ProcurarExercicio from '../views/User/ProcurarExercicio.vue'
+import ProcurarTreino from '../views/User/ProcurarTreino.vue'
+
 import Treinadores from '../views/User/Treinadores.vue'
 
 
@@ -33,19 +35,24 @@ const routes = [
     component: Login
   },
   {
-    path: '/PaginaInicial_User',
-    name: 'PaginaInicial_User',
-    component: PaginaInicial_User
+    path: '/perfil',
+    name: 'Perfil',
+    component: Perfil
+  },
+  {
+    path: '/agenda',
+    name: 'Agenda',
+    component: Agenda
+  },
+  {
+    path: '/exercicios',
+    name: 'ProcurarExercicio',
+    component: ProcurarExercicio
   },
   {
     path: '/treinos',
     name: 'ProcurarTreino',
     component: ProcurarTreino
-  },
-  {
-    path: '/perfil',
-    name: 'Perfil',
-    component: Perfil
   },
   {
     path: '/treinadores',

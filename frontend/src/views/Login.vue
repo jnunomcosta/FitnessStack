@@ -12,8 +12,9 @@
                     Entre no Fitness Stack
                   </h1>
                   <div class="text-center mt-4">
-                    <v-btn class="mx-2" fab color="black" outlined>
-                      <v-icon large>mdi-google-plus</v-icon>
+                    <v-btn class="mx-2" color="black" outlined>
+                      Entrar com
+                      <v-icon large class="ml-2">mdi-google-plus</v-icon>
                     </v-btn>
                   </div>
                   <v-form class="px-16 mx-8">
@@ -39,7 +40,7 @@
                     Esqueceu-se da password? <a href="#">Clique aqui</a>
                   </h3>-->
                   <div class="text-center my-16">
-                    <v-btn v-on:click="login()" rounded color="#f95738" dark>Login</v-btn>
+                    <v-btn v-on:click="login()" color="#f95738" dark>Login</v-btn>
                   </div>
                 </v-card-text>
               </v-col>
@@ -51,7 +52,7 @@
                   </h5>
                 </v-card-text>
                 <div class="text-center mb-10">
-                  <v-btn rounded outlined dark @click="step++">Registar</v-btn>
+                  <v-btn outlined dark @click="step++">Registar</v-btn>
                 </div>
               </v-col>
             </v-row>
@@ -66,7 +67,7 @@
                   </h5>
                 </v-card-text>
                 <div class="text-center mb-10">
-                  <v-btn rounded outlined dark @click="step--">Login</v-btn>
+                  <v-btn  outlined dark @click="step--">Login</v-btn>
                 </div>
               </v-col>
 
@@ -76,8 +77,9 @@
                     Criar Conta
                   </h1>
                   <div class="text-center mt-4">
-                    <v-btn class="mx-2" fab color="black" outlined>
-                      <v-icon large>mdi-google-plus</v-icon>
+                    <v-btn class="mx-2" color="black" outlined>
+                      Registar com
+                      <v-icon large class="ml-2">mdi-google-plus</v-icon>
                     </v-btn>
                   </div>
                   <v-form class="px-16 mx-8">
@@ -165,7 +167,6 @@
                     <template v-slot:activator="{ on, attrs }">
                       <div class="text-center my-8">
                         <v-btn
-                          rounded
                           color="#f95738"
                           dark
                           v-bind="attrs"

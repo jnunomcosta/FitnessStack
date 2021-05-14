@@ -1,8 +1,6 @@
 <template>
-
   <v-container>
-    
-    <h5 class="mb-4 ml-8" style="color: #5b5b5b">
+    <h5 class="mb-4 ml-8 " style="color: #5b5b5b">
       {{ titles.length }} treinadores
     </h5>
     <v-row class="fill-height overflow-y-auto" v-if="titles.length">
@@ -26,11 +24,14 @@
             <v-card-title>João Ratão</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" persistent max-width="700">
+
+              <InfoTreinador/>
+
+              <!-- <v-dialog v-model="dialog" persistent max-width="700">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     class="mx-4"
-                    height="25"
+                    small
                     color="#f95738"
                     dark
                     v-bind="attrs"
@@ -43,7 +44,6 @@
                 <v-card height="37vh" style="text-align: center">
                   <v-row>
                     <v-col cols="12" md="4">
-                      <!--<v-card-title class="justify-center"> Nome do treinador </v-card-title> -->
                       <v-card-text>
                         <div class="mx-auto text-center">
                           <v-avatar class="mt-4" size="150">
@@ -89,7 +89,7 @@
                     </v-col>
                   </v-row>
                 </v-card>
-              </v-dialog>
+              </v-dialog> -->
             </v-card-actions>
           </v-card>
           <v-card v-intersect="infiniteScrolling"></v-card>
@@ -102,17 +102,17 @@
 
 <script>
 import axios from "axios";
+import InfoTreinador from "./InfoTreinador.vue"
 
 export default {
   name: "Treinador",
+  components:{
+    InfoTreinador
+  },
   data() {
     return {
       titles: [],
       page: 1,
-      actions: [
-        { icon: "pencil", title: "Editar", link: "/" },
-        { icon: "delete", title: "Eliminar", link: "/" },
-      ],
     };
   },
   computed: {

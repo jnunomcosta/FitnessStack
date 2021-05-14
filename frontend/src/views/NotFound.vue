@@ -23,7 +23,7 @@
           <div class="my-10 mx-16">
             <p>Não foi possível encontrar a página. Lamentamos o transtorno.</p>
           </div>
-          <v-btn rounded color="#7189ff" dark :href="'/'">Voltar à Home</v-btn>
+          <v-btn color="#7189ff" dark :href="'/'">Voltar à Home</v-btn>
         </v-col>
         <v-col cols="12" md="6">
           <v-img
