@@ -44,4 +44,18 @@ public class gestao_utilizadores {
         return true;
     }
 
+    public boolean usernameExisteU(String username){
+        if(uDao.findUtilizador_Username(username) != null){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean usernameExisteT(String username){
+        if(tDao.findTreinador_Username(username) != null){
+            return true;
+        }
+        return false;
+    }
+
 }
