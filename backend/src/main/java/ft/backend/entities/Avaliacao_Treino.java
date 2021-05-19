@@ -19,7 +19,7 @@ public class Avaliacao_Treino implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="AVALIACAO_TREINO_ID_GENERATOR", strategy="native")	
 	private int ID;
 	
-	@Column(name="Classificacao", nullable=true)	
+	@Column(name="Classificacao", nullable=false)	
 	private float classificacao;
 	
 	@Column(name="Comentario", nullable=true, length=2048)	

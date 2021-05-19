@@ -20,13 +20,13 @@ public class Bloco implements Serializable {
 	@JoinColumns(value={ @JoinColumn(name="ExercicioID", referencedColumnName="ID", nullable=false) }, foreignKey=@ForeignKey(name="FKBloco735558"))	
 	private Exercicio exercicio;
 	
-	@Column(name="Descanso", nullable=false)	
+	@Column(name="Descanso", nullable=true)	
 	private float descanso;
 	
-	@Column(name="Series", nullable=false, length=10)	
+	@Column(name="Series", nullable=true, length=10)	
 	private int series;
 	
-	@Column(name="Duracao", nullable=false, length=10)	
+	@Column(name="Duracao", nullable=true, length=10)	
 	private int duracao;
 	
 	private void setID(int value) {

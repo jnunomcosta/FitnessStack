@@ -15,10 +15,10 @@ public class Treinador implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="TREINADOR_ID_GENERATOR", strategy="native")	
 	private int ID;
 	
-	@Column(name="Email", nullable=true, length=1024)	
+	@Column(name="Email", nullable=false, length=1024)	
 	private String email;
 	
-	@Column(name="Password", nullable=true, length=1024)	
+	@Column(name="Password", nullable=false, length=1024)	
 	private String password;
 	
 	//@Column(name="Idade", nullable=false, length=10)	
@@ -28,20 +28,23 @@ public class Treinador implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private java.util.Date data_nascimento;
 	
-	@Column(name="Peso", nullable=false)	
+	@Column(name="Peso", nullable=true)	
 	private float peso;
 	
 	@Column(name="Nome", nullable=true, length=1024)	
 	private String nome;
 	
-	@Column(name="Altura", nullable=false)	
+	@Column(name="Altura", nullable=true)	
 	private float altura;
 	
-	@Column(name="Genero", nullable=false, length=1)	
+	@Column(name="Genero", nullable=true, length=1)	
 	private boolean genero;
 
-	@Column(name="Username", nullable=true, length=255)	
+	@Column(name="Username", nullable=false, length=255)	
 	private String username;
+
+	@Column(name="Descricao", nullable=true, length=2048)	
+	private String descricao;
 	
 	@OneToMany(targetEntity=Avaliacao_Treinador.class, cascade = {CascadeType.ALL})	
 	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
@@ -123,6 +126,14 @@ public class Treinador implements Serializable {
 	
 	public String getUsername() {
 		return username;
+	}
+
+	public void setDescricao(String value) {
+		this.descricao = value;
+	}
+	
+	public String getDescricao() {
+		return descricao;
 	}
 	
 	public void setORM_Avaliacoes_t(java.util.Set<Avaliacao_Treinador> value) {

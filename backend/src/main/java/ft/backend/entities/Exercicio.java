@@ -17,13 +17,13 @@ public class Exercicio implements Serializable {
 	
 	@ManyToOne(targetEntity=Treinador.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=false) }, foreignKey=@ForeignKey(name="FKExercicio354696"))	
+	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=true) }, foreignKey=@ForeignKey(name="FKExercicio354696"))	
 	private Treinador criador_exercicio;
 	
 	@Column(name="Nome", nullable=true, length=512)	
 	private String nome;
 	
-	@Column(name="Duracao_media", nullable=false)	
+	@Column(name="Duracao_media", nullable=true)	
 	private float duracao_media;
 	
 	@Column(name="Material_necessario", nullable=true, length=2048)	

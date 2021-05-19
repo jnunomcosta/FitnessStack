@@ -2,6 +2,7 @@ package ft.backend.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name="Treino")
@@ -28,12 +29,9 @@ public class Treino implements Serializable {
 	@Column(name="Nome", nullable=true, length=1024)	
 	private String nome;
 	
-	@Column(name="Duracao", nullable=false)	
+	@Column(name="Duracao", nullable=true)	
 	private float duracao;
-	
-	@Column(name="Categoria", nullable=true, length=512)	
-	private String categoria;
-	
+
 	@Column(name="Dificuldade", nullable=true, length=512)	
 	private String dificuldade;
 	
@@ -50,12 +48,18 @@ public class Treino implements Serializable {
 	@OneToMany(targetEntity=Bloco.class,cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Bloco> ORM_blocos_exercicios = new java.util.HashSet();
+	private java.util.Set<Bloco> ORM_blocos_exercicios = new java.util.HashSet<>();
 	
 	@OneToMany(targetEntity=Avaliacao_Treino.class,cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.HashSet();
+	private java.util.Set<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.HashSet<>();
+
+	@OneToMany(targetEntity=Categoria.class,cascade = {CascadeType.ALL})	
+	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set<Categoria> ORM_categorias = new java.util.HashSet<>();
 
 	private void setID(int value) {
 		this.ID = value;
@@ -84,15 +88,7 @@ public class Treino implements Serializable {
 	public float getDuracao() {
 		return duracao;
 	}
-	
-	public void setCategoria(String value) {
-		this.categoria = value;
-	}
-	
-	public String getCategoria() {
-		return categoria;
-	}
-	
+		
 	public void setDificuldade(String value) {
 		this.dificuldade = value;
 	}
@@ -125,7 +121,7 @@ public class Treino implements Serializable {
 		return data_criacao;
 	}
 	
-	public void setORM_Blocos_exercicios(java.util.Set value) {
+	public void setORM_Blocos_exercicios(java.util.Set<Bloco> value) {
 		this.ORM_blocos_exercicios = value;
 	}
 	
@@ -133,12 +129,20 @@ public class Treino implements Serializable {
 		return ORM_blocos_exercicios;
 	}
 	
-	public void setORM_Avaliacoes_treino(java.util.Set value) {
+	public void setORM_Avaliacoes_treino(java.util.Set<Avaliacao_Treino> value) {
 		this.ORM_avaliacoes_treino = value;
 	}
 	
 	public java.util.Set<Avaliacao_Treino> getORM_Avaliacoes_treino() {
 		return ORM_avaliacoes_treino;
+	}
+
+	public void setCategorias(java.util.Set<Categoria> value) {
+		this.ORM_categorias = value;
+	}
+	
+	public java.util.Set<Categoria> getCategorias() {
+		return ORM_categorias;
 	}
 	
 	public void setCriador_u(Utilizador value) {

@@ -16,7 +16,7 @@ public class ConteudoMedia implements Serializable{
 	@org.hibernate.annotations.GenericGenerator(name="CONTEUDOMEDIA_ID_GENERATOR", strategy="native")	
 	private int ID;
 	
-    @Column(name="Conteudo", nullable=true, columnDefinition = "LONGBLOB")	
+    @Column(name="Conteudo", nullable=false, columnDefinition = "LONGBLOB")	
 	private byte[] Conteudo;
 	
 	private void setID(int value) {

@@ -31,14 +31,22 @@ public class RegisterController {
         Utilizador u = new Utilizador();
         JSONObject obj = new JSONObject(pl);
 
+        
+
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dn = df.parse(obj.getString("data"),new ParsePosition(0));
-
 
         u.setEmail(obj.getString("email"));u.setPassword(obj.getString("password"));
         u.setNome(obj.getString("nome"));u.setAltura(obj.getFloat("altura"));
         u.setGenero(obj.getBoolean("genero"));u.setPeso(obj.getFloat("peso"));
         u.setDataNascimento(dn);u.setUsername(obj.getString("username"));
+
+        /*
+        String a;
+        if(obj.has("foto_perfil")){
+            a = obj.getString("foto_perfil");
+        }
+        */
 
         RespostaRegister ret = new RespostaRegister();
 
