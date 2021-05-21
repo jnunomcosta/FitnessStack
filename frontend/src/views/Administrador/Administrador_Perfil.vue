@@ -1,6 +1,7 @@
 <template>
   <div class="profile">
     <NavBar />
+    
     <div>
       <SideBar />
       <v-row
@@ -11,7 +12,10 @@
           margin-bottom: 25px;
         "
       >
-        <v-col cols="12" md="2">
+      <v-col cols="12" md="3">
+      </v-col>
+      
+        <v-col cols="12" md="6">
           
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
@@ -23,6 +27,7 @@
             <v-card-subtitle> xanareigada </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
             <div class="mt-4 body-2">xana@gmail.com</div>
+             <div class="mt-4 body-2">Administrador desde 1999</div>
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -111,6 +116,8 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+              
+                  
 
               <v-dialog v-model="dialog3" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -165,261 +172,8 @@
             </v-container>
           </v-card>
         </v-col>
-
-        <v-col cols="12" md="5">
-          <v-card>
-            <v-card-title
-              >Peso atual: 80kg
-              <v-dialog v-model="dialog4" persistent max-width="300px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    class="mx-4"
-                    color="#f95738"
-                    small
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <v-icon dense>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Atualizar peso</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-text-field
-                      color="#f95738"
-                      type="number"
-                      :max="maxPeso"
-                      :min="minPeso"
-                      label="Peso (kg)"
-                      required
-                    >
-                      ></v-text-field
-                    >
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#f95738" text @click="dialog4 = false">
-                      Sair
-                    </v-btn>
-                    <v-btn color="#f95738" text @click="dialog4 = false">
-                      Atualizar
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-spacer></v-spacer>
-              Meta: 70kg
-            </v-card-title>
-            <div style="margin-left: 50px; margin-right: 50px">
-              <br />
-              <v-progress-linear
-                color="#f95738"
-                height="20"
-                value="20"
-                striped
-              ></v-progress-linear>
-            </div>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12" md="6">
-                  <p>Altura</p>
-
-                  <p>
-                    Percentagem de massa gorda
-                    <v-dialog v-model="dialog5" persistent max-width="500px">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="mx-4"
-                          color="#f95738"
-                          small
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon dense> mdi-lead-pencil </v-icon>
-                        </v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline"
-                            >Atualizar % de massa gorda</span
-                          >
-                        </v-card-title>
-                        <v-card-text>
-                          <v-text-field
-                            color="#f95738"
-                            type="number"
-                            :max="maxPercentagem"
-                            :min="minPercentagem"
-                            label="Massa gorda (%)"
-                            required
-                          ></v-text-field>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="#f95738" text @click="dialog5 = false">
-                            Sair
-                          </v-btn>
-                          <v-btn color="#f95738" text @click="dialog5 = false">
-                            Atualizar
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </p>
-
-                  <p>
-                    Percentagem de massa muscular
-                    <v-dialog v-model="dialog6" persistent max-width="500px">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="mx-4"
-                          color="#f95738"
-                          small
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon dense> mdi-lead-pencil </v-icon>
-                        </v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline"
-                            >Atualizar % de massa muscular</span
-                          >
-                        </v-card-title>
-                        <v-card-text>
-                          <v-text-field
-                            color="#f95738"
-                            type="number"
-                            :max="maxPercentagem"
-                            :min="minPercentagem"
-                            label="Massa muscular (%)"
-                            required
-                          ></v-text-field>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="#f95738" text @click="dialog6 = false">
-                            Sair
-                          </v-btn>
-                          <v-btn color="#f95738" text @click="dialog6 = false">
-                            Atualizar
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </p>
-                </v-col>
-
-                <v-col cols="12" md="6">
-                  <p>IMC</p>
-                  <p>IMC ideal</p>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-
-          <v-card class="mt-4">
-            <v-card-title class="justify-center">
-              Os meus treinos
-            </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <v-row>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >Total de horas de treino</v-list-item-title
-                    >
-                    <v-list-item-subtitle>12</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title>Média de minutos</v-list-item-title>
-                    <v-list-item-title>por treino</v-list-item-title>
-                    <v-list-item-subtitle>1</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >Média de minutos de treino</v-list-item-title
-                    >
-                    <v-list-item-title>por dia</v-list-item-title>
-                    <v-list-item-subtitle>10</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-            </v-row>
-          </v-card>
-
-          <!-- <v-card class="mt-4">
-            <v-card-title class="justify-center"> Os meus treinos </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-subtitle>Total de horas de treino</v-card-subtitle>
-            <v-card-subtitle>Média de minutos por treino</v-card-subtitle>
-            <v-card-subtitle
-              >Média de minutos de treino por dia</v-card-subtitle
-            >
-          </v-card>  -->
-
-          <v-card class="mt-7">
-            <v-card-title class="justify-center">
-              Categorias de treinos
-            </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <div id="chart">
-              <apexchart
-                type="pie"
-                width="350"
-                height="400"
-                :options="chartOptions_categorias"
-                :series="series_categorias"
-              ></apexchart>
-            </div>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="5">
-          <v-card class="mx-auto text-center">
-            <v-card-title class="justify-center"
-              >Peso e Massa Muscular</v-card-title
-            >
-            <v-divider class="mx-4"></v-divider>
-            <div id="chart">
-              <apexchart
-                type="line"
-                height="250"
-                :options="chartOptions_peso_massa"
-                :series="series_peso_massa"
-              ></apexchart>
-            </div>
-          </v-card>
-
-          <v-card class="mt-4">
-            <v-card-title class="justify-center"
-              >Minutos por treino</v-card-title
-            >
-            <v-divider class="mx-4"></v-divider>
-            <div width="300" height="300">
-              <apexchart
-                type="bar"
-                height="350"
-                :options="chartOptions_treinos"
-                :series="series_treinos"
-              ></apexchart>
-            </div>
-          </v-card>
+        
+        <v-col cols="12" md="3">
         </v-col>
       </v-row>
     </div>
@@ -430,15 +184,13 @@
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_User.vue";
-import SideBar from "@/components/SideBar_User.vue";
-import VueApexCharts from "vue-apexcharts";
+import SideBar from "@/components/SideBar_Administrador.vue";
 
 export default {
   name: "Progresso",
   components: {
     NavBar,
-    SideBar,
-    apexchart: VueApexCharts,
+    SideBar
   },
   created() {
     document.title = "Fitness Stack";

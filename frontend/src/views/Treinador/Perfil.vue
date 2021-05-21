@@ -2,7 +2,6 @@
   <div class="profile">
     <NavBar />
     <div>
-      <SideBar />
       <v-row
         style="
           margin-left: 75px;
@@ -12,7 +11,7 @@
         "
       >
         <v-col cols="12" md="2">
-          
+          <SideBar />
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
@@ -430,7 +429,7 @@
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_User.vue";
-import SideBar from "@/components/SideBar_User.vue";
+import SideBar from "@/components/SideBar_Treinador.vue";
 import VueApexCharts from "vue-apexcharts";
 
 export default {

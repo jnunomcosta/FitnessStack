@@ -7,36 +7,57 @@
       </v-col>
       <v-col cols="12" md="10">
 
-        <v-dialog v-model="dialog" persistent max-width="700">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              style="margin-top: 90px"
+
+
+
+
+         <v-dialog transition="dialog-bottom-transition" max-width="700">
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+      style="margin-top: 90px"
               class="mx-5"
               height="47"
-              color="#f95738"
-              dark
-              v-bind="attrs"
-              v-on="on"
-            >
-              O meu treinador
-            </v-btn>
-          </template>
+        v-bind="attrs"
+        v-on="on"
+        small
+        color="#f95738"
+        dark
+      >
+        O meu treinador
+      </v-btn>
+    </template>
+    <template v-slot:default="dialog">
+      <v-card>
+        <v-toolbar color="#f95738" dark
+          ><h3>João Ratão</h3>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog.value = false"
+            ><v-icon>mdi-close</v-icon></v-btn
+          >
+        </v-toolbar>
 
-          <v-card height="37vh" style="text-align: center">
-            <v-row>
-              <v-col cols="12" md="4">
-                <!--<v-card-title class="justify-center"> Nome do treinador </v-card-title> -->
-                <v-card-text>
-                  <div class="mx-auto text-center">
-                    <v-avatar class="mt-4" size="150">
-                      <v-img src="https://picsum.photos/200"></v-img>
-                    </v-avatar>
-                  </div>
-                  <v-card-title class="justify-center">Xana</v-card-title>
-                  <v-card-subtitle> xanareigada </v-card-subtitle>
-                  <v-divider class="mx-4"></v-divider>
-                  <p>Email</p>
-                  <div>
+        <div class="d-flex flex-no-wrap justify-space-between">
+          <div>
+            <v-avatar class="ma-3" width="250" height="300" tile>
+              <v-img
+                src="https://randomuser.me/api/portraits/men/93.jpg"
+              ></v-img>
+            </v-avatar>
+          </div>
+          <div class="ma-2">
+            <v-card-title
+              >Joao Ratão<v-icon dense color="#f95738" class="ml-2"
+                >mdi-weight-lifter</v-icon
+              ></v-card-title
+            >
+            <v-card-subtitle>joniratatui</v-card-subtitle>
+
+            <v-card-text>
+              <v-row align="center" class="mx-0">
+                <div class="body-2">joniratatui@gmail.com</div>
+                <v-spacer></v-spacer>
+              </v-row>
+              <div style="margin-top: 14px">
                     <v-rating
                       v-model="rating"
                       color="yellow darken-3"
@@ -45,35 +66,30 @@
                       half-increments
                       hover
                     ></v-rating>
+                    <v-spacer></v-spacer>
                   </div>
-                </v-card-text>
-              </v-col>
-              <v-col
-                cols="12"
-                md="1"
-                style="margin-top: 40px; margin-bottom: 40px"
-              >
-                <v-divider class="mx-10" vertical></v-divider>
-              </v-col>
-              <v-col cols="12" md="7" style="margin-top: 50px">
-                <p>
-                  Olá sou o João e tenho 30 anos. Sou licenciado em Desporto e
-                  ...
-                </p>
+                
 
-                <v-spacer></v-spacer>
-                <div style="margin-top: 200px">
-                  <v-btn color="#f95738" text @click="dialog4 = false">
-                    Sair
-                  </v-btn>
-                  <v-btn color="#f95738" text @click="dialog4 = false">
-                    Cancelar contrato
-                  </v-btn>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-dialog>
+              <v-divider></v-divider>
+              <div class="my-4">
+                Olá sou o João e tenho 30 anos. Sou licenciado em Desporto e...
+              </div>
+            </v-card-text>
+          </div>
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#f95738" text @click="dialog.value = false">
+            Cancelar contrato
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
+  </v-dialog>
+
+
+
+
 
         <v-container class="pa-0 ma-0">
           <v-row align="center" justify="space-around">

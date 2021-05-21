@@ -9,7 +9,15 @@ import ProcurarExercicio from '../views/User/ProcurarExercicio.vue'
 import ProcurarTreino from '../views/User/ProcurarTreino.vue'
 
 import Treinadores from '../views/User/Treinadores.vue'
+import Perfil_Treinador from '../views/Treinador/Perfil.vue'
+import Alunos from '../views/Treinador/Alunos.vue'
 
+import Administrador_Alunos from '../views/Administrador/Administrador_Alunos.vue'
+import Administrador_Treinadores from '../views/Administrador/Administrador_Treinadores.vue'
+import Administrador_Administradores from '../views/Administrador/Administrador_Administradores.vue'
+import Administrador_Treinos from '../views/Administrador/Administrador_Treinos.vue'
+import Administrador_Exercicios from '../views/Administrador/Administrador_Exercicios.vue'
+import Administrador_Perfil from '../views/Administrador/Administrador_Perfil.vue'
 
 Vue.use(VueRouter)
 
@@ -58,6 +66,51 @@ const routes = [
     path: '/treinadores',
     name: 'Treinadores',
     component: Treinadores
+  },
+  {
+    path: '/Perfil_Treinador',
+    name: 'Perfil_Treinador',
+    component: Perfil_Treinador
+  },
+  {
+    path: '/treinador/alunos',
+    name: 'Alunos',
+    component: Alunos
+  },
+  {
+    path: '/administrador/alunos',
+    name: 'Administrador_Alunos',
+    component: Administrador_Alunos
+  },
+  {
+    path: '/administrador/treinadores',
+    name: 'Administrador_Treinadores',
+    component: Administrador_Treinadores
+  },
+  {
+    path: '/administrador/treinos',
+    name: 'Administrador_Treinos',
+    component: Administrador_Treinos
+  },
+  {
+    path: '/administrador/exercicios',
+    name: 'Administrador_Exercicios',
+    component: Administrador_Exercicios
+  },
+  {
+    path: '/administrador/Administradores',
+    name: 'Administrador_Administradores',
+    component: Administrador_Administradores
+  },
+  {
+    path: '/administrador/Perfil',
+    name: 'Administrador_Perfil',
+    component: Administrador_Perfil
+  },
+  {
+    path: '/administrador',
+    name: 'Administrador_Perfil',
+    component: Administrador_Perfil
   },
   {
     // path: "*",
