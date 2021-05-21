@@ -1,11 +1,11 @@
 <template>
   <div class="treinadores">
     <NavBar />
-    <v-row style="margin-top: 40px">
+    <v-row style="margin-top: 90px">
       <v-col cols="12" md="1">
         <SideBar />
       </v-col>
-      <v-col cols="12" md="10">
+      <v-col cols="12" md="10" >
        <v-dialog
       v-model="dialog"
       fullscreen
@@ -14,10 +14,9 @@
     >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
-        class="mx-2 my-2"
+        class="mx-6"
         v-bind="attrs"
         v-on="on"
-        small
         color="#f95738"
         dark
       >
@@ -61,7 +60,7 @@
         <v-container class="pa-0 ma-0">
           <v-row align="center" justify="space-around">
             <v-col cols="12" md="12">
-              <v-toolbar dense rounded class="mx-6" style="margin-top: 90px">
+              <v-toolbar dense rounded class="mx-6" style="margin-top: 40px">
                 <v-text-field
                   hide-details
                   prepend-icon="mdi-magnify"
@@ -75,6 +74,7 @@
               </v-toolbar>
             </v-col>
           </v-row>
+
           <Aluno
         /></v-container>
       </v-col>
@@ -84,8 +84,8 @@
 
 <script>
 // @ is an alias to /src
-import NavBar from "@/components/NavBar_User.vue";
-import SideBar from "@/components/SideBar_User.vue";
+import NavBar from "@/components/NavBar_Logged.vue";
+import SideBar from "@/components/SideBar_Treinador.vue";
 import Aluno from "@/components/Aluno.vue";
 import AlunoSolicitacao from "@/components/AlunoSolicitacao.vue";
 

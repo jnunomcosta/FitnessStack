@@ -138,7 +138,7 @@
 
 <script>
 // @ is an alias to /src
-import NavBar from "@/components/NavBar_User.vue";
+import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
 
 export default {

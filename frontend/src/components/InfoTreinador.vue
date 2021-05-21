@@ -9,7 +9,7 @@
         color="#f95738"
         dark
       >
-        VER MAIS
+        <v-icon>mdi-text-box-search</v-icon>
       </v-btn>
     </template>
     <template v-slot:default="dialog">

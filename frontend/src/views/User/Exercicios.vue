@@ -30,24 +30,21 @@
         /></v-container>
       </v-col>
     </v-row>
-    <CriarExercicio />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import NavBar from "@/components/NavBar_User.vue";
+import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
 import Exercicio from "@/components/Exercicio.vue";
-import CriarExercicio from "@/components/CriarExercicio.vue";
 
 export default {
   name: "ProcurarExercicio",
   components: {
     NavBar,
     SideBar,
-    Exercicio,
-    CriarExercicio,
+    Exercicio
   },
   created() {
     document.title = "Exercícios";

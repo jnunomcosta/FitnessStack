@@ -1,5 +1,5 @@
 <template>
-  <div class="procurarExercicio">
+  <div class="procurarTreino">
     <NavBar />
     <v-row>
       <v-col cols="12" md="1">
@@ -7,7 +7,7 @@
       </v-col>
       <v-col cols="12" md="10">
         <h1 style="padding-top: 100px; text-align: center; font-size: 40px">
-          Procure um exercício
+          Procure um treino
         </h1>
         <v-container>
           <v-row align="center" justify="space-around">
@@ -17,7 +17,7 @@
                 v-model="search"
                 hide-details
                 prepend-icon="mdi-magnify"
-                label="Procurar exercício"
+                label="Procurar treino"
                 single-line
                 color="#f95738"
               ></v-text-field>
@@ -28,69 +28,40 @@
         <v-container align="center" justify="space-around">
           <v-card>
             <v-data-table
-              
-              v-model="selected"
-              :headers="columns"
-              :items="rows"
-              :single-select="singleSelect"
-              show-select
-              item-key="codigo"
+              :headers="headers"
+              :items="treinos"
               :search="search"
-              @click:row="verExercicio"
-              >
-              
-            </v-data-table>
-            
+              @click:row="verTreino"
+            ></v-data-table>
           </v-card>
         </v-container>
-        
       </v-col>
-      <v-dialog v-model="dialog" persistent max-width="600px">
-    
-    
-      <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        fab
-        dark
-        large
-        color="#f95738"
-        fixed
-        right
-        bottom
-        v-bind="attrs"
-        v-on="on"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-    </template>
-      </v-dialog>
-     
     </v-row>
-    
+    <CriarTreino />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
-import SideBar from "@/components/SideBar_Administrador.vue";
+import SideBar from "@/components/SideBar_Treinador.vue";
+import CriarTreino from "@/components/CriarTreino.vue";
 
 export default {
-  name: "ProcurarExercicio",
+  name: "ProcurarTreino",
   components: {
     NavBar,
     SideBar,
+    CriarTreino,
   },
   created() {
-    document.title = "Exercicios";
+    document.title = "Treinos";
   },
   data() {
     return {
-      singleSelect: false,
-      selected: [],
       search: "",
-      columns: [
-        { text: "Nome do Exercicio", value: "nome" },
+      headers: [
+        { text: "Nome do Treino", value: "nome" },
         { text: "Duração", value: "duracao" },
         { text: "Categoria", value: "categoria" },
         { text: "Dificuldade", value: "dificuldade" },
@@ -98,9 +69,9 @@ export default {
         { text: "Publicado em", value: "data" },
         { text: "Avaliação", value: "avaliacao" },
         { text: "Favoritos", value: "favoritos" },
-        { text: "Código", value: "codigo" }
+        { text: "Código", value: "codigo" },
       ],
-      rows: [
+      treinos: [
         {
           nome: "10 Min Ab Workout",
           duracao: "10 min",
@@ -127,16 +98,16 @@ export default {
     };
   },
   methods: {
-    //verExercicio: function (value) {
-      //console.log("ROW VALUES:", value);
-      //this.$router.push("/treinos/" + value.codigo);
-    //},
+    verTreino: function (value) {
+      console.log("ROW VALUES:", value);
+      this.$router.push("/treinos/" + value.codigo);
+    },
   },
 };
 </script>
 
 <style>
-.procurarExercicio {
+.procurarTreino {
   background-color: #d3d3d2;
 }
 </style>

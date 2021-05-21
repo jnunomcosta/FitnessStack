@@ -5,19 +5,22 @@ import Login from '../views/Login.vue'
 import NotFound from '../views/NotFound.vue'
 import Perfil from '../views/User/Perfil.vue'
 import Agenda from '../views/User/Agenda.vue'
-import ProcurarExercicio from '../views/User/ProcurarExercicio.vue'
-import ProcurarTreino from '../views/User/ProcurarTreino.vue'
-
+import Exercicios from '../views/User/Exercicios.vue'
+import Treinos from '../views/User/Treinos.vue'
 import Treinadores from '../views/User/Treinadores.vue'
-import Perfil_Treinador from '../views/Treinador/Perfil.vue'
-import Alunos from '../views/Treinador/Alunos.vue'
 
+import Treinador_Perfil from '../views/Treinador/Treinador_Perfil.vue'
+import Treinador_Agenda from '../views/Treinador/Treinador_Agenda.vue'
+import Treinador_Exercicio from '../views/Treinador/Treinador_Exercicios.vue'
+import Treinador_Treinos from '../views/Treinador/Treinador_Treinos.vue'
+import Treinador_Alunos from '../views/Treinador/Treinador_Alunos.vue'
+
+import Administrador_Perfil from '../views/Administrador/Administrador_Perfil.vue'
+import Administrador_Exercicios from '../views/Administrador/Administrador_Exercicios.vue'
+import Administrador_Treinos from '../views/Administrador/Administrador_Treinos.vue'
 import Administrador_Alunos from '../views/Administrador/Administrador_Alunos.vue'
 import Administrador_Treinadores from '../views/Administrador/Administrador_Treinadores.vue'
 import Administrador_Administradores from '../views/Administrador/Administrador_Administradores.vue'
-import Administrador_Treinos from '../views/Administrador/Administrador_Treinos.vue'
-import Administrador_Exercicios from '../views/Administrador/Administrador_Exercicios.vue'
-import Administrador_Perfil from '../views/Administrador/Administrador_Perfil.vue'
 
 Vue.use(VueRouter)
 
@@ -54,13 +57,13 @@ const routes = [
   },
   {
     path: '/exercicios',
-    name: 'ProcurarExercicio',
-    component: ProcurarExercicio
+    name: 'Exercicios',
+    component: Exercicios
   },
   {
     path: '/treinos',
-    name: 'ProcurarTreino',
-    component: ProcurarTreino
+    name: 'Treinos',
+    component: Treinos
   },
   {
     path: '/treinadores',
@@ -68,14 +71,29 @@ const routes = [
     component: Treinadores
   },
   {
-    path: '/Perfil_Treinador',
-    name: 'Perfil_Treinador',
-    component: Perfil_Treinador
+    path: '/treinador/perfil',
+    name: 'Treinador_Perfil',
+    component: Treinador_Perfil
+  },
+  {
+    path: '/treinador/agenda',
+    name: 'Treinador_Agenda',
+    component: Treinador_Agenda
+  },
+  {
+    path: '/treinador/exercicios',
+    name: 'Treinador_Exercicios',
+    component: Treinador_Exercicio
+  },
+  {
+    path: '/treinador/treinos',
+    name: 'Treinos_Treinador',
+    component: Treinador_Treinos
   },
   {
     path: '/treinador/alunos',
-    name: 'Alunos',
-    component: Alunos
+    name: 'Treinador_Alunos',
+    component: Treinador_Alunos
   },
   {
     path: '/administrador/alunos',

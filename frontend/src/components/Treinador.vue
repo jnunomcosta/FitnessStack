@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h5 class="mb-4 ml-8 " style="color: #5b5b5b">
+    <h5 class="mb-4 ml-8" style="color: #5b5b5b">
       {{ titles.length }} treinadores
     </h5>
     <v-row class="fill-height overflow-y-auto" v-if="titles.length">
@@ -22,74 +22,24 @@
             </v-img>
             <!--<v-card-title v-text="title.body"></v-card-title>-->
             <v-card-title>João Ratão</v-card-title>
+            <v-card-subtitle>
+              <v-row align="center" class="mx-0">
+                <v-rating
+                  :value="4.5"
+                  color="amber"
+                  dense
+                  half-increments
+                  readonly
+                  size="14"
+                ></v-rating>
+                <div class="grey--text ml-4">4.5 (413)</div>
+              </v-row>
+            </v-card-subtitle>
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <InfoTreinador/>
+              <InfoTreinador />
 
-              <!-- <v-dialog v-model="dialog" persistent max-width="700">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    class="mx-4"
-                    small
-                    color="#f95738"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    VER MAIS
-                  </v-btn>
-                </template>
-
-                <v-card height="37vh" style="text-align: center">
-                  <v-row>
-                    <v-col cols="12" md="4">
-                      <v-card-text>
-                        <div class="mx-auto text-center">
-                          <v-avatar class="mt-4" size="150">
-                            <v-img src="https://picsum.photos/200"></v-img>
-                          </v-avatar>
-                        </div>
-                        <v-card-title class="justify-center">Xana</v-card-title>
-                        <v-card-subtitle> xanareigada </v-card-subtitle>
-                        <v-divider class="mx-4"></v-divider>
-                        <p>Email</p>
-                        <v-rating
-                          :value="4.5"
-                          color="amber"
-                          dense
-                          half-increments
-                          readonly
-                          size="14"
-                        ></v-rating>
-                      </v-card-text>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      md="1"
-                      style="margin-top: 40px; margin-bottom: 40px"
-                    >
-                      <v-divider class="mx-10" vertical></v-divider>
-                    </v-col>
-                    <v-col cols="12" md="7" style="margin-top: 50px">
-                      <p>
-                        Olá sou o João e tenho 30 anos. Sou licenciado em
-                        Desporto e ...
-                      </p>
-
-                      <v-spacer></v-spacer>
-                      <div style="margin-top: 200px">
-                        <v-btn color="#f95738" text @click="dialog4 = false">
-                          Sair
-                        </v-btn>
-                        <v-btn color="#f95738" text @click="dialog4 = false">
-                          Enviar pedido
-                        </v-btn>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-dialog> -->
             </v-card-actions>
           </v-card>
           <v-card v-intersect="infiniteScrolling"></v-card>
@@ -97,17 +47,16 @@
       </v-col>
     </v-row>
   </v-container>
-
 </template>
 
 <script>
 import axios from "axios";
-import InfoTreinador from "./InfoTreinador.vue"
+import InfoTreinador from "./InfoTreinador.vue";
 
 export default {
   name: "Treinador",
-  components:{
-    InfoTreinador
+  components: {
+    InfoTreinador,
   },
   data() {
     return {

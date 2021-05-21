@@ -43,7 +43,7 @@
 
 <script>
 // @ is an alias to /src
-import NavBar from "@/components/NavBar_User.vue";
+import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
 import CriarTreino from "@/components/CriarTreino.vue";
 
