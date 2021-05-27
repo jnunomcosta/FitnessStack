@@ -50,10 +50,10 @@ public class RegisterController {
 
         RespostaRegister ret = new RespostaRegister();
 
-        if(!gestao_utilizadores.registerUser(u)){
+        /* if(!gestao_utilizadores.registerUser(u)){
             ret.setSucess(false);
             return ResponseEntity.badRequest().body(ret);
-        }
+        } */
 
         ret.setSucess(true);
         return ResponseEntity.ok().body(ret);

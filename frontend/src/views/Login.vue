@@ -160,6 +160,13 @@
                       color="#f95738"
                       required
                     />
+                    <v-file-input
+                      id="imagem"
+                      v-model="input_register.imagem"
+                      label="Imagem de Perfil"
+                      name="imagem_perfil"
+                      prepend-icon="mdi-camera"
+                    />
                     <small>* campo obrigatório</small>
                   </v-form>
 
@@ -245,8 +252,7 @@
                         <v-btn
                           color="#7189ff"
                           text
-                          v-on:click="registar()"
-                          
+                          v-on:click="registar()"                   
                         >
                           Registar
                         </v-btn>
@@ -291,7 +297,8 @@ export default {
             idade: 2,
             peso: 70,
             altura: 170, 
-            genero: ""
+            genero: "",
+            foto_perfil:""
         },
     step: 1,
     //date: new Date().toISOString().substr(0, 10),
@@ -305,10 +312,8 @@ export default {
   methods: {
       login() {
           if(this.input.username != "" && this.input.password != "") {
-              console.log("1");
-              console.log(this.input.password);
               var loginInfo = {
-                email: this.input.username,
+                username: this.input.username,
                 password: this.input.password
               }
               axios
@@ -317,8 +322,13 @@ export default {
                   console.log(response);
                   const status = JSON.parse(response.status);
                   //redirect logic
-                  if (status == '200')
-                    this.$router.push('/PaginaInicial_User');
+                  if (status == '200'){
+                    localStorage.setItem('user-token', response.data.token);
+                    this.$router.push('/Treinos');
+                  }
+
+                  //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
+
                  // else self.$router.push('/Login');
                   //console.log(response);
                   //redirect("/PaginaInicial_User");
@@ -331,17 +341,47 @@ export default {
           }
       },
       registar(){
+
+        /* let promessa = new Promise(function(resolve, reject) {
+            let blob = new Blob([this.input_register.imagem]),fileReader = new FileReader();
+            fileReader.readAsBinaryString(blob);
+            fileReader.onload = function(){
+              resolve(this.result);
+              reject(null);
+            } 
+        });
+        promessa.then(x => console.log('Bytes to string:',x)) */
+
         var registoInfo = {
-            email: this.input_register.username,
+            email: this.input_register.email,
             password: this.input_register.password,
-            //username: "",
+            username: this.input_register.username,
             nome: this.input_register.nome,
-            idade: this.input_register.idade,
+            idade: this.input_register.date,
             peso: this.input_register.peso,
             altura: this.input_register.altura, 
-            genero: this.input_register.genero=="Masculino"
+            genero: this.input_register.genero,
+            foto_perfil: "ola" //falta converter a imagem em string
           }
-          if(this.input_register.username != "" && this.input_register.password != "" && this.input_register.nome != "" 
+          axios
+            .post('http://localhost:4576/api/register/user', registoInfo)
+            .then(response => {
+              if (response.status == '200'){
+                var login_info = {
+                  username: this.input.username,
+                  password: this.input.password
+                }
+                  axios
+                    .post('http://localhost:4576/api/login/user',login_info)
+                    .then(response2 => {
+                      if(response2.status == '200'){
+                        localStorage.setItem('user-token', response2.data.token);
+                        this.$router.push('/Treinos');
+                      }
+                    })
+              }
+            })
+          /* if(this.input_register.username != "" && this.input_register.password != "" && this.input_register.nome != "" 
           && this.input_register.idade != 0 && this.input_register.peso != 0 && this.input_register.altura != 0 && this.input_register.genero != "") {
               axios
                 .post('http://localhost:4576/api/register/user', registoInfo)
@@ -358,7 +398,7 @@ export default {
           } else {
               console.log(registoInfo)
               console.log("A username and password must be present");
-          }
+          } */
       }
   }
 };
