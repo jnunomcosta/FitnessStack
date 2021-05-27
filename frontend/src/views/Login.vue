@@ -341,17 +341,7 @@ export default {
           }
       },
       registar(){
-
-        /* let promessa = new Promise(function(resolve, reject) {
-            let blob = new Blob([this.input_register.imagem]),fileReader = new FileReader();
-            fileReader.readAsBinaryString(blob);
-            fileReader.onload = function(){
-              resolve(this.result);
-              reject(null);
-            } 
-        });
-        promessa.then(x => console.log('Bytes to string:',x)) */
-
+        
         var registoInfo = {
             email: this.input_register.email,
             password: this.input_register.password,
@@ -360,9 +350,14 @@ export default {
             idade: this.input_register.date,
             peso: this.input_register.peso,
             altura: this.input_register.altura, 
-            genero: this.input_register.genero,
-            foto_perfil: "ola" //falta converter a imagem em string
-          }
+            genero: this.input_register.genero
+        }
+
+        let blob = new Blob([this.input_register.imagem]),fileReader = new FileReader();
+        fileReader.readAsBinaryString(blob);
+        fileReader.onload = function(){
+          registoInfo.foto_perfil = this.result;
+          
           axios
             .post('http://localhost:4576/api/register/user', registoInfo)
             .then(response => {
@@ -381,6 +376,16 @@ export default {
                     })
               }
             })
+
+        } 
+
+        /* let promessa = new Promise(function(resolve, reject) {
+            
+        });
+        promessa.then(x => console.log('Bytes to string:',x)) */
+
+        
+          
           /* if(this.input_register.username != "" && this.input_register.password != "" && this.input_register.nome != "" 
           && this.input_register.idade != 0 && this.input_register.peso != 0 && this.input_register.altura != 0 && this.input_register.genero != "") {
               axios
