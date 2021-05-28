@@ -10,7 +10,8 @@
     >
       <v-list-item class="px-2 py-2">
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          <!-- <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img> -->
+          <v-img :src="'data:image/jpeg;base64,'+variavelRecebidaDaAPI"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content class="ma-0 pa-0" >
@@ -66,10 +67,14 @@
   </div>
 </template>
 
-      <script>
+<script>
+
+import axios from 'axios';
+
 export default {
   data() {
     return {
+      variavelRecebidaDaAPI: "",
       drawer: true,
       items: [
         {title: "Perfil", icon: "mdi-account", link: "/perfil"},
@@ -85,5 +90,13 @@ export default {
       mini: true,
     };
   },
+  mounted () {
+    axios
+      .get('http://localhost:4576/rest/utilizadores/getImagem?username=candido')
+      .then(response => {
+        this.variavelRecebidaDaAPI = response.data.imagem
+      })
+      .finally(() => this.loading = false)
+  }
 };
 </script>

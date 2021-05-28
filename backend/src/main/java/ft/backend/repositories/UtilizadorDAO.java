@@ -14,7 +14,7 @@ public interface UtilizadorDAO extends JpaRepository<Utilizador,Integer> {
     public List<Utilizador> findByJavardice(@Param("searchTerm") String searchTerm);
 
     @Query(value = "SELECT * FROM Utilizador u WHERE u.username = :username",nativeQuery = true)
-    public Utilizador findUtilizador_Username(@Param("username") String email);
+    public Utilizador findUtilizador_Username(@Param("username") String username);
 
     @Query(value = "SELECT * FROM Utilizador u WHERE u.email = :email",nativeQuery = true)
     public Utilizador findUtilizador_Email(@Param("email") String email);

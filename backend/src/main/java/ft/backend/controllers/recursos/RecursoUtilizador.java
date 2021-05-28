@@ -1,5 +1,6 @@
 package ft.backend.controllers.recursos;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,14 @@ public class RecursoUtilizador {
         rep_users.save(ut);
         return rep_users.findAll();
     } 
+
+    @GetMapping(value = "/getImagem")
+    public String getImagem(@RequestParam String username){
+        Utilizador u = rep_users.findUtilizador_Username(username);
+        if(u!=null){
+            return "{\"imagem\":\""+ Base64.getEncoder().encodeToString(u.getFoto_perfil().getConteudo()) + "\"}";
+        }
+        return "{\"imagem\":null}";
+    }
 
 }

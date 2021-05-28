@@ -341,23 +341,34 @@ export default {
           }
       },
       registar(){
-        
+        let genero_registo = true;
+        if(this.input_register.genero != "Masculino"){
+          genero_registo = false;
+        }
         var registoInfo = {
             email: this.input_register.email,
             password: this.input_register.password,
             username: this.input_register.username,
             nome: this.input_register.nome,
-            idade: this.input_register.date,
+            data: this.input_register.date,
             peso: this.input_register.peso,
             altura: this.input_register.altura, 
-            genero: this.input_register.genero
-        }
+            genero: genero_registo
+        } 
+
+        //ELE ENTRA NO 'onload' QUANDO OS BYTES TIVEREM LIDOS
+        //ERA BOM TER UMA VERIFICACAO SE O USER FEZ UPLOAD DE UM FICHEIRO OU NAO
 
         let blob = new Blob([this.input_register.imagem]),fileReader = new FileReader();
-        fileReader.readAsBinaryString(blob);
+        fileReader.readAsArrayBuffer(blob);
         fileReader.onload = function(){
-          registoInfo.foto_perfil = this.result;
+
+          registoInfo.foto_perfil = Buffer.from(this.result).toString('base64');
           
+          //processo inverso
+          //const myBuffer = Buffer.from(someBase64String, 'base64');
+
+
           axios
             .post('http://localhost:4576/api/register/user', registoInfo)
             .then(response => {
@@ -375,17 +386,11 @@ export default {
                       }
                     })
               }
-            })
+            }) 
 
         } 
-
-        /* let promessa = new Promise(function(resolve, reject) {
-            
-        });
-        promessa.then(x => console.log('Bytes to string:',x)) */
-
         
-          
+        
           /* if(this.input_register.username != "" && this.input_register.password != "" && this.input_register.nome != "" 
           && this.input_register.idade != 0 && this.input_register.peso != 0 && this.input_register.altura != 0 && this.input_register.genero != "") {
               axios

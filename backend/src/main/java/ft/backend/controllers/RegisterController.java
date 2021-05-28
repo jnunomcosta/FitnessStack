@@ -2,6 +2,7 @@ package ft.backend.controllers;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ft.backend.beans.gestao_utilizadores;
+import ft.backend.entities.ConteudoMedia;
 import ft.backend.entities.Treinador;
 import ft.backend.entities.Utilizador;
 import ft.backend.responses.RespostaRegister;
@@ -31,7 +33,6 @@ public class RegisterController {
         Utilizador u = new Utilizador();
         JSONObject obj = new JSONObject(pl);
 
-        
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dn = df.parse(obj.getString("data"),new ParsePosition(0));
@@ -41,19 +42,18 @@ public class RegisterController {
         u.setGenero(obj.getBoolean("genero"));u.setPeso(obj.getFloat("peso"));
         u.setDataNascimento(dn);u.setUsername(obj.getString("username"));
 
-        /*
-        String a;
         if(obj.has("foto_perfil")){
-            a = obj.getString("foto_perfil");
+            ConteudoMedia foto = new ConteudoMedia();
+            foto.setConteudo(Base64.getDecoder().decode(obj.getString("foto_perfil")));
+            u.setFoto_perfil(foto);
         }
-        */
-
+        
         RespostaRegister ret = new RespostaRegister();
 
-        /* if(!gestao_utilizadores.registerUser(u)){
+        if(!gestao_utilizadores.registerUser(u)){
             ret.setSucess(false);
             return ResponseEntity.badRequest().body(ret);
-        } */
+        } 
 
         ret.setSucess(true);
         return ResponseEntity.ok().body(ret);
