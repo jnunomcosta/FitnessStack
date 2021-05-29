@@ -45,17 +45,17 @@ public class Treino implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private java.util.Date data_criacao;
 	
-	@OneToMany(targetEntity=Bloco.class,cascade = {CascadeType.ALL})	
+	@OneToMany(targetEntity=Bloco.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Bloco> ORM_blocos_exercicios = new java.util.HashSet<>();
 	
-	@OneToMany(targetEntity=Avaliacao_Treino.class,cascade = {CascadeType.ALL})	
+	@OneToMany(targetEntity=Avaliacao_Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.HashSet<>();
 
-	@OneToMany(targetEntity=Categoria.class,cascade = {CascadeType.ALL})	
+	@OneToMany(targetEntity=Categoria.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	

@@ -3,6 +3,7 @@ package ft.backend.controllers.recursos;
 import java.util.Base64;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,25 @@ public class RecursoUtilizador {
             return "{\"imagem\":\""+ Base64.getEncoder().encodeToString(u.getFoto_perfil().getConteudo()) + "\"}";
         }
         return "{\"imagem\":null}";
+    }
+
+    @GetMapping(value = "/getUserInfo")
+    public String getInfoUser(@RequestParam String username){
+        Utilizador u = rep_users.findUtilizador_Username(username);
+        JSONObject obj = new JSONObject();
+        obj.put("email", u.getEmail());
+        obj.put("datanascimento", u.getDataNascimento());
+        obj.put("nome",u.getNome());
+        obj.put("username", username);
+        obj.put("peso", u.getPeso());
+        obj.put("m_gorda", 20);
+        obj.put("m_muscular", 78);
+        obj.put("altura", u.getAltura());
+        obj.put("genero", u.getGenero() ? "Masculino" : "Feminino");
+        obj.put("foto_perfil", Base64.getEncoder().encodeToString(u.getFoto_perfil().getConteudo()));
+        //ver se a imagem e null
+    
+        return obj.toString();
     }
 
 }

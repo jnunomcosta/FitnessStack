@@ -319,12 +319,13 @@ export default {
               axios
                 .post('http://localhost:4576/api/login/user', loginInfo)
                 .then(response => { 
-                  console.log(response);
+                  //console.log(response);
                   const status = JSON.parse(response.status);
                   //redirect logic
                   if (status == '200'){
                     localStorage.setItem('user-token', response.data.token);
-                    this.$router.push('/Treinos');
+                    localStorage.setItem('username', this.input.username);
+                    this.$router.push('/perfil');
                   }
 
                   //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
@@ -372,7 +373,10 @@ export default {
           axios
             .post('http://localhost:4576/api/register/user', registoInfo)
             .then(response => {
-              if (response.status == '200'){
+              
+              const status = JSON.parse(response.status);
+
+              if (status == '200'){
                 var login_info = {
                   username: this.input.username,
                   password: this.input.password
@@ -380,7 +384,8 @@ export default {
                   axios
                     .post('http://localhost:4576/api/login/user',login_info)
                     .then(response2 => {
-                      if(response2.status == '200'){
+                      const status2 = JSON.parse(response2.status);
+                      if(status2 == '200'){
                         localStorage.setItem('user-token', response2.data.token);
                         this.$router.push('/Treinos');
                       }

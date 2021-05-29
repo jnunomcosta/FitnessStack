@@ -16,13 +16,13 @@
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
-                <v-img src="https://picsum.photos/200"></v-img>
+                <v-img :src="'data:image/jpeg;base64,'+utilizador.foto_perfil"></v-img>
               </v-avatar>
             </div>
-            <v-card-title class="justify-center">Xana</v-card-title>
-            <v-card-subtitle> xanareigada </v-card-subtitle>
+            <v-card-title class="justify-center">{{ utilizador.nome }}</v-card-title>
+            <v-card-subtitle> {{ utilizador.username }} </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            <div class="mt-4 body-2">xana@gmail.com</div>
+            <div class="mt-4 body-2">{{ utilizador.email }}</div>
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -169,7 +169,7 @@
         <v-col cols="12" md="5">
           <v-card>
             <v-card-title
-              >Peso atual: 80kg
+              >Peso atual: {{utilizador.peso}}kg
               <v-dialog v-model="dialog4" persistent max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -225,10 +225,10 @@
             <v-card-text>
               <v-row>
                 <v-col cols="12" md="6">
-                  <p>Altura</p>
+                  <p>Altura {{utilizador.altura}}cm</p>
 
                   <p>
-                    Percentagem de massa gorda
+                    Massa Gorda {{utilizador.m_gorda}}%
                     <v-dialog v-model="dialog5" persistent max-width="500px">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -272,7 +272,7 @@
                   </p>
 
                   <p>
-                    Percentagem de massa muscular
+                    Massa Muscular {{utilizador.m_muscular}}%
                     <v-dialog v-model="dialog6" persistent max-width="500px">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -317,8 +317,8 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <p>IMC</p>
-                  <p>IMC ideal</p>
+                  <p>IMC {{imc}}</p>
+                  <p>IMC ideal: 18.5 - 24.9</p>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -432,6 +432,8 @@
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
 import VueApexCharts from "vue-apexcharts";
+
+import axios from 'axios';
 
 export default {
   name: "Progresso",
@@ -619,12 +621,31 @@ export default {
     maxPeso: 200,
     minPercentagem: 0,
     maxPercentagem: 100,
+    imc: 0,
+    utilizador: {
+      email:'',
+      datanascimento:'',
+      nome:'',
+      username:'',
+      peso:0.0,
+      m_gorda:0.0,
+      m_muscular:0.0,
+      altura:0.0,
+      genero:false,
+      foto_perfil:''
+    }
   }),
+  mounted() {
+    axios
+      .get('http://localhost:4576/rest/utilizadores/getUserInfo?username=magui')
+      .then(response => {
+        this.utilizador = response.data
+        this.imc = (this.utilizador.peso / (this.utilizador.altura * this.utilizador.altura)) * 10000
+      })
+      .finally(() => this.loading = false)
+  }
 };
 </script>
-
-};
-
 
 <style>
 .profile {

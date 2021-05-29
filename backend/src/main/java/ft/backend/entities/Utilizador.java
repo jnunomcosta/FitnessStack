@@ -21,9 +21,6 @@ public class Utilizador implements Serializable {
 	
 	@Column(name="Password", nullable=false, length=1024)	
 	private String password;
-	
-	//@Column(name="Idade", nullable=true, length=10)	
-	//private int idade;
 
 	@Column(name="DataNascimento", nullable=true)	
 	@Temporal(TemporalType.DATE)	
@@ -31,6 +28,12 @@ public class Utilizador implements Serializable {
 	
 	@Column(name="Peso", nullable=true)	
 	private float peso;
+
+	@Column(name="MassaGorda", nullable=true)	
+	private float m_gorda;
+
+	@Column(name="MassaMuscular", nullable=true)	
+	private float m_muscular;
 	
 	@Column(name="Nome", nullable=true, length=1024)	
 	private String nome;
@@ -44,27 +47,33 @@ public class Utilizador implements Serializable {
 	@Column(name="Username", nullable=false, length=512)	
 	private String username;
 
-	@OneToMany(targetEntity=Marcacao.class,cascade = {CascadeType.ALL})	
-	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@OneToMany(targetEntity=Marcacao.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="UtilizadorID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Marcacao> ORM_agenda = new java.util.HashSet<>();
+	private java.util.Set<Marcacao> agenda = new java.util.HashSet<>();
+
+	@OneToMany(targetEntity=InformacaoFisica.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
+	@JoinColumns({ @JoinColumn(name="UtilizadorID3", nullable=true) })	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE) 	
+	private java.util.Set<InformacaoFisica> informacao_fisica = new java.util.HashSet<>();
+
+	@OneToMany(targetEntity=Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
+	@JoinColumns({ @JoinColumn(name="UtilizadorID4", nullable=true) })	
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set<Treino> historico_treinos = new java.util.HashSet<>();
 
 	@ManyToOne(targetEntity=Treinador.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
-	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=true) }, foreignKey=@ForeignKey(name="FKUtilizador567467"))	
+	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=true) })	
 	private Treinador treinador_responsavel;	
 
 	@ManyToOne(targetEntity=ConteudoMedia.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
-	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) }, foreignKey=@ForeignKey(name="FKUtilizador456623"))	
+	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) })	
 	private ConteudoMedia foto_perfil;
 
-	@OneToMany(targetEntity=Treino.class, cascade = {CascadeType.ALL})	
-	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@OneToMany(targetEntity=Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="UtilizadorID2", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Treino> ORM_treinos_favoritos = new java.util.HashSet<>();
+	private java.util.Set<Treino> treinos_favoritos = new java.util.HashSet<>();
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -135,11 +144,11 @@ public class Utilizador implements Serializable {
 	}
 
 	public void setORM_Agenda(java.util.Set<Marcacao> value) {
-		this.ORM_agenda = value;
+		this.agenda = value;
 	}
 	
 	public java.util.Set<Marcacao> getORM_Agenda() {
-		return ORM_agenda;
+		return agenda;
 	}
 
 	public void setUsername(String value) {
@@ -151,11 +160,11 @@ public class Utilizador implements Serializable {
 	}
 
 	public void setORM_Treinos_favoritos(java.util.Set<Treino> value) {
-		this.ORM_treinos_favoritos = value;
+		this.treinos_favoritos = value;
 	}
 	
 	public java.util.Set<Treino> getORM_Treinos_favoritos() {
-		return ORM_treinos_favoritos;
+		return treinos_favoritos;
 	}
 
 	public Treinador getTreinador_responsavel() {
@@ -173,6 +182,38 @@ public class Utilizador implements Serializable {
 	public void setFoto_perfil(ConteudoMedia foto_perfil) {
 		this.foto_perfil = foto_perfil;
 	}
+
+	public float getMassaGorda() {
+		return m_gorda;
+	}
+
+	public void setMassaGorda(float m_gorda) {
+		this.m_gorda = m_gorda;
+	}
+
+	public float getMassaMuscular() {
+		return m_muscular;
+	}
+
+	public void setMassaMuscular(float m_muscular) {
+		this.m_muscular = m_muscular;
+	}
+
+	public java.util.Set<InformacaoFisica> getInformacao_fisica() {
+		return informacao_fisica;
+	}
+
+	public void setInformacao_fisica(java.util.Set<InformacaoFisica> informacao_fisica) {
+		this.informacao_fisica = informacao_fisica;
+	}
+
+	public java.util.Set<Treino> getHistorico_treinos() {
+		return historico_treinos;
+	}
+
+	public void setHistorico_treinos(java.util.Set<Treino> historico_treinos) {
+		this.historico_treinos = historico_treinos;
+	} 
 	
 	public String toString() {
 		return String.valueOf(getID());

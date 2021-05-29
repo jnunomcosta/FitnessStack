@@ -13,7 +13,9 @@
           <!-- <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img> -->
           <v-img :src="'data:image/jpeg;base64,'+variavelRecebidaDaAPI"></v-img>
         </v-list-item-avatar>
-
+        <div id='imagem-sidebar'>
+          {{username}}
+        </div>
         <v-list-item-content class="ma-0 pa-0" >
           <v-list-item-title>John Leider</v-list-item-title>
           <v-list-item-subtitle>username</v-list-item-subtitle>
@@ -72,6 +74,7 @@
 import axios from 'axios';
 
 export default {
+  props: ['username'],
   data() {
     return {
       variavelRecebidaDaAPI: "",
@@ -92,7 +95,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:4576/rest/utilizadores/getImagem?username=candido')
+      .get('http://localhost:4576/rest/utilizadores/getImagem?username='+localStorage.getItem('username'))
       .then(response => {
         this.variavelRecebidaDaAPI = response.data.imagem
       })
