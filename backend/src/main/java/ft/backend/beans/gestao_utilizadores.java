@@ -13,13 +13,18 @@ public class gestao_utilizadores {
     
     @Autowired
     UtilizadorDAO uDao;
-    @Autowired
-    TreinadorDAO tDao;
 
-    public Utilizador loginUser(String username,String password){
+    public boolean loginUser(String username,String password){
         Utilizador u = uDao.findUtilizador_Username(username);
-        //verificar se a password e correta
-        return u;
+        if(u!=null){
+            if(u.getPassword().equals(password)){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
     }
 
     public boolean registerUser(Utilizador u){
@@ -30,20 +35,6 @@ public class gestao_utilizadores {
         return true;
     }
 
-    public Treinador loginTreinador(String username, String password){
-        Treinador t = tDao.findTreinador_Username(username);
-        //Verificar a password aqui
-        return t;
-    }
-
-    public boolean registerTreinador(Treinador u){
-        if(tDao.findTreinador_Username(u.getUsername())!=null || tDao.findTreinador_Email(u.getEmail()) != null){
-            return false;
-        }
-        tDao.save(u);
-        return true;
-    }
-
     public boolean usernameExisteU(String username){
         if(uDao.findUtilizador_Username(username) != null){
             return true;
@@ -51,9 +42,24 @@ public class gestao_utilizadores {
         return false;
     }
 
-    public boolean usernameExisteT(String username){
-        if(tDao.findTreinador_Username(username) != null){
+    public boolean mudarEmail(String username,String email){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            u.setEmail(email);
+            uDao.save(u);
             return true;
+        }
+        return false;
+    }
+
+    public boolean mudarUsername(String username,String username_novo){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            if(uDao.findUtilizador_Username(username_novo) == null){
+                u.setUsername(username_novo);
+                uDao.save(u);
+                return true;
+            }  
         }
         return false;
     }

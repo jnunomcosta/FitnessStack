@@ -274,6 +274,7 @@
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
 import axios from 'axios';
+import sjcl from 'sjcl'
 
 export default {
   name: "Login",
@@ -314,8 +315,9 @@ export default {
           if(this.input.username != "" && this.input.password != "") {
               var loginInfo = {
                 username: this.input.username,
-                password: this.input.password
+                password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password))
               }
+              console.log(sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(loginInfo.password)));
               axios
                 .post('http://localhost:4576/api/login/user', loginInfo)
                 .then(response => { 
@@ -335,7 +337,7 @@ export default {
                   //redirect("/PaginaInicial_User");
                   //  this.variavelRecebidaDaAPI = response.data.bpi
                 })
-                .finally(() => this.loading = false)
+                .finally(() => this.loading = false) 
   
           } else {
               console.log("A username and password must be present");
@@ -348,7 +350,7 @@ export default {
         }
         var registoInfo = {
             email: this.input_register.email,
-            password: this.input_register.password,
+            password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input_register.password)),
             username: this.input_register.username,
             nome: this.input_register.nome,
             data: this.input_register.date,
@@ -378,8 +380,8 @@ export default {
 
               if (status == '200'){
                 var login_info = {
-                  username: this.input.username,
-                  password: this.input.password
+                  username: registoInfo.username,
+                  password: registoInfo.password
                 }
                   axios
                     .post('http://localhost:4576/api/login/user',login_info)
@@ -387,7 +389,8 @@ export default {
                       const status2 = JSON.parse(response2.status);
                       if(status2 == '200'){
                         localStorage.setItem('user-token', response2.data.token);
-                        this.$router.push('/Treinos');
+                        localStorage.setItem('username', registoInfo.username);
+                        this.$router.push('/perfil');
                       }
                     })
               }

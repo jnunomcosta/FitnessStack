@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ft.backend.beans.gestao_treinadores;
 import ft.backend.beans.gestao_treinos;
 import ft.backend.beans.gestao_utilizadores;
 import ft.backend.responses.RespostaOk;
@@ -26,7 +27,7 @@ public class ExercicioController {
     gestao_treinos gt;
 
     @Autowired 
-    gestao_utilizadores gu;
+    gestao_treinadores gu;
 
     @PostMapping(value = "/novo")
     public ResponseEntity<RespostaOk> novoExercicio(@RequestHeader String token, @RequestBody String t){

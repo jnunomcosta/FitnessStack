@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ft.backend.beans.gestao_treinadores;
 import ft.backend.beans.gestao_utilizadores;
 import ft.backend.entities.ConteudoMedia;
 import ft.backend.entities.Treinador;
@@ -28,11 +30,13 @@ public class RegisterController {
     @Autowired
     gestao_utilizadores gestao_utilizadores;
 
+    @Autowired
+    gestao_treinadores gestao_treinadores;
+
     @PostMapping(value = "/user")
-    public ResponseEntity<RespostaRegister> register_utilizador(@RequestBody String pl){
+    public ResponseEntity<String> register_utilizador(@RequestBody String pl){
         Utilizador u = new Utilizador();
         JSONObject obj = new JSONObject(pl);
-
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dn = df.parse(obj.getString("data"),new ParsePosition(0));
@@ -48,15 +52,11 @@ public class RegisterController {
             u.setFoto_perfil(foto);
         }
         
-        RespostaRegister ret = new RespostaRegister();
-
         if(!gestao_utilizadores.registerUser(u)){
-            ret.setSucess(false);
-            return ResponseEntity.badRequest().body(ret);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
         } 
 
-        ret.setSucess(true);
-        return ResponseEntity.ok().body(ret);
+        return ResponseEntity.ok().body("");
     }
 
     @PostMapping(value = "/treinador")
@@ -71,11 +71,11 @@ public class RegisterController {
         u.setNome(obj.getString("nome"));u.setAltura(obj.getFloat("altura"));
         u.setGenero(obj.getBoolean("genero"));u.setPeso(obj.getFloat("peso"));
         u.setDataNascimento(dn);u.setUsername(obj.getString("username"));
-        gestao_utilizadores.registerTreinador(u);
+        gestao_treinadores.registerTreinador(u);
 
         RespostaRegister ret = new RespostaRegister();
 
-        if(!gestao_utilizadores.registerTreinador(u)){
+        if(!gestao_treinadores.registerTreinador(u)){
             ret.setSucess(false);
             return ResponseEntity.badRequest().body(ret);
         }

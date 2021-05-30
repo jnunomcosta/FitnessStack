@@ -12,8 +12,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class Authorization {
 
-    private static String secret="augustooooo";
-    private static long duration=1000 * 60 * 60 * 10; //10 hrs
+    private static String secret = "augustooooo";
+    private static long duration = 1000 * 60 * 60 * 10; //10 hrs
 
     public static String generateToken(String data,boolean tipo){
         JSONObject json = new JSONObject();

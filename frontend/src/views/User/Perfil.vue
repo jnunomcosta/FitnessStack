@@ -637,7 +637,7 @@ export default {
   }),
   mounted() {
     axios
-      .get('http://localhost:4576/rest/utilizadores/getUserInfo?username=magui')
+      .get('http://localhost:4576/rest/utilizadores/getUserInfo?username='+localStorage.getItem('username'))
       .then(response => {
         this.utilizador = response.data
         this.imc = (this.utilizador.peso / (this.utilizador.altura * this.utilizador.altura)) * 10000
