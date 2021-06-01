@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,9 +58,11 @@ public class RecursoUtilizador {
     public String delet(@RequestParam String username){
         Utilizador u = rep_users.findUtilizador_Username(username);
         rep_users.delete(u);
-        return "{\"great\":success}";
+
+        return "{\"great\":\"success\"}";
     }
 
+    //Isto vai ser para ir para o bean do gestao_utilizadores
     @GetMapping(value = "/getUserInfo")
     public String getInfoUser(@RequestParam String username){
         Utilizador u = rep_users.findUtilizador_Username(username);

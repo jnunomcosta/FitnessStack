@@ -18,6 +18,9 @@ public class ConteudoMedia implements Serializable{
 	
     @Column(name="Conteudo", nullable=false, columnDefinition = "LONGBLOB")	
 	private byte[] Conteudo;
+
+	@Column(name="Extensao", nullable=false)	
+	private boolean Extensao;
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -37,6 +40,14 @@ public class ConteudoMedia implements Serializable{
 	
 	public byte[] getConteudo() {
 		return Conteudo;
+	}
+
+	public boolean getExtensao() {
+		return Extensao;
+	}
+
+	public void setExtensao(Boolean extensao) {
+		this.Extensao = extensao;
 	}
 	
 	public String toString() {

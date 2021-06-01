@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h5 class="mb-4 ml-8 " style="color: #5b5b5b">
+    <h5 class="mb-4 ml-8" style="color: #5b5b5b">
       {{ titles.length }} exercícios
     </h5>
     <v-row class="fill-height overflow-y-auto" v-if="titles.length">
@@ -15,18 +15,90 @@
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-card hover class="white">
             <v-img
-              :src="'https://picsum.photos/200'"
+              :src="'http://localhost:4576' + title.conteudo_media[0]"
               class="white--text align-end"
               height="150px"
             >
             </v-img>
             <!--<v-card-title v-text="title.body"></v-card-title>-->
-            <v-card-title>Agachamentos</v-card-title>
+            <v-card-title>{{ title.nome }}</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <InfoExercicio />
+              <!-- <InfoExercicio /> -->
+              <v-dialog transition="dialog-bottom-transition" max-width="600">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="mx-2 my-2"
+                    v-bind="attrs"
+                    v-on="on"
+                    small
+                    color="#f95738"
+                    dark
+                  >
+                    <v-icon>mdi-text-box-search</v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:default="dialog">
+                  <v-card>
+                    <v-toolbar color="#f95738" dark
+                      ><h3>{{ title.nome }}</h3>
+                      <v-spacer></v-spacer>
+                      <v-btn icon @click="dialog.value = false"
+                        ><v-icon>mdi-close</v-icon></v-btn
+                      >
+                    </v-toolbar>
+                    <v-card-text>
+                      <div class="d-flex flex-no-wrap justify-space-between">
+                        <div class="mt-6">
+                          <v-list-item two-line>
+                            <v-list-item-content>
+                              <v-list-item-title>Descrição</v-list-item-title>
+                              <v-list-item-subtitle>{{
+                                title.descricao
+                              }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
 
+                          <v-list-item two-line>
+                            <v-list-item-content>
+                              <v-list-item-title
+                                >Duração média</v-list-item-title
+                              >
+                              <v-list-item-subtitle
+                                >{{ title.duracao }}s</v-list-item-subtitle
+                              >
+                            </v-list-item-content>
+                          </v-list-item>
+
+                          <v-list-item two-line>
+                            <v-list-item-content>
+                              <v-list-item-title
+                                >Material necessário</v-list-item-title
+                              >
+                              <v-list-item-subtitle>{{
+                                title.material
+                              }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </div>
+                        <div>
+                          <v-avatar tile rounded size="200" class="mt-8 mb-4">
+                            <v-img
+                              max-height="200"
+                              max-width="200"
+                              :src="
+                                'http://localhost:4576' +
+                                title.conteudo_media[0]
+                              "
+                            ></v-img>
+                          </v-avatar>
+                        </div>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </template>
+              </v-dialog>
             </v-card-actions>
           </v-card>
           <v-card v-intersect="infiniteScrolling"></v-card>
@@ -38,22 +110,23 @@
 
 <script>
 import axios from "axios";
-import InfoExercicio from "./InfoExercicio.vue"
-
+/* import InfoExercicio from "./InfoExercicio.vue"
+ */
 export default {
-  components: {
+  /* components: {
     InfoExercicio
-  },
+  }, */
   name: "Exercicio",
   data() {
     return {
       titles: [],
-      page: 1
+      page: 1,
     };
   },
   computed: {
     url() {
-      return "https://jsonplaceholder.typicode.com/posts?_page=" + this.page;
+      /* return "https://jsonplaceholder.typicode.com/posts?_page=" + this.page; */
+      return "http://localhost:4576/api/exercicio/listar";
     },
   },
   created() {

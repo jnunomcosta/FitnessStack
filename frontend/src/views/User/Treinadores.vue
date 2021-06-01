@@ -13,8 +13,7 @@
               v-bind="attrs"
               v-on="on"
               color="#f95738"
-              dark
-            >
+              dark>
               O meu treinador
             </v-btn>
           </template>
@@ -37,11 +36,9 @@
                   </v-avatar>
                 </div>
                 <div class="ma-2">
-                  <v-card-title
-                    >Joao Ratão<v-icon dense color="#f95738" class="ml-2"
-                      >mdi-weight-lifter</v-icon
-                    ></v-card-title
-                  >
+                  <v-card-title>Joao Ratão
+                    <v-icon dense color="#f95738" class="ml-2">mdi-weight-lifter</v-icon>
+                  </v-card-title>
                   <v-card-subtitle>joniratatui</v-card-subtitle>
 
                   <v-card-text>

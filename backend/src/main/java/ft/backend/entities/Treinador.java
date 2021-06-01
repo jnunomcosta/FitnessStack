@@ -20,22 +20,13 @@ public class Treinador implements Serializable {
 	
 	@Column(name="Password", nullable=false, length=1024)	
 	private String password;
-	
-	//@Column(name="Idade", nullable=false, length=10)	
-	//private int idade;
 
 	@Column(name="DataNascimento", nullable=true)	
 	@Temporal(TemporalType.DATE)	
 	private java.util.Date data_nascimento;
 	
-	@Column(name="Peso", nullable=true)	
-	private float peso;
-	
 	@Column(name="Nome", nullable=true, length=1024)	
 	private String nome;
-	
-	@Column(name="Altura", nullable=true)	
-	private float altura;
 	
 	@Column(name="Genero", nullable=true, length=1)	
 	private boolean genero;
@@ -47,11 +38,14 @@ public class Treinador implements Serializable {
 	private String descricao;
 	
 	@OneToMany(targetEntity=Avaliacao_Treinador.class, cascade = {CascadeType.ALL})	
-	//@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns({ @JoinColumn(name="TreinadorID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Avaliacao_Treinador> ORM_avaliacoes_t = new java.util.HashSet();
-	
+	private java.util.Set<Avaliacao_Treinador> ORM_avaliacoes_t = new java.util.HashSet<>();
+
+	@ManyToOne(targetEntity=ConteudoMedia.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
+	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) })	
+	private ConteudoMedia foto_perfil;
+
 	private void setID(int value) {
 		this.ID = value;
 	}
@@ -88,28 +82,12 @@ public class Treinador implements Serializable {
 		return this.data_nascimento;
 	}
 	
-	public void setPeso(float value) {
-		this.peso = value;
-	}
-	
-	public float getPeso() {
-		return peso;
-	}
-	
 	public void setNome(String value) {
 		this.nome = value;
 	}
 	
 	public String getNome() {
 		return nome;
-	}
-	
-	public void setAltura(float value) {
-		this.altura = value;
-	}
-	
-	public float getAltura() {
-		return altura;
 	}
 	
 	public void setGenero(boolean value) {
@@ -143,12 +121,16 @@ public class Treinador implements Serializable {
 	public java.util.Set<Avaliacao_Treinador> getORM_Avaliacoes_t() {
 		return ORM_avaliacoes_t;
 	}
-	
-	/* @Transient	
-	public final AvaliacaoSetCollection avaliacoes_t = new AvaliacaoSetCollection(this, _ormAdapter, ORMConstants.KEY_TREINADOR_AVALIACOES_T, ORMConstants.KEY_MUL_ONE_TO_MANY);
-	 */
+
+	public ConteudoMedia getFoto_perfil() {
+		return foto_perfil;
+	}
+
+	public void setFoto_perfil(ConteudoMedia foto_perfil) {
+		this.foto_perfil = foto_perfil;
+	}
+
 	public String toString() {
 		return String.valueOf(getID());
-	} 
-	
+	} 	
 }

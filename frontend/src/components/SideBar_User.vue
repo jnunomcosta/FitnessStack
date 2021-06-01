@@ -10,7 +10,7 @@
     >
       <v-list-item class="px-2 py-2">
         <v-list-item-avatar>
-          <!-- <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img> -->
+          <!-- <v-img src="http://localhost:4576/api/assets/photo/olaolaola"></v-img> -->
           <v-img :src="'data:image/jpeg;base64,'+variavelRecebidaDaAPI"></v-img>
         </v-list-item-avatar>
         <div id='imagem-sidebar'>

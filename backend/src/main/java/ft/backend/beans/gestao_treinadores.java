@@ -1,5 +1,9 @@
 package ft.backend.beans;
 
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +35,22 @@ public class gestao_treinadores {
             return true;
         }
         return false;
+    }
+
+    public JSONArray getTreinadores(){
+        JSONArray ret = new JSONArray();
+
+        List<Treinador> t = tDao.findAll();
+        for(Treinador tr : t){
+            JSONObject exe = new JSONObject();
+            exe.put("nome", tr.getNome());
+            exe.put("username", tr.getUsername());
+            exe.put("email", tr.getEmail());
+            exe.put("descricao", tr.getDescricao());
+            exe.put("imagem", "/api/assets/photo/"+tr.getFoto_perfil().getID());
+            ret.put(exe);
+        }
+
+        return ret;
     }
 }

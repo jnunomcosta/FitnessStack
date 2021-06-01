@@ -20,24 +20,9 @@ public class gestao_treinos {
     @Autowired
     TreinadorDAO treinadorDao;
 
-    public void criaExercicio(Exercicio e, int id_treinador, JSONArray media){
-        Treinador ttt = treinadorDao.getOne(id_treinador);
-        e.setCriador_exercicio(ttt);
-
-        Set<ConteudoMedia> medias = new HashSet<>();
-        for(int i = 0;i < media.length();i++){
-            ConteudoMedia c = new ConteudoMedia();
-            c.setConteudo(DatatypeConverter.parseBase64Binary(media.getString(i)));
-            medias.add(c);
-        }
-        e.setORM_ConteudoMedia(medias);
-        e.setCriador_exercicio(ttt);
-        eDao.save(e);
-    }
-
     public Treino pesquisarTreino(int id){
 
-        return  tDao.findbyId(id);
+        return tDao.findbyId(id);
     }
 
     public List<Treino> pesquisarTreino(){

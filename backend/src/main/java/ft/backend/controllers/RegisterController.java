@@ -68,12 +68,17 @@ public class RegisterController {
         Date dn = df.parse(obj.getString("data"),new ParsePosition(0));
 
         u.setEmail(obj.getString("email"));u.setPassword(obj.getString("password"));
-        u.setNome(obj.getString("nome"));u.setAltura(obj.getFloat("altura"));
-        u.setGenero(obj.getBoolean("genero"));u.setPeso(obj.getFloat("peso"));
+        u.setNome(obj.getString("nome"));u.setGenero(obj.getBoolean("genero"));
         u.setDataNascimento(dn);u.setUsername(obj.getString("username"));
-        gestao_treinadores.registerTreinador(u);
+        u.setDescricao(obj.getString("descricao"));
 
         RespostaRegister ret = new RespostaRegister();
+
+        if(obj.has("foto_perfil")){
+            ConteudoMedia foto = new ConteudoMedia();
+            foto.setConteudo(Base64.getDecoder().decode(obj.getString("foto_perfil")));
+            u.setFoto_perfil(foto);
+        }
 
         if(!gestao_treinadores.registerTreinador(u)){
             ret.setSucess(false);

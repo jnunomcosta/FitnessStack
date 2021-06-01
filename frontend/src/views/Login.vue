@@ -361,7 +361,7 @@ export default {
 
         //ELE ENTRA NO 'onload' QUANDO OS BYTES TIVEREM LIDOS
         //ERA BOM TER UMA VERIFICACAO SE O USER FEZ UPLOAD DE UM FICHEIRO OU NAO
-
+      
         let blob = new Blob([this.input_register.imagem]),fileReader = new FileReader();
         fileReader.readAsArrayBuffer(blob);
         fileReader.onload = function(){

@@ -26,8 +26,8 @@
               </v-toolbar>
             </v-col>
           </v-row>
-          <Exercicio
-        /></v-container>
+          <Exercicio/>
+        </v-container>
       </v-col>
     </v-row>
   </div>
