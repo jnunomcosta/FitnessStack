@@ -2,8 +2,8 @@ package ft.backend.beans;
 
 import java.util.*;
 
-import javax.xml.bind.DatatypeConverter;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,11 @@ public class gestao_treinos {
     TreinadorDAO treinadorDao;
 
     public Treino pesquisarTreino(int id){
-
         return tDao.findbyId(id);
     }
 
     public List<Treino> pesquisarTreino(){
-
         return tDao.findAllTreinos();
-
     }
 
     public boolean comentar(int id, Avaliacao_Treino at){
@@ -39,8 +36,37 @@ public class gestao_treinos {
             tDao.save(t);
             b = true;
         }
-
         return b;
+    }
+
+    public JSONArray listarTreinos(){
+        JSONArray ret = new JSONArray();
+
+        List<Treino> treinos = tDao.findAll();
+        for(Treino t : treinos){
+            JSONObject exe = new JSONObject();
+            exe.put("nome", t.getNome());
+            exe.put("duracao",t.getDuracao()/60);
+            JSONArray a = new JSONArray();
+            for(Categoria c : t.getCategorias()){
+                a.put(c.getCategoria());
+            }
+            exe.put("categoria", a);
+            exe.put("dificuldade", t.getDificuldade());
+            exe.put("data", t.getData_criacao());
+            exe.put("codigo", t.getCodigo());
+            ret.put(exe);
+        }
+
+        return ret;
+    }
+
+    public boolean guardaTreino(Treino t){
+        Treino tr = tDao.save(t);
+        if(tr==null){
+            return false;
+        }
+        return true;
     }
 
 }

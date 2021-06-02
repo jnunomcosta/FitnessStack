@@ -64,4 +64,8 @@ public class gestao_utilizadores {
         return false;
     }
 
+    public Utilizador getUserByUsername(String username){
+        return uDao.findUtilizador_Username(username); 
+    }
+
 }

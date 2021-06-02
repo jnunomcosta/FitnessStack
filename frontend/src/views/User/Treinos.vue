@@ -46,6 +46,7 @@
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
 import CriarTreino from "@/components/CriarTreino.vue";
+import axios from 'axios';
 
 export default {
   name: "ProcurarTreino",
@@ -73,26 +74,15 @@ export default {
       ],
       treinos: [
         {
-          nome: "10 Min Ab Workout",
-          duracao: "10 min",
-          categoria: "Abdominais",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "07/05/2021",
-          avaliacao: "4.6/5",
-          favoritos: "true",
-          codigo: "12345",
-        },
-        {
-          nome: "12 Min Happy Cardio",
-          duracao: "12 min",
-          categoria: "Cardio",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "05/05/2021",
-          avaliacao: "4.2/5",
-          favoritos: "true",
-          codigo: "67890",
+          nome: "",
+          duracao: "",
+          categoria: "",
+          dificuldade: "",
+          treinador: "",
+          data: "",
+          avaliacao: "",
+          favoritos: "",
+          codigo: "",
         },
       ],
     };
@@ -103,6 +93,14 @@ export default {
       this.$router.push("/treinos/" + value.codigo);
     },
   },
+  mounted () {
+    axios
+      .get('http://localhost:4576/api/treinos/listar')
+      .then(response => {
+        this.treinos = response.data 
+      })
+      .finally(() => this.loading = false)
+  }
 };
 </script>
 

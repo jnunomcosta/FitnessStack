@@ -20,6 +20,8 @@ public class gestao_exercicios {
     ExercicioDAO eDao;
     @Autowired
     TreinadorDAO treinadorDao;
+    @Autowired
+    ExercicioDAO exercicioDAO;
 
     public void criaExercicio(Exercicio e, int id_treinador, JSONArray media){
         Treinador ttt = treinadorDao.getOne(id_treinador);
@@ -35,6 +37,10 @@ public class gestao_exercicios {
         e.setORM_ConteudoMedia(medias);
         e.setCriador_exercicio(ttt);
         eDao.save(e);
+    }
+
+    public Exercicio getExercicio(int id_exercicio){
+        return exercicioDAO.getOne(id_exercicio);
     }
 
     public JSONArray getExercicios(){
