@@ -37,7 +37,9 @@
         </v-container>
       </v-col>
     </v-row>
-    <CriarTreino />
+     <v-btn fab dark large color="#f95738" fixed right bottom to="/criartreino">
+      <v-icon>mdi-plus</v-icon>
+     </v-btn>
   </div>
 </template>
 
@@ -45,7 +47,6 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
-import CriarTreino from "@/components/CriarTreino.vue";
 import axios from 'axios';
 
 export default {
@@ -53,7 +54,6 @@ export default {
   components: {
     NavBar,
     SideBar,
-    CriarTreino,
   },
   created() {
     document.title = "Treinos";

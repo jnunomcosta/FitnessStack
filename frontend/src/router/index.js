@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import CriarTreino from '../views/CriarTreino.vue'
 import NotFound from '../views/NotFound.vue'
 import Perfil from '../views/User/Perfil.vue'
 import Agenda from '../views/User/Agenda.vue'
@@ -64,6 +65,11 @@ const routes = [
     path: '/treinos',
     name: 'Treinos',
     component: Treinos
+  },
+  {
+    path: '/criartreino',
+    name: 'CriarTreino',
+    component: CriarTreino
   },
   {
     path: '/treinadores',

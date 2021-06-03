@@ -130,7 +130,9 @@ public class TreinoController {
         Set<Categoria> cats = new HashSet<>();
         JSONArray arr = obj.getJSONArray("categorias");
         for(int i=0;i<arr.length();i++){
-            cats.add(gCategorias.getCategoria(arr.getString(i)));
+            Categoria c = new Categoria();
+            c.setCategoria(arr.getString(i));
+            cats.add(c);
         }
         treino.setCategorias(cats);
 
