@@ -63,7 +63,7 @@ public class TreinoController {
     @PostMapping(value = "/comentar")
     public ResponseEntity<RespostaOk> comentar(@RequestParam int IdTreino, @RequestBody Avaliacao_Treino s){
 
-        if(gt.comentar(IdTreino, s) == true){
+        if(gt.comentar(IdTreino, s)){
             return ResponseEntity.ok().body(new RespostaOk());
         }
 
@@ -78,16 +78,19 @@ public class TreinoController {
     @PostMapping(value = "/novoTreino")
     public ResponseEntity<String> novoTreino(@RequestHeader String token,@RequestBody String s){
         JSONObject obj;
+        boolean flag = true;
+        String username;
         try{
             obj = new JSONObject(Authorization.extractClaims(token));
             if(obj.getBoolean("treinador_utilizador")){
-                String username = obj.getString("username");
+                username = obj.getString("username");
                 if(!gTreinadores.usernameExisteT(username)){
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
                 }
             }
             else{
-                String username = obj.getString("username");
+                flag = false;
+                username = obj.getString("username");
                 if(!gUtilizadores.usernameExisteU(username)){
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
                 }
@@ -100,7 +103,22 @@ public class TreinoController {
         Treino treino = new Treino();
         obj = new JSONObject(s);
 
-        if(obj.has("criador_utilizador")){
+        if(!flag){
+            Utilizador u = gUtilizadores.getUserByUsername(username);
+            if(u == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+            }
+            treino.setCriador_u(u);
+        }
+        else{
+            Treinador t = gTreinadores.getTreinadorByUsername(username);
+            if(t == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+            }
+            treino.setCriador_t(t);
+        }
+
+        /* if(obj.has("criador_utilizador")){
             Utilizador u = gUtilizadores.getUserByUsername(obj.getString("criador_utilizador"));
             if(u == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
@@ -115,18 +133,20 @@ public class TreinoController {
                 }
                 treino.setCriador_t(t);
             }
-        }
+        } */
 
         treino.setDificuldade(obj.getString("dificuldade"));
         treino.setCodigo(Date_Utils.generateCode());
         treino.setNome(obj.getString("nome"));
         treino.setDescricao(obj.getString("descricao"));
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date dn = df.parse(obj.getString("data_criacao"),new ParsePosition(0));
-        treino.setData_criacao(dn);
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        //Date dn = df.parse(obj.getString("data_criacao"),new ParsePosition(0));
+        treino.setData_criacao(new Date());
 
-        treino.setDuracao(obj.getFloat("duracao"));
+        //treino.setDuracao(obj.getFloat("duracao"));
+        treino.setDuracao(10000);
+
         Set<Categoria> cats = new HashSet<>();
         JSONArray arr = obj.getJSONArray("categorias");
         for(int i=0;i<arr.length();i++){
@@ -141,9 +161,10 @@ public class TreinoController {
         for(int i=0;i<arr.length();i++){
             Bloco b = new Bloco();
             JSONObject aux = arr.getJSONObject(i);
-            b.setExercicio(gExercicios.getExercicio(aux.getInt("exercicio_id")));
+            b.setExercicio(gExercicios.getExercicio(aux.getString("nome_exercicio")));
             b.setDescanso(aux.getFloat("descanso"));
             b.setDuracao(aux.getInt("duracao"));
+            b.setTipo(aux.getBoolean("tipo"));
             b.setSeries(aux.getInt("series"));
             exs.add(b);
         }

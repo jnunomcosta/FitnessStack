@@ -28,6 +28,10 @@ public class Bloco implements Serializable {
 	
 	@Column(name="Duracao", nullable=true, length=10)	
 	private int duracao;
+
+	//True -> Repeticoes | False -> Duracao
+	@Column(name="Tipo", nullable=true)
+	private boolean tipo;
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -71,6 +75,14 @@ public class Bloco implements Serializable {
 	
 	public Exercicio getExercicio() {
 		return exercicio;
+	}
+
+	public boolean isTipo() {
+		return tipo;
+	}
+
+	public void setTipo(boolean tipo) {
+		this.tipo = tipo;
 	}
 	
 	public String toString() {

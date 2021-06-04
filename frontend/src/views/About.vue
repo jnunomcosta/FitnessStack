@@ -5,7 +5,9 @@
     <h1 style="padding: 100px">Exemplo de Consumo da API</h1>
     <p v-if="loading">A carregar...</p>
     <p v-if="error">Há erros...</p>
-    <p>{{ variavelRecebidaDaAPI }}</p>
+    <p>{{ countDown }}</p>
+    <v-btn color="#7189ff" text v-on:click="countDownTimer()">Registar</v-btn>
+    <!-- <v-btn color="#7189ff" text v-on:click="playSound()">Alarm</v-btn> -->
     <Footer />
   </div>
 </template>
@@ -25,12 +27,34 @@ export default {
   created() {
     document.title = "Sobre o Fitness Stack";
   },
-  // Exemplo de Consumo da API
+  
   data () {
     return {
       variavelRecebidaDaAPI: "",
       loading: true,
-      error: false
+      error: false,
+      countDown: 5,
+    }
+  },
+  methods: {
+    countDownTimer() {
+      if(this.countDown > 0) {
+        setTimeout(() => {
+          this.countDown -= 1
+          this.countDownTimer()
+        }, 1000)
+      }
+      else {
+        if (this.countDown == 0){
+          this.playSound();
+          this.countDown = 5;
+        }
+      }
+    },
+    playSound () {
+      //var audio = new Audio('http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3');
+      var audio = new Audio('http://localhost:4576/api/assets/audio/37');
+      audio.play();
     }
   },
   mounted () {

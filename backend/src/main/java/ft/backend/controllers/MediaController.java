@@ -41,14 +41,26 @@ public class MediaController {
         return null;
     }
 
-    @GetMapping(value = "/video/{path}") 
+    @GetMapping(value = "/video/{path}")
     public ResponseEntity<InputStreamResource> getVideo(@PathVariable String path){
         ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
         if(u!=null){
             return ResponseEntity.ok()
+                    .contentLength(u.getConteudo().length)
+                    .contentType(MediaType.parseMediaType("video/mp4"))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=video%s.%s", 1, "mp4"))
+                    .body(new InputStreamResource(new ByteArrayInputStream(u.getConteudo())));
+        }
+        return null;
+    }
+
+    @GetMapping(value = "/audio/{path}")
+    public ResponseEntity<InputStreamResource> getAudio(@PathVariable String path){
+        ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
+        if(u!=null){
+            return ResponseEntity.ok()
                 .contentLength(u.getConteudo().length)
-                .contentType(MediaType.parseMediaType("video/mp4"))
-                .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=video%s.%s", 1, "mp4"))
+                .contentType(MediaType.parseMediaType("audio/mp3"))
                 .body(new InputStreamResource(new ByteArrayInputStream(u.getConteudo())));
         }
         return null;

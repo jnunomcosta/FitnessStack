@@ -325,7 +325,7 @@ export default {
                   const status = JSON.parse(response.status);
                   //redirect logic
                   if (status == '200'){
-                    localStorage.setItem('user-token', response.data.token);
+                    localStorage.setItem('token', response.data.token);
                     localStorage.setItem('username', this.input.username);
                     this.$router.push('/perfil');
                   }

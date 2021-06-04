@@ -43,6 +43,10 @@ public class gestao_exercicios {
         return exercicioDAO.getOne(id_exercicio);
     }
 
+    public Exercicio getExercicio(String nome_exercicio){
+        return exercicioDAO.findExercicioByNome(nome_exercicio);
+    }
+
     public JSONArray getExercicios(){
 
         JSONArray res = new JSONArray();

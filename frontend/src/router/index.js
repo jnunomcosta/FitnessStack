@@ -7,6 +7,7 @@ import NotFound from '../views/NotFound.vue'
 import Perfil from '../views/User/Perfil.vue'
 import Agenda from '../views/User/Agenda.vue'
 import Exercicios from '../views/User/Exercicios.vue'
+import Treino from '../views/User/Treino.vue'
 import Treinos from '../views/User/Treinos.vue'
 import Treinadores from '../views/User/Treinadores.vue'
 
@@ -60,6 +61,11 @@ const routes = [
     path: '/exercicios',
     name: 'Exercicios',
     component: Exercicios
+  },
+  {
+    path: '/treino/:codigo',
+    name: 'Treino',
+    component: Treino
   },
   {
     path: '/treinos',
