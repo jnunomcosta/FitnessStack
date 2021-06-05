@@ -29,46 +29,80 @@
               <v-row class="fill-height" align="center" justify="center">
                 <v-col cols="12" md="1"> </v-col>
                 <v-col cols="12" md="7">
-                  <h3 class="text-center">Exercício atual</h3>
                   <v-card
                     elevation="17"
-                    shaped
                     color="white"
                     class="text-center"
                     style="text-align: center"
                   >
                     <div class="text-center mx-4">
-                      <v-img
-                      tile
-                        style="text-align: center"
-                        max-height="250"
-                        max-width="400"
-                        src="https://randomuser.me/api/portraits/men/93.jpg"
-                      ></v-img>
+                      <div class="mx-auto text-center">
+                        <v-avatar tile class="mt-4" size="200">
+                          <v-img
+                            src="https://randomuser.me/api/portraits/men/93.jpg"
+                          ></v-img>
+                        </v-avatar>
+                      </div>
 
                       <v-list-item-content class="black--text">
                         <h2>{{ i }}</h2>
-                        <h2>Nome</h2>
-                        <h2>Séries</h2>
-                        
+                        <h2>NOME DO EXERCÍCIO</h2>
+                        <h2>{{ series }} / {{ series_total }} Séries</h2>
 
-                        <p>{{ countDown }}</p>
-                        <v-btn color="black" text v-on:click="countDownTimer()"
+                        <v-row class="text-center" style="text-align: center">
+                          <v-col v-if="flag_duracao" cols="12" md="6">
+                            <p
+                              class="
+                                pa-4
+                                grey
+                                lighten-2
+                                text-no-wrap
+                                rounded-pill
+                              "
+                            >
+                              Duração: {{ duracao_serie }} segundos
+                            </p>
+                          </v-col>
+                          <v-col v-if="flag_repeticoes" cols="12" md="6">
+                            <v-btn
+                              color="black"
+                              dark
+                              v-on:click="aumentar_serie()"
+                            >
+                              Próxima série
+                              <v-icon dense> mdi-ArrowRightBoldOutline </v-icon>
+                            </v-btn>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <p
+                              class="
+                                pa-4
+                                grey
+                                lighten-2
+                                text-no-wrap
+                                rounded-pill
+                              "
+                            >
+                              Descanso: {{ duracao_descanso }} segundos
+                            </p>
+                          </v-col>
+                        </v-row>
+                        <v-btn
+                          v-if="flag_duracao"
+                          color="black"
+                          text
+                          v-on:click="countDownTimer_serie()"
                           >Iniciar</v-btn
                         >
-                        <v-btn variant="success" v-on:click="stop">STOP</v-btn>
                       </v-list-item-content>
                     </div>
                   </v-card>
                 </v-col>
                 <v-col cols="12" md="3">
-                  <h3 class="text-center">Próximo exercício</h3>
-                  <v-card
-                    elevation="17"
-                    shaped
-                    color="white"
-                    class="black--text"
-                  >
+                  <h3 class="text-center" style="color: black">
+                    Próximo exercício
+                  </h3>
+                  <v-card elevation="17" color="white" class="black--text">
                     <div class="text-center mx-4">
                       <h4>Nome</h4>
                       <h5>Séries</h5>
@@ -83,11 +117,47 @@
         </v-carousel>
       </v-col>
     </v-row>
-    <div class="text-center my-16">
-      <v-btn v-on:click="terminarTreino()" color="#f95738" dark
-        >Terminar treino</v-btn
-      >
-    </div>
+
+    <v-container class="text-center">
+    <v-dialog v-model="dialog1" persistent max-width="380px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="#f95738"
+          dark
+          small
+          class="mb-1"
+          v-bind="attrs"
+          v-on="on"
+          >Terminar treino</v-btn
+        >
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline text-center" >Dê-nos o seu feedback acerca deste treino!</span>
+        </v-card-title>
+        <v-card-text>
+          <div class="text-center mt-12">
+            <v-rating
+              v-model="rating"
+              color="#f95738"
+              background-color="grey darken-1"
+              empty-icon="$ratingFull"
+              half-increments
+              hover
+              large
+            ></v-rating>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#f95738" text v-on:click="submit"> Sair </v-btn>
+          <v-btn color="#f95738" text v-on:click="submit">
+            Confirmar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    </v-container>
   </div>
 </template>
 
@@ -95,57 +165,88 @@
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
 
-
 export default {
   name: "IniciarTreino",
   components: {
     NavBar,
     SideBar,
-
   },
   data() {
     return {
+      //True -> Repeticoes | False -> Duracao
+      dialog1: false,
       slides: ["First", "Second", "Third", "Fourth", "Fifth"],
-      countDown: 2,
-      page:0
+      duracao_serie: 2,
+      duracao_descanso: 3,
+      series: 0,
+      series_total: 5,
+      flag_repeticoes: false,
+      flag_duracao: true,
+      //page:0
       //interval: 2000,
     };
   },
   methods: {
-    pageChange(i){ console.log('current Index', i); },
+    //pageChange(i){ console.log('current Index', i); },
 
     terminarTreino: function () {
-      this.refs.carousel.goToPage(1);
-      this.$refs.carousel[0].goToPage(this.$refs.carousel[0].getNextPage());
+      //this.refs.carousel.goToPage(1);
+      //this.$refs.carousel[0].goToPage(this.$refs.carousel[0].getNextPage());
     },
     //onSlideChange() {
     //if (this.countDown===0) {
     //   this.interval = 1000000;
     //}
     //},
-    countDownTimer() {
-      if (this.countDown > 0) {
+    countDownTimer_serie() {
+      if (this.duracao_serie > -1) {
         setTimeout(() => {
-          this.countDown -= 1;
-          this.countDownTimer();
+          this.duracao_serie -= 1;
+          this.countDownTimer_serie();
         }, 1000);
       } else {
-        if (this.countDown == 0) {
-          this.doAutoplay = false;
-          this.page=1;
-          this.$refs.carousel[0].goToPage(this.$refs.carousel[0].getNextPage());
-          //this.$refs['carousel'][0].goToPage(1);
+        if (this.duracao_serie == -1) {
           this.playSound();
-          this.countDown = 2;
+          this.duracao_serie = 2; //voltar a dar o valor inicial
+          this.countDownTimer_descanso();
         }
       }
-      //this.interval = 10000;
     },
+
+    countDownTimer_descanso() {
+      if (this.duracao_descanso > -1) {
+        setTimeout(() => {
+          this.duracao_descanso -= 1;
+          this.countDownTimer_descanso();
+        }, 1000);
+      } else {
+        if (this.duracao_descanso == -1) {
+          if (this.flag_duracao) {
+            this.aumentar_serie();
+            this.countDownTimer_serie();
+          }
+          this.playSound();
+          this.duracao_descanso = 3;
+        }
+      }
+    },
+
+    aumentar_serie() {
+      if (this.series < this.series_total) {
+        this.series++;
+        if (this.flag_repeticoes) this.countDownTimer_descanso();
+      }
+    },
+
     playSound() {
       //var audio = new Audio('http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3');
       var audio = new Audio("http://localhost:4576/api/assets/audio/37");
       audio.play();
     },
+
+    submit(){
+      this.$router.push('/treinos??')
+    }
   },
 };
 </script>
