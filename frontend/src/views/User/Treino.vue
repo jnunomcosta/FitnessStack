@@ -2,7 +2,7 @@
   <div class="profile">
     <NavBar />
     <h1 class="text-center display-2" style="color: #f95738; margin-top: 90px">
-      Titulo do treino
+      {{ treino.nome }}
     </h1>
     <v-row class="mt-4">
       <v-col cols="12" md="1">
@@ -21,13 +21,14 @@
           <v-list-item-content
             class="mx-auto text-center px-4 pt-4 pb-3 font-weight-bold"
           >
-            <h3 class="pa-4 grey lighten-2 text-no-wrap rounded-pill">Descrição</h3>
+            <h3 class="pa-4 grey lighten-2 text-no-wrap rounded-pill"> Descrição: {{ treino.descricao }}</h3>
         
-            <h3>Categoria</h3>
-            <h3>Código</h3>
-            <h3>Data de criação</h3>
-            <h3>Dificuldade</h3>
-            <h3>Duração</h3>
+            <h3 class="pa-4 grey lighten-2 text-no-wrap rounded-pill">Categoria: <p v-for="item in treino.categorias" :key="item"> {{ item }} </p> </h3>
+              
+            <h3 class="pa-4 grey lighten-2 text-no-wrap rounded-pill"> Código: {{ $route.params.codigo }}</h3>
+            <h3 class="pa-4 grey lighten-2 text-no-wrap rounded-pill">  Data de criação: {{ treino.data }} </h3>
+            <h3 class="pa-4 grey lighten-2 text-no-wrap rounded-pill"> Dificuldade: {{ treino.dificuldade }}</h3>
+            <h3 class="pa-4 grey lighten-2 text-no-wrap rounded-pill"> Duração: {{ treino.duracao }} </h3>
           </v-list-item-content>
         </v-card>
       </v-col>
@@ -47,7 +48,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="text-center" v-for="item in exercicios" :key="item.nome">
+                <tr class="text-center" v-for="item in treino.exercicios" :key="item.nome">
                   <td>{{ item.nome }}</td>
                   <td>{{ item.series }}</td>
                   <td>{{ item.repeticoes }}</td>
@@ -69,6 +70,7 @@
 <script>
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
+import axios from 'axios';
 
 export default {
   name: "Treino",
@@ -81,6 +83,21 @@ export default {
       exercicios: [
         { nome: "exercicio", series: 3, repeticoes: 10, descanso: 5 },
       ],
+      treino: 
+        {
+          nome: "",
+          duracao: "",
+          categorias: [
+            { categoria: ""}
+          ],
+          dificuldade: "",
+          //treinador: "",
+          data: "",
+          exercicios: [
+            { nome: "", series: 0, repeticoes: 0, descanso: 0},
+          ]
+        },
+      
     };
 
   },
@@ -89,5 +106,13 @@ export default {
       this.$router.push("/iniciarTreino/" + this.$route.params.codigo);
     },
   },
+  mounted () {
+    axios
+      .get('http://localhost:4576/api/treinos/getTreino?codigo=' + this.$route.params.codigo)
+      .then(response => {
+        this.treino = response.data 
+      })
+      .finally(() => this.loading = false)
+  }
 };
 </script>
