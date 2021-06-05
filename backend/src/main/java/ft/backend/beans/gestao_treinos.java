@@ -20,6 +20,8 @@ public class gestao_treinos {
     @Autowired
     TreinadorDAO treinadorDao;
 
+    public Treino getTreino(String codigo) {return tDao.findbyCodigo(codigo);}
+
     public Treino pesquisarTreino(int id){
         return tDao.findbyId(id);
     }

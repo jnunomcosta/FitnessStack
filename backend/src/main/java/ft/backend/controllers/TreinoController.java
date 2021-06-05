@@ -174,4 +174,34 @@ public class TreinoController {
         return ResponseEntity.ok().body("{\"codigo\":\""+treino.getCodigo()+"\"}");
     }
 
+    @GetMapping(value="/getTreino")
+    public ResponseEntity<String> getTreino(/*@RequestHeader String token,*/@RequestParam String codigo){
+        Treino t = gt.getTreino(codigo);
+        JSONObject ret = new JSONObject();
+        ret.put("nome", t.getNome());
+        ret.put("descricao", t.getDescricao());
+        JSONArray categoria = new JSONArray();
+        for(Categoria c : t.getCategorias()){
+            categoria.put(c.getCategoria());
+        }
+        ret.put("categorias", categoria);
+        ret.put("codigo", codigo);
+        ret.put("data", t.getData_criacao());
+        ret.put("dificuldade", t.getDificuldade());
+        ret.put("duracao", t.getDuracao());
+        //falta a foto do gajo e o nome
+        JSONArray exercicios = new JSONArray();
+        for(Bloco c : t.getORM_Blocos_exercicios()){
+            JSONObject ex_aux = new JSONObject();
+            ex_aux.put("nome", c.getExercicio().getNome());
+            ex_aux.put("series", c.getSeries());
+            ex_aux.put("repeticoes", c.getDuracao());
+            ex_aux.put("descanso", c.getDescanso());
+            exercicios.put(ex_aux);
+        }
+        ret.put("exercicios", exercicios);
+        return ResponseEntity.ok().body(ret.toString());
+
+    }
+
 }

@@ -14,4 +14,7 @@ public interface TreinoDAO extends JpaRepository<Treino,Integer>{
 
     @Query(value = "SELECT * FROM Treino u WHERE u.id = :id",nativeQuery = true)
     public Treino findbyId(@Param("id") int id);
+
+    @Query(value = "SELECT * FROM Treino u WHERE u.codigo = :codigo",nativeQuery = true)
+    public Treino findbyCodigo(@Param("codigo") String codigo);
 }
