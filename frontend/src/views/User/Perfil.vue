@@ -324,44 +324,7 @@
             </v-card-text>
           </v-card>
 
-          <v-card class="mt-4">
-            <v-card-title class="justify-center">
-              Os meus treinos
-            </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <v-row>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >Total de horas de treino</v-list-item-title
-                    >
-                    <v-list-item-subtitle>12</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title>Média de minutos</v-list-item-title>
-                    <v-list-item-title>por treino</v-list-item-title>
-                    <v-list-item-subtitle>1</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >Média de minutos de treino</v-list-item-title
-                    >
-                    <v-list-item-title>por dia</v-list-item-title>
-                    <v-list-item-subtitle>10</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-            </v-row>
-          </v-card>
+          
 
           <!-- <v-card class="mt-4">
             <v-card-title class="justify-center"> Os meus treinos </v-card-title>
@@ -407,19 +370,45 @@
           </v-card>
 
           <v-card class="mt-4">
-            <v-card-title class="justify-center"
-              >Minutos por treino</v-card-title
-            >
+            <v-card-title class="justify-center">
+              Os meus treinos
+            </v-card-title>
             <v-divider class="mx-4"></v-divider>
-            <div width="300" height="300">
-              <apexchart
-                type="bar"
-                height="350"
-                :options="chartOptions_treinos"
-                :series="series_treinos"
-              ></apexchart>
-            </div>
+            <v-row>
+              <v-col cols="12" md="4">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >Total de horas de treino</v-list-item-title
+                    >
+                    <v-list-item-subtitle>12</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title>Média de minutos</v-list-item-title>
+                    <v-list-item-title>por treino</v-list-item-title>
+                    <v-list-item-subtitle>1</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >Média de minutos de treino</v-list-item-title
+                    >
+                    <v-list-item-title>por dia</v-list-item-title>
+                    <v-list-item-subtitle>10</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
           </v-card>
+
+         
         </v-col>
       </v-row>
     </div>

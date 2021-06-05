@@ -90,7 +90,7 @@ export default {
   methods: {
     verTreino: function (value) {
       console.log("ROW VALUES:", value);
-      this.$router.push("/treinos/" + value.codigo);
+      this.$router.push("/treino/" + value.codigo);
     },
   },
   mounted () {
