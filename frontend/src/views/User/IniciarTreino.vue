@@ -118,46 +118,8 @@
       </v-col>
     </v-row>
 
-    <v-container class="text-center">
-    <v-dialog v-model="dialog1" persistent max-width="380px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="#f95738"
-          dark
-          small
-          class="mb-1"
-          v-bind="attrs"
-          v-on="on"
-          >Terminar treino</v-btn
-        >
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline text-center" >Dê-nos o seu feedback acerca deste treino!</span>
-        </v-card-title>
-        <v-card-text>
-          <div class="text-center mt-12">
-            <v-rating
-              v-model="rating"
-              color="#f95738"
-              background-color="grey darken-1"
-              empty-icon="$ratingFull"
-              half-increments
-              hover
-              large
-            ></v-rating>
-          </div>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#f95738" text v-on:click="submit"> Sair </v-btn>
-          <v-btn color="#f95738" text v-on:click="submit">
-            Confirmar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    </v-container>
+    
+<v-btn color="#f95738" dark>Avaliar treino</v-btn>
   </div>
 </template>
 
@@ -199,18 +161,21 @@ export default {
     //}
     //},
     countDownTimer_serie() {
-      if (this.duracao_serie > -1) {
-        setTimeout(() => {
-          this.duracao_serie -= 1;
-          this.countDownTimer_serie();
-        }, 1000);
-      } else {
-        if (this.duracao_serie == -1) {
-          this.playSound();
-          this.duracao_serie = 2; //voltar a dar o valor inicial
-          this.countDownTimer_descanso();
+      if (this.series>0){
+        if (this.duracao_serie > -1) {
+          setTimeout(() => {
+            this.duracao_serie -= 1;
+            this.countDownTimer_serie();
+          }, 1000);
+        } else {
+          if (this.duracao_serie == -1) {
+            this.playSound();
+            this.duracao_serie = 2; //voltar a dar o valor inicial
+            this.countDownTimer_descanso();
+          }
         }
       }
+      else this.series=0;
     },
 
     countDownTimer_descanso() {
