@@ -1,5 +1,6 @@
 package ft.backend.controllers;
 
+import ft.backend.utils.Authorization;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,31 @@ public class TreinadorController {
         //falta verificar o token
         JSONArray a = gestao_treinadores.getTreinadores();
         return a.toString();
+    }
+
+    @GetMapping(value = "/getSideBarTreinadorInfo")
+    public ResponseEntity<String> getSideBarInfoUser(@RequestHeader String token) {
+        JSONObject obj;
+        String username = null;
+        try {
+            obj = new JSONObject(Authorization.extractClaims(token));
+            if (obj.getBoolean("treinador_utilizador")) {
+                username = obj.getString("username");
+                if (!gestao_treinadores.usernameExisteT(username)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        obj = gestao_treinadores.getSideBarTreinadorInformation(username);
+        if (obj != null) {
+            return ResponseEntity.ok().body(obj.toString());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 }

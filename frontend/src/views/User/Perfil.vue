@@ -16,7 +16,7 @@
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
                 <v-img
-                  :src="'data:image/jpeg;base64,' + utilizador.foto_perfil"
+                  :src="'http://localhost:4576' + utilizador.foto_perfil"
                 ></v-img>
               </v-avatar>
             </div>
@@ -629,10 +629,8 @@ export default {
   }),
   mounted() {
     axios
-      .get(
-        "http://localhost:4576/rest/utilizadores/getUserInfo?username=" +
-          localStorage.getItem("username")
-      )
+      //.get("http://localhost:4576/rest/utilizadores/getUserInfo?username="+localStorage.getItem("username"))
+      .get("http://localhost:4576/api/user/getUserInfo",{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
         
         this.utilizador = response.data;
@@ -678,7 +676,7 @@ export default {
         
           
         })
-        .finally(() => console.log("hi"));//msg erro a mudar email));
+        .finally(() => console.log("hi"));//msg erro a mudar username));
     },
   },
 };

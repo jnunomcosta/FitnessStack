@@ -49,6 +49,8 @@
                       >
                     </v-toolbar>
                     <v-card-text>
+                      <v-row class="w-100">
+                      <v-col cols="12" md="4">   
                       <div class="d-flex flex-no-wrap justify-space-between">
                         <div class="mt-6">
                           <v-list-item two-line>
@@ -82,8 +84,12 @@
                             </v-list-item-content>
                           </v-list-item>
                         </div>
+                        </div>
+                        </v-col>
+                        
+                        <v-col md="8">
                         <div>
-                          <v-avatar tile rounded size="200" class="mt-8 mb-4">
+                          <!-- <v-avatar tile rounded size="200" class="mt-8 mb-4">
                             <v-img
                               max-height="200"
                               max-width="200"
@@ -92,9 +98,21 @@
                                 title.conteudo_media[0]
                               "
                             ></v-img>
-                          </v-avatar>
+                            
+                          </v-avatar>  -->
+                          <!-- <v-container> -->
+                          <v-carousel :show-arrows="false" >
+                            <v-carousel-item
+                              v-for="(item,i) in title.conteudo_media"
+                              :key="i"
+                              :src="'http://localhost:4576'+item"
+                            ></v-carousel-item>
+                          </v-carousel>
+                          <!-- </v-container> -->
+                          
                         </div>
-                      </div>
+                        </v-col>
+                        </v-row>
                     </v-card-text>
                   </v-card>
                 </template>
@@ -124,19 +142,26 @@ export default {
     };
   },
   computed: {
-    url() {
+    //url() {
       /* return "https://jsonplaceholder.typicode.com/posts?_page=" + this.page; */
-      return "http://localhost:4576/api/exercicio/listar";
-    },
+      //return "http://localhost:4576/api/exercicio/listar";
+    //},
   },
-  created() {
+  /* created() {
     this.fetchData();
+  }, */
+  mounted() {
+    axios
+      .get("http://localhost:4576/api/exercicio/listar")
+      .then(response => {
+        this.titles = response.data;
+      })
   },
   methods: {
-    async fetchData() {
+    /* async fetchData() {
       const response = await axios.get(this.url);
       this.titles = response.data;
-    },
+    }, */
     /*infiniteScrolling(entries, observer, isIntersecting) {
       setTimeout(() => {
         this.page++;

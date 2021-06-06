@@ -9,31 +9,31 @@ public class ConteudoMedia implements Serializable{
 
     public ConteudoMedia() {
 	}
-	
+	/*
 	@Column(name="ID", nullable=false, length=10)	
 	@Id	
 	@GeneratedValue(generator="CONTEUDOMEDIA_ID_GENERATOR")	
 	@org.hibernate.annotations.GenericGenerator(name="CONTEUDOMEDIA_ID_GENERATOR", strategy="native")	
-	private int ID;
-	
-    @Column(name="Conteudo", nullable=false, columnDefinition = "LONGBLOB")	
+	private int ID;*/
+
+	@Column(name="ID", nullable=false, length=32)
+	@Id
+	private String ID;
+
+	@Column(name="Conteudo", nullable=false, columnDefinition = "LONGBLOB")
 	private byte[] Conteudo;
 
 	@Column(name="Extensao", nullable=false)	
 	private boolean Extensao;
 	
-	private void setID(int value) {
+	public void setID(String value) {
 		this.ID = value;
 	}
 	
-	public int getID() {
+	public String getID() {
 		return ID;
 	}
-	
-	public int getORMID() {
-		return getID();
-	}
-	
+
 	public void setConteudo(byte[] value) {
 		this.Conteudo = value;
 	}

@@ -2,6 +2,7 @@ package ft.backend.beans;
 
 import java.util.List;
 
+import ft.backend.entities.Utilizador;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,17 @@ public class gestao_treinadores {
     @Autowired
     TreinadorDAO tDao;
     
-    public Treinador loginTreinador(String username, String password){
-        Treinador t = tDao.findTreinador_Username(username);
-        //Verificar a password aqui
-        return t;
+    public boolean loginTreinador(String username, String password){
+        Treinador u = tDao.findTreinador_Username(username);
+        if(u!=null){
+            if(u.getPassword().equals(password)){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
     }
 
     public boolean registerTreinador(Treinador u){
@@ -52,6 +60,20 @@ public class gestao_treinadores {
         }
 
         return ret;
+    }
+
+    public JSONObject getSideBarTreinadorInformation(String username){
+        Treinador u = tDao.findTreinador_Username(username);
+        if(u != null){
+            JSONObject ret = new JSONObject();
+            ret.put("nome",u.getNome());
+            ret.put("username", username);
+            ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
+            return ret;
+        }
+        else{
+            return null;
+        }
     }
 
     public Treinador getTreinadorByUsername(String username){

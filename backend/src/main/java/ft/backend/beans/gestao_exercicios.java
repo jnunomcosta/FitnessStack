@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.xml.bind.DatatypeConverter;
 
+import ft.backend.utils.Date_Utils;
 import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,19 +24,20 @@ public class gestao_exercicios {
     @Autowired
     ExercicioDAO exercicioDAO;
 
-    public void criaExercicio(Exercicio e, int id_treinador, JSONArray media){
-        Treinador ttt = treinadorDao.getOne(id_treinador);
-        e.setCriador_exercicio(ttt);
+    public void criaExercicio(Exercicio e, Treinador t, JSONArray media){
 
+        e.setCriador_exercicio(t);
         Set<ConteudoMedia> medias = new HashSet<>();
         for(int i = 0;i < media.length();i++){
+            JSONObject obj = media.getJSONObject(i);
+
             ConteudoMedia c = new ConteudoMedia();
-            c.setConteudo(DatatypeConverter.parseBase64Binary(media.getString(i)));
-            c.setExtensao(true);//isto e imagem, falta ver se e video
+            c.setID(Date_Utils.generateCode());
+            c.setConteudo(DatatypeConverter.parseBase64Binary(obj.getString("conteudo")));
+            c.setExtensao(obj.getBoolean("tipo"));
             medias.add(c);
         }
         e.setORM_ConteudoMedia(medias);
-        e.setCriador_exercicio(ttt);
         eDao.save(e);
     }
 
@@ -45,6 +47,11 @@ public class gestao_exercicios {
 
     public Exercicio getExercicio(String nome_exercicio){
         return exercicioDAO.findExercicioByNome(nome_exercicio);
+    }
+
+    public JSONArray getNomeExercicios(){
+        return new JSONArray(exercicioDAO.listNomeExercicios());
+        //return exercicioDAO.listNomeExercicios();
     }
 
     public JSONArray getExercicios(){

@@ -35,6 +35,10 @@
                       type="password"
                       color="#f95738"
                     />
+                    <v-checkbox
+                      v-model="modo_login"
+                      label="É Treinador?"
+                    />
                   </v-form>
                   <!--<h3 class="text-center mt-4">
                     Esqueceu-se da password? <a href="#">Clique aqui</a>
@@ -98,7 +102,6 @@
                       ref="menu"
                       v-model="menu"
                       :close-on-content-click="false"
-                      :return-value.sync="date"
                       transition="scale-transition"
                       offset-y
                       min-width="auto"
@@ -170,69 +173,8 @@
                       prepend-icon="mdi-camera"
                     />
                     <small>* campo obrigatório</small>
-                    <v-col cols="12">
-                      <v-subheader>Peso (kg)</v-subheader>
-                      <v-slider
-                        v-model="input_register.peso"
-                        class="align-center"
-                        :max="maxPeso"
-                        :min="minPeso"
-                        hide-details
-                        color="#7189ff"
-                      >
-                        <template v-slot:append>
-                          <v-text-field
-                            v-model="input_register.peso"
-                            class="mt-0 pt-0"
-                            hide-details
-                            single-line
-                            type="number"
-                            style="width: 60px"
-                          ></v-text-field>
-                        </template>
-                      </v-slider>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-subheader>Altura (cm)</v-subheader>
-                      <v-slider
-                        v-model="input_register.altura"
-                        class="align-center"
-                        :max="maxAltura"
-                        :min="minAltura"
-                        hide-details
-                        color="#7189ff"
-                      >
-                        <template v-slot:append>
-                          <v-text-field
-                            v-model="input_register.altura"
-                            class="mt-0 pt-0"
-                            hide-details
-                            single-line
-                            type="number"
-                            style="width: 60px"
-                          ></v-text-field>
-                        </template>
-                      </v-slider>
-                    </v-col>
-                    <v-col cols="12" center>
-                      <v-select
-                        :items="['Masculino', 'Feminino']"
-                        v-model="input_register.genero"
-                        label="Género"
-                        color="#7189ff"
-                        required
-                      ></v-select>
-                    </v-col>
                   </v-form>
-                  <v-btn
-                    color="#f95738"
-                    dark
-                    v-bind="attrs"
-                    v-on:click="registar()"
-                    >Registar</v-btn
-                  >
-
-                  <!-- <v-dialog v-model="dialog" persistent max-width="600px">
+                  <v-dialog v-model="dialog" persistent max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
                       <div class="text-center my-8">
                         <v-btn
@@ -320,7 +262,7 @@
                         </v-btn>
                       </v-card-actions>
                     </v-card>
-                  </v-dialog> -->
+                  </v-dialog> 
                 </v-card-text>
               </v-col>
             </v-row>
@@ -352,6 +294,7 @@ export default {
       username: "",
       password: "",
     },
+    modo_login: false,
     input_register: {
       username: "",
       password: "",
@@ -364,7 +307,6 @@ export default {
       foto_perfil: "",
     },
     step: 1,
-    //date: new Date().toISOString().substr(0, 10),
     menu: false,
     dialog: false,
     minPeso: 30,
@@ -374,22 +316,20 @@ export default {
   }),
   methods: {
     login() {
-      if (this.input.username != "" && this.input.password != "") {
+      if(this.modo_login == false){ //utilizador
+        if (this.input.username != "" && this.input.password != "") {
         var loginInfo = {
           username: this.input.username,
           password: sjcl.codec.hex.fromBits(
             sjcl.hash.sha256.hash(this.input.password)
           ),
         };
-        console.log(
-          sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(loginInfo.password))
-        );
         axios
           .post("http://localhost:4576/api/login/user", loginInfo)
           .then((response) => {
-            //console.log(response);
+            
             const status = JSON.parse(response.status);
-            //redirect logic
+            
             if (status == "200") {
               localStorage.setItem("token", response.data.token);
               localStorage.setItem("username", this.input.username);
@@ -397,16 +337,45 @@ export default {
             }
 
             //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
+            
+            //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
 
-            // else self.$router.push('/Login');
-            //console.log(response);
-            //redirect("/PaginaInicial_User");
-            //  this.variavelRecebidaDaAPI = response.data.bpi
           })
           .finally(() => (this.loading = false));
       } else {
         console.log("A username and password must be present");
       }
+      }
+      else{ //treinador
+        if (this.input.username != "" && this.input.password != "") {
+        var loginInfoTreinador = {
+          username: this.input.username,
+          password: this.input.password,
+          //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
+        };
+        axios
+          .post("http://localhost:4576/api/login/treinador", loginInfoTreinador)
+          .then((response) => {
+
+            const status = JSON.parse(response.status);
+            
+            if (status == "200") {
+              localStorage.setItem("token", response.data.token);
+              localStorage.setItem("username", this.input.username);
+              this.$router.push("/treinador/perfil");
+            }
+
+            //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
+            
+            //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+
+          })
+          .finally(() => (this.loading = false));
+      } else {
+        console.log("A username and password must be present");
+      }
+      }
+      
     },
     async registar() {
       function carrega_foto(x) {
@@ -416,8 +385,8 @@ export default {
           fileReader.onload = function () {
             resolve(Buffer.from(this.result).toString("base64"));
           };
-      });
-    }
+        });
+      }
 
     //FALTA VERIFICAR SE O EMAIL E A PASS SAO CORRETOS OU EXISTEM OU QQ COISA ASSIM
 

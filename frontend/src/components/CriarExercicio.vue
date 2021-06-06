@@ -17,7 +17,7 @@
     </template>
     <v-card>
       <v-toolbar color="#f95738" dark
-        ><h3>Novo Exercício (Colocar só para o treinador depois)</h3>
+        ><h3>Novo Exercício</h3>
         <v-spacer></v-spacer>
         <v-btn icon @click="dialog = false"><v-icon>mdi-close</v-icon></v-btn>
       </v-toolbar>
@@ -81,8 +81,9 @@
 
             <v-card-text v-else-if="n == 2">
               <v-file-input
-                :rules="mediaRules"
-                accept="image/png, image/jpeg, image/bmp"
+                v-model="conteudos"
+                multiple
+                accept="image/png, image/jpeg, image/bmp, video/mp4"
                 placeholder="Selecione uma imagem ou vídeo"
                 prepend-icon="mdi-paperclip"
                 label="Demonstração do Exercício (só está a dar imagem para já)"
@@ -101,7 +102,7 @@
               >
                 Continuar
               </v-btn>
-              <v-btn color="#f95738" rounded dark @click="dialog = false">
+              <v-btn color="#f95738" rounded dark @click="dialog = false" v-on:click="confirmarTreino()" >
                 Confirmar
               </v-btn>
             </v-card-actions>
@@ -113,6 +114,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "CriarExercicio",
   data() {
@@ -123,15 +126,17 @@ export default {
       nome: "",
       descricao: "",
       duracao: 0,
+      material: "",
       minDuracao: 0,
       maxDuracao: 86400,
+      conteudos: [],
       rules: [(v) => !!v || "Campo obrigatório"],
-      mediaRules: [
+      /* mediaRules: [
         (value) =>
           !value ||
           value.size < 2000000 ||
           "O tamanho do ficheiro deve ser inferior a 2 MB",
-      ],
+      ], */
     };
   },
   watch: {
@@ -156,6 +161,54 @@ export default {
           this.searchTags = "";
         });
       });
+    },
+    async confirmarTreino(){
+
+      function carrega_conteudomedia(x) {
+        return new Promise((resolve) => {
+          let blob = new Blob([x]),fileReader = new FileReader();
+          fileReader.readAsArrayBuffer(blob);
+          fileReader.onload = function () {
+            let falg = false;
+            let splitted = x.type.split("/");
+            if(splitted[0] == "video"){
+              falg = true;
+            }
+            resolve({
+              tipo: falg,
+              conteudo: Buffer.from(this.result).toString("base64"),
+            });
+          };
+        });
+      }
+
+      let conteudos_lindos = [];
+      for(let i = 0;i<this.conteudos.length;i++){
+        var elou = await carrega_conteudomedia(this.conteudos[i]);
+        conteudos_lindos.push(elou)
+      }
+
+      var exercicio_post = {
+        nome: this.nome,
+        descricao: this.descricao,
+        duracao_media: this.duracao,
+        material_necessario: this.material,
+        conteudo_media: conteudos_lindos,
+      };
+      
+      axios
+        .post('http://localhost:4576/api/exercicio/novo',exercicio_post,{headers:{'token':localStorage.getItem("token")}})
+        .then(response => {
+          console.log(response);
+        })
+
+      //VER SE O POST CORREU BEM  
+      
+      this.nome = "";
+      this.descricao = "";
+      this.duracao = "";
+      this.material = "";
+      this.conteudos = [];
     },
   },
 };

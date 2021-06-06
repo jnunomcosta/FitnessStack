@@ -10,15 +10,15 @@
     >
       <v-list-item class="px-2 py-2">
         <v-list-item-avatar>
-          <!-- <v-img src="http://localhost:4576/api/assets/photo/olaolaola"></v-img> -->
-          <v-img :src="'data:image/jpeg;base64,'+variavelRecebidaDaAPI"></v-img>
+          <v-img :src="'http://localhost:4576' + foto_perfil"></v-img>
+          <!-- <v-img :src="'data:image/jpeg;base64,'+variavelRecebidaDaAPI"></v-img> -->
         </v-list-item-avatar>
         <div id='imagem-sidebar'>
-          {{username}}
+          {{n_sei_isto}}
         </div>
         <v-list-item-content class="ma-0 pa-0" >
-          <v-list-item-title>John Leider</v-list-item-title>
-          <v-list-item-subtitle>username</v-list-item-subtitle>
+          <v-list-item-title>{{ nome }}</v-list-item-title>
+          <v-list-item-subtitle>{{ username }}</v-list-item-subtitle>
         </v-list-item-content>
 
         <v-btn icon @click.stop="mini = !mini">
@@ -74,10 +74,12 @@
 import axios from 'axios';
 
 export default {
-  props: ['username'],
+  props: ['n_sei_isto'],
   data() {
     return {
-      variavelRecebidaDaAPI: "",
+      foto_perfil: "",
+      nome: "",
+      username: "",
       drawer: true,
       items: [
         {title: "Perfil", icon: "mdi-account", link: "/perfil"},
@@ -95,9 +97,11 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:4576/rest/utilizadores/getImagem?username='+localStorage.getItem('username'))
+      .get("http://localhost:4576/api/user/getSideBarUserInfo",{headers: {'token': localStorage.getItem("token")}})      
       .then(response => {
-        this.variavelRecebidaDaAPI = response.data.imagem
+        this.foto_perfil = response.data.foto_perfil;
+        this.nome = response.data.nome;
+        this.username = response.data.username;
       })
       .finally(() => this.loading = false)
   }
