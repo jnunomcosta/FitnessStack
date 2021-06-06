@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
-@Table(name="Utilizador")
+@Table(name="utilizador")
 public class Utilizador implements Serializable {
 	public Utilizador() {
 	}

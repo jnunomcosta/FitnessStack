@@ -12,17 +12,22 @@
         "
       >
         <v-col cols="12" md="2">
-          
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
-                <v-img :src="'data:image/jpeg;base64,'+utilizador.foto_perfil"></v-img>
+                <v-img
+                  :src="'data:image/jpeg;base64,' + utilizador.foto_perfil"
+                ></v-img>
               </v-avatar>
             </div>
-            <v-card-title class="justify-center">{{ utilizador.nome }}</v-card-title>
-            <v-card-subtitle> {{ utilizador.username }} </v-card-subtitle>
+            <v-card-title class="justify-center">{{
+              utilizador.nome
+            }}</v-card-title>
+            <v-card-subtitle v-model="username">
+              {{ utilizador.username }}
+            </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            <div class="mt-4 body-2">{{ utilizador.email }}</div>
+            <div class="mt-4 body-2" ><v-span >{{ utilizador.email }}</v-span></div>
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -47,6 +52,7 @@
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo nome de utilizador.
                           <v-text-field
+                            v-model="new_username"
                             color="#f95738"
                             prepend-icon="mdi-account-lock"
                             label="Nome de Utilizador"
@@ -61,7 +67,7 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog1 = false">
+                    <v-btn color="#f95738" text @click="setUsername(new_username);dialog1 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -91,6 +97,7 @@
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo email.
                           <v-text-field
+                            v-model="input_email"
                             color="#f95738"
                             prepend-icon="mdi-email"
                             label="Email"
@@ -105,7 +112,7 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog2 = false">
+                    <v-btn color="#f95738" text @click="setEmail(input_email);dialog2 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -169,7 +176,7 @@
         <v-col cols="12" md="5">
           <v-card>
             <v-card-title
-              >Peso atual: {{utilizador.peso}}kg
+              >Peso atual: {{ utilizador.peso }}kg
               <v-dialog v-model="dialog4" persistent max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -225,10 +232,10 @@
             <v-card-text>
               <v-row>
                 <v-col cols="12" md="6">
-                  <p>Altura {{utilizador.altura}}cm</p>
+                  <p>Altura {{ utilizador.altura }}cm</p>
 
                   <p>
-                    Massa Gorda {{utilizador.m_gorda}}%
+                    Massa Gorda {{ utilizador.m_gorda }}%
                     <v-dialog v-model="dialog5" persistent max-width="500px">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -272,7 +279,7 @@
                   </p>
 
                   <p>
-                    Massa Muscular {{utilizador.m_muscular}}%
+                    Massa Muscular {{ utilizador.m_muscular }}%
                     <v-dialog v-model="dialog6" persistent max-width="500px">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -317,14 +324,12 @@
                 </v-col>
 
                 <v-col cols="12" md="6">
-                  <p>IMC {{imc}}</p>
+                  <p>IMC {{ imc }}</p>
                   <p>IMC ideal: 18.5 - 24.9</p>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
-
-          
 
           <!-- <v-card class="mt-4">
             <v-card-title class="justify-center"> Os meus treinos </v-card-title>
@@ -407,8 +412,6 @@
               </v-col>
             </v-row>
           </v-card>
-
-         
         </v-col>
       </v-row>
     </div>
@@ -422,7 +425,7 @@ import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
 import VueApexCharts from "vue-apexcharts";
 
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "Progresso",
@@ -612,27 +615,74 @@ export default {
     maxPercentagem: 100,
     imc: 0,
     utilizador: {
-      email:'',
-      datanascimento:'',
-      nome:'',
-      username:'',
-      peso:0.0,
-      m_gorda:0.0,
-      m_muscular:0.0,
-      altura:0.0,
-      genero:false,
-      foto_perfil:''
-    }
+      email: "",
+      datanascimento: "",
+      nome: "",
+      username: "",
+      peso: 0.0,
+      m_gorda: 0.0,
+      m_muscular: 0.0,
+      altura: 0.0,
+      genero: false,
+      foto_perfil: "",
+    },
   }),
   mounted() {
     axios
-      .get('http://localhost:4576/rest/utilizadores/getUserInfo?username='+localStorage.getItem('username'))
-      .then(response => {
-        this.utilizador = response.data
-        this.imc = (this.utilizador.peso / (this.utilizador.altura * this.utilizador.altura)) * 10000
+      .get(
+        "http://localhost:4576/rest/utilizadores/getUserInfo?username=" +
+          localStorage.getItem("username")
+      )
+      .then((response) => {
+        
+        this.utilizador = response.data;
+        this.imc =
+          (this.utilizador.peso /
+            (this.utilizador.altura * this.utilizador.altura)) *
+          10000;
       })
-      .finally(() => this.loading = false)
-  }
+      .finally(() => (this.loading = false));
+  },
+  methods: {
+    setEmail(new_email) {
+      console.log("hidsajidsajdiasj")
+      axios
+        .post(
+          "http://localhost:4576/api/user/mudarEmail",
+            {
+              "username": localStorage.getItem("username"),
+              "email": new_email
+              }
+            , {headers: {'token': localStorage.getItem("token")}}
+        )
+        .then((response) => {
+          console.log(response  )
+          this.utilizador.email=new_email
+          
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar email));
+    },
+    setUsername(new_username) {
+      console.log("hidsajidsajdiasj")
+      axios
+        .post(
+          "http://localhost:4576/api/user/mudarUsername",
+            {
+              "username_novo": new_username,
+              }
+            , {headers: {'token': localStorage.getItem("token")}}
+        )
+        .then((response) => {
+          console.log(response  )
+          this.utilizador.username= new_username
+          localStorage.setItem("token",response.token)
+          localStorage.setItem("username",new_username)
+        
+          
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar email));
+    },
+  },
 };
 </script>
 

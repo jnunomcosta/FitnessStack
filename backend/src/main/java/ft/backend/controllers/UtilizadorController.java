@@ -52,7 +52,7 @@ public class UtilizadorController {
     }
 
     
-    @PostMapping(value = "mudarUsername")
+    @PostMapping(value = "/mudarUsername")
     public ResponseEntity<String> mudarUsername(@RequestHeader String token, @RequestBody String t){
         JSONObject obj;
         String username = null;
