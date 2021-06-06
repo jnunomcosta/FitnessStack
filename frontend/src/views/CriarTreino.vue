@@ -51,8 +51,9 @@
             </div>
           </v-card-text>
         </v-col>
-        <v-col cols="12" md="5">
-          <v-card-text class="mt-16">
+        <v-col style="margin-top:80px; max-width:800px" cols="12" md="5" >
+          <v-card v-scroll.self="onScroll" class=" overflow-y-auto" max-height="800"> 
+          <v-card-text class="mt-3">
             <h1 class="text-center display-1">Exercícios</h1>
           </v-card-text>
           <!-- <v-data-table
@@ -92,6 +93,7 @@
               </li>
             </v-card>
           </draggable> 
+          </v-card>
         </v-col>
       </v-row>
       <!-- <CriarBloco /> -->
