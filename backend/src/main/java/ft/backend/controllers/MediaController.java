@@ -5,13 +5,11 @@ import java.util.Base64;
 
 import javax.print.attribute.standard.Media;
 
+import ft.backend.beans.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.MediaTypeFactory;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,11 +25,12 @@ import ft.backend.repositories.*;
 public class MediaController {
     
     @Autowired
-    ConteudoMediaDAO rep_users;
+    gestao_conteudomedia gcm;
 
     @GetMapping(value = "/photo/{path}") 
     public ResponseEntity<InputStreamResource> getImagem(@PathVariable String path){
-        ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
+        //ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
+        ConteudoMedia u = gcm.getConteudo(path);
         if(u!=null){
             return ResponseEntity.ok()
                 .contentLength(u.getConteudo().length)
@@ -43,7 +42,8 @@ public class MediaController {
 
     @GetMapping(value = "/video/{path}")
     public ResponseEntity<InputStreamResource> getVideo(@PathVariable String path){
-        ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
+        //ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
+        ConteudoMedia u = gcm.getConteudo(path);
         if(u!=null){
             return ResponseEntity.ok()
                     .contentLength(u.getConteudo().length)
@@ -51,12 +51,13 @@ public class MediaController {
                     .header(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=video%s.%s", 1, "mp4"))
                     .body(new InputStreamResource(new ByteArrayInputStream(u.getConteudo())));
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     @GetMapping(value = "/audio/{path}")
     public ResponseEntity<InputStreamResource> getAudio(@PathVariable String path){
-        ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
+        //ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
+        ConteudoMedia u = gcm.getConteudo(path);
         if(u!=null){
             return ResponseEntity.ok()
                 .contentLength(u.getConteudo().length)

@@ -2,6 +2,7 @@ package ft.backend.beans;
 
 import ft.backend.entities.Treinador;
 import ft.backend.repositories.TreinadorDAO;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,41 @@ public class gestao_utilizadores {
             }
         }
         return false;
+    }
+
+    public JSONObject getUserInformation(String username){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            JSONObject ret = new JSONObject();
+            ret.put("email", u.getEmail());
+            ret.put("datanascimento", u.getDataNascimento());
+            ret.put("nome",u.getNome());
+            ret.put("username", username);
+            ret.put("peso", u.getPeso());
+            ret.put("m_gorda", 20);
+            ret.put("m_muscular", 78);
+            ret.put("altura", u.getAltura());
+            ret.put("genero", u.getGenero() ? "Masculino" : "Feminino");
+            ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
+            return ret;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public JSONObject getSideBarUserInformation(String username){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            JSONObject ret = new JSONObject();
+            ret.put("nome",u.getNome());
+            ret.put("username", username);
+            ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
+            return ret;
+        }
+        else{
+            return null;
+        }
     }
 
     public boolean registerUser(Utilizador u){

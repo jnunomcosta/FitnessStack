@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 
+import ft.backend.utils.Date_Utils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,9 @@ public class RegisterController {
 
         if(obj.has("foto_perfil")){
             ConteudoMedia foto = new ConteudoMedia();
+            foto.setID(Date_Utils.generateCode());
             foto.setConteudo(Base64.getDecoder().decode(obj.getString("foto_perfil")));
+            foto.setExtensao(false);
             u.setFoto_perfil(foto);
         }
         
@@ -60,7 +63,7 @@ public class RegisterController {
     }
 
     @PostMapping(value = "/treinador")
-    public ResponseEntity<RespostaRegister> register_treinador(@RequestBody String pl){
+    public ResponseEntity<String> register_treinador(@RequestBody String pl){
         Treinador u = new Treinador();
         JSONObject obj = new JSONObject(pl);
 
@@ -72,21 +75,19 @@ public class RegisterController {
         u.setDataNascimento(dn);u.setUsername(obj.getString("username"));
         u.setDescricao(obj.getString("descricao"));
 
-        RespostaRegister ret = new RespostaRegister();
-
         if(obj.has("foto_perfil")){
             ConteudoMedia foto = new ConteudoMedia();
+            foto.setID(Date_Utils.generateCode());
             foto.setConteudo(Base64.getDecoder().decode(obj.getString("foto_perfil")));
+            foto.setExtensao(false);
             u.setFoto_perfil(foto);
         }
 
         if(!gestao_treinadores.registerTreinador(u)){
-            ret.setSucess(false);
-            return ResponseEntity.badRequest().body(ret);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
         }
 
-        ret.setSucess(true);
-        return ResponseEntity.ok().body(ret);
+        return ResponseEntity.ok().body("");
     }
 
 }

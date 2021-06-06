@@ -32,45 +32,47 @@ public class ExercicioController {
     gestao_treinadores gu;
 
     @PostMapping(value = "/novo")
-    public ResponseEntity<RespostaOk> novoExercicio(@RequestHeader String token, @RequestBody String t){
+    public ResponseEntity<String> novoExercicio(@RequestHeader String token, @RequestBody String t){
         JSONObject obj;
-        RespostaOk ret = new RespostaOk();
+        String username;
         try{
             obj = new JSONObject(Authorization.extractClaims(token));
             if(obj.getBoolean("treinador_utilizador")){
-                String username = obj.getString("username");
+                username = obj.getString("username");
                 if(!gu.usernameExisteT(username)){
-                    ret.setEstado("UNAUTHORIZED");
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ret);
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
                 }
             }
             else{
-                ret.setEstado("UNAUTHORIZED");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ret);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
         }
         catch (Exception e){
-            ret.setEstado("UNAUTHORIZED");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ret);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         obj = new JSONObject(t);
 
-        int id_treinador = obj.getInt("criador_exercicio");
         Exercicio e = new Exercicio();
         e.setNome(obj.getString("nome"));
         e.setDescricao("descricao");
         e.setDuracao_media(obj.getFloat("duracao_media"));
         e.setMaterial_necessario(obj.getString("material_necessario"));
 
-        ge.criaExercicio(e,id_treinador,obj.getJSONArray("conteudo_media"));
+        ge.criaExercicio(e,gu.getTreinadorByUsername(username),obj.getJSONArray("conteudo_media"));
         
-        return ResponseEntity.ok().body(ret);
-    } 
+        return ResponseEntity.ok().body("");
+    }
+
+    @GetMapping(value = "/getNomesExercicios")
+    public ResponseEntity<String> getNomesExercicios(@RequestHeader String token){
+        return ResponseEntity.ok().body(ge.getNomeExercicios().toString());
+    }
 
     @GetMapping(value = "/listar")
     public String getExercicios(){
         //falta verificar o token
         return ge.getExercicios().toString();
     }
+
 
 }

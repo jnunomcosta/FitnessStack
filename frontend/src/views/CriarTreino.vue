@@ -94,7 +94,6 @@
           </draggable> 
         </v-col>
       </v-row>
-      <!-- <CriarBloco /> -->
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -197,7 +196,8 @@ export default {
   data() {
     return {
       dialog: false,
-      items: ["Flexões", "Prancha", "Agachamentos"],
+      //items: ["Flexões", "Prancha", "Agachamentos"],
+      items: [],
       exercicio: "",
       modo: "",
       valor: "",
@@ -245,7 +245,17 @@ export default {
       ],
     };
   },
-  mounted() {},
+  mounted() {
+    axios 
+      .get('http://localhost:4576/api/exercicio/getNomesExercicios',{headers: {'token': localStorage.getItem("token")}})
+      .then(response => {
+        console.log(response);
+        if (response.status == '200'){
+          this.items = response.data;
+          console.log("GR8 SUCC");
+        }
+      })
+  },
   methods: {
     confirmar() {
       var exs = [];

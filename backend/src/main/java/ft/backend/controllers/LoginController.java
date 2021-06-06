@@ -49,19 +49,15 @@ public class LoginController {
     }
 
     @PostMapping(value = "/treinador")
-    public ResponseEntity<RespostaLogin> login_treinador(@RequestBody PedidoLogin pl){
+    public ResponseEntity<String> login_treinador(@RequestBody PedidoLogin pl){
 
-        //VER A CENA DA PASSWORD!
-
-        Treinador u = gt.loginTreinador(pl.getUsername(), pl.getPassword());
-        if(u==null){
-            return ResponseEntity.badRequest().body(null);
+        if(!gt.loginTreinador(pl.getUsername(), pl.getPassword())){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("null");
         }
+        JSONObject obj = new JSONObject();
+        obj.put("token", Authorization.generateToken(pl.getUsername(), true));
 
-        RespostaLogin ret = new RespostaLogin();
-        ret.setToken(Authorization.generateToken(u.getUsername(), true));
-
-        return ResponseEntity.ok().body(ret);
+        return ResponseEntity.ok().body(obj.toString());
     }
 
 }

@@ -1,18 +1,16 @@
 package ft.backend.controllers;
 
+import ft.backend.entities.Utilizador;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ft.backend.beans.gestao_utilizadores;
 import ft.backend.utils.Authorization;
+
+import java.util.Base64;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -21,6 +19,64 @@ public class UtilizadorController {
     
     @Autowired
     gestao_utilizadores gestao_utilizadores;
+
+    @GetMapping(value = "/getUserInfo")
+    public ResponseEntity<String> getInfoUser(@RequestHeader String token){
+        JSONObject obj;
+        String username = null;
+        try{
+            obj = new JSONObject(Authorization.extractClaims(token));
+            if(!obj.getBoolean("treinador_utilizador")){
+                username = obj.getString("username");
+                if(!gestao_utilizadores.usernameExisteU(username)){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        obj = gestao_utilizadores.getUserInformation(username);
+        if(obj!=null){
+            return ResponseEntity.ok().body(obj.toString());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping(value = "/getSideBarUserInfo")
+    public ResponseEntity<String> getSideBarInfoUser(@RequestHeader String token){
+        JSONObject obj;
+        String username = null;
+        try{
+            obj = new JSONObject(Authorization.extractClaims(token));
+            if(!obj.getBoolean("treinador_utilizador")){
+                username = obj.getString("username");
+                if(!gestao_utilizadores.usernameExisteU(username)){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        obj = gestao_utilizadores.getSideBarUserInformation(username);
+        if(obj!=null){
+            return ResponseEntity.ok().body(obj.toString());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 
     @PostMapping(value = "/mudarEmail")
     public ResponseEntity<String> mudarEmail(@RequestHeader String token, @RequestBody String t){
@@ -51,7 +107,6 @@ public class UtilizadorController {
         }
     }
 
-    
     @PostMapping(value = "/mudarUsername")
     public ResponseEntity<String> mudarUsername(@RequestHeader String token, @RequestBody String t){
         JSONObject obj;
