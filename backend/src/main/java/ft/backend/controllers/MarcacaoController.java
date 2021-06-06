@@ -28,21 +28,22 @@ public class MarcacaoController {
     gestao_marcacoes gm;
     
     @GetMapping(value = "/getAgenda")
-    public ResponseEntity<List<RespostaAgenda>> getAgenda(@RequestParam int id){
-        return ResponseEntity.ok().body(gm.getAgendaUtilizador(id));
+    public ResponseEntity<String> getAgenda(@RequestParam String username){
+        return ResponseEntity.ok().body(gm.getAgendaUtilizador(username).toString());
     }
 
     @PostMapping(value = "/novaMarcacao")
     public ResponseEntity<String> novaMarcacao(@RequestBody String marc){
 
         JSONObject obj = new JSONObject(marc);
-        int id_treino = obj.getInt("treino");
-        int id_user = obj.getInt("utilizador");
+        String cod_treino = obj.getString("treino");
+        String username = obj.getString("utilizador");
+        String cor = obj.getString("cor");
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date td = df.parse(obj.getString("data_hora"),new ParsePosition(0));
 
-        if(gm.novaMarcacao(td, id_user, id_treino)){
+        if(gm.novaMarcacao(td, username, cod_treino, cor)){
             return ResponseEntity.ok().body("{\"Great\":\"Success\"}");
         }
 

@@ -78,7 +78,7 @@
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                     <v-toolbar-title
-                      v-html="selectedEvent.name"
+                      v-html="treino_info.nome"
                     ></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn icon>
@@ -89,7 +89,9 @@
                     </v-btn>
                   </v-toolbar>
                   <v-card-text>
-                    <span v-html="selectedEvent.details"></span>
+                    <h3 class="text-center">{{treino_info.nome}}</h3>
+                    <h3 class="text-center">{{treino_info.dificuldade}}</h3>
+                    <h3 class="text-center">{{treino_info.duracao}}</h3>
                   </v-card-text>
                   <v-card-actions>
                     <v-btn text color="#f95738" @click="selectedOpen = false">
@@ -103,15 +105,29 @@
         </v-col>
         <v-col cols="12" md="1"> </v-col>
         <v-col cols="12" md="3" class="mt-16">
-          <v-combobox
+          <!-- <v-combobox
             v-model="select"
             :items="items"
-            label="Combobox"
+            label="Treino"
             multiple
             color="#f95738"
             dense
-          ></v-combobox>
-
+          ></v-combobox> -->
+          <v-autocomplete
+                    label="Código Treino*"
+                    v-model="select"
+                    :items="items"
+                    required
+                  >
+                  </v-autocomplete>
+          <!-- <v-text-field
+                  v-model="select"
+                  label="Treino"
+                  prepend-icon="mdi-calendar"
+                  color="#f95738"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field> -->
           <template>
             <v-menu
               ref="menu"
@@ -125,7 +141,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="date_1"
-                  label="Picker in menu"
+                  label="Data"
                   prepend-icon="mdi-calendar"
                   color="#f95738"
                   readonly
@@ -157,7 +173,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="time"
-                  label="Picker in dialog"
+                  label="Hora"
                   prepend-icon="mdi-clock-time-four-outline"
                   readonly
                   color="#f95738"
@@ -177,7 +193,7 @@
             </v-dialog>
           </template>
           <div class="text-center mt-10">
-            <v-btn color="#f95738" dark> Confirmar </v-btn>
+            <v-btn color="#f95738" v-on:click="confirmar()" dark> Confirmar </v-btn>
           </div>
         </v-col>
       </v-row>
@@ -186,13 +202,17 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "AgendarTreino",
   data: () => ({
     select: "",
+    items:[],
     time: null,
     menu2: false,
     modal2: false,
+    date: "",
     date_1: new Date().toISOString().substr(0, 10),
     menu_1: false,
     modal_1: false,
@@ -208,6 +228,7 @@ export default {
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
+    treino_info: {},
     events: [],
     colors: [
       "blue",
@@ -231,6 +252,27 @@ export default {
   }),
   mounted() {
     this.$refs.calendar.checkChange();
+    axios
+      .get("http://localhost:4576/api/treinos/getCodigos")
+      .then(response => {
+        this.items = response.data
+      })
+    axios
+      .get("http://localhost:4576/api/agenda/getAgenda?username="+localStorage.getItem("username"))
+      .then(response => {
+        console.log(response.data)
+        response.data.forEach(x => {
+          var objjjj = {
+            name: x.name,
+            start: new Date(x.start),
+            end: new Date(x.end),
+            color: x.color,
+          }
+          console.log(objjjj);
+          this.events.push(objjjj);
+        });
+        console.log(this.events);
+      })  
   },
   methods: {
     viewDay({ date }) {
@@ -249,7 +291,44 @@ export default {
     next() {
       this.$refs.calendar.next();
     },
+    confirmar() {
+      var d = new Date(this.date_1 + ' ' + this.time);
+      console.log(d);
+      var da = new Date(d);
+      da.setHours(da.getHours()+1);
+      var cor = this.colors[this.rnd(0, this.colors.length - 1)]
+      var evento = {
+        name: this.select,
+        start: d,
+        end: da,
+        color: cor,
+      }
+      var body = {
+        treino: this.select,
+        data_hora: this.date_1 + ' ' + this.time,
+        utilizador: localStorage.getItem("username"),
+        cor: cor,
+      }
+      axios
+        .post("http://localhost:4576/api/agenda/novaMarcacao",body)
+        .then(response => {
+          console.log(response)
+        })  
+      axios
+        .get("http://localhost:4576/api/treinos/getNomeTreino?codigo="+this.select)
+        .then(response => {
+          evento.name = this.select + " - " + response.data.nome;
+          this.events.push(evento); 
+        })  
+       
+    },
     showEvent({ nativeEvent, event }) {
+      var splited = event.name.split("-",1);
+      axios
+        .get("http://localhost:4576/api/treinos/getTreinoInfo?codigo="+splited[0])
+        .then(response => {
+          this.treino_info = response.data
+        })
       const open = () => {
         this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
@@ -267,35 +346,14 @@ export default {
 
       nativeEvent.stopPropagation();
     },
-    updateRange({ start, end }) {
-      const events = [];
-
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
-
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
-
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
-        });
-      }
-
-      this.events = events;
+    updateRange ({ start, end }) {
+      console.log(start.toISOString());
+      console.log(end.toISOString());
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
+    
   },
 };
 </script>
