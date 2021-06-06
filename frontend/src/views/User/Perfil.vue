@@ -645,7 +645,6 @@ export default {
   },
   methods: {
     setEmail(new_email) {
-      console.log("hidsajidsajdiasj")
       axios
         .post(
           "http://localhost:4576/api/user/mudarEmail",
@@ -663,7 +662,6 @@ export default {
         .finally(() => console.log("hi"));//msg erro a mudar email));
     },
     setUsername(new_username) {
-      console.log("hidsajidsajdiasj")
       axios
         .post(
           "http://localhost:4576/api/user/mudarUsername",

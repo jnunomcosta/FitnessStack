@@ -40,7 +40,9 @@
                     Esqueceu-se da password? <a href="#">Clique aqui</a>
                   </h3>-->
                   <div class="text-center my-16">
-                    <v-btn v-on:click="login()" color="#f95738" dark>Login</v-btn>
+                    <v-btn v-on:click="login()" color="#f95738" dark
+                      >Login</v-btn
+                    >
                   </div>
                 </v-card-text>
               </v-col>
@@ -67,7 +69,7 @@
                   </h5>
                 </v-card-text>
                 <div class="text-center mb-10">
-                  <v-btn  outlined dark @click="step--">Login</v-btn>
+                  <v-btn outlined dark @click="step--">Login</v-btn>
                 </div>
               </v-col>
 
@@ -168,9 +170,69 @@
                       prepend-icon="mdi-camera"
                     />
                     <small>* campo obrigatório</small>
+                    <v-col cols="12">
+                      <v-subheader>Peso (kg)</v-subheader>
+                      <v-slider
+                        v-model="input_register.peso"
+                        class="align-center"
+                        :max="maxPeso"
+                        :min="minPeso"
+                        hide-details
+                        color="#7189ff"
+                      >
+                        <template v-slot:append>
+                          <v-text-field
+                            v-model="input_register.peso"
+                            class="mt-0 pt-0"
+                            hide-details
+                            single-line
+                            type="number"
+                            style="width: 60px"
+                          ></v-text-field>
+                        </template>
+                      </v-slider>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-subheader>Altura (cm)</v-subheader>
+                      <v-slider
+                        v-model="input_register.altura"
+                        class="align-center"
+                        :max="maxAltura"
+                        :min="minAltura"
+                        hide-details
+                        color="#7189ff"
+                      >
+                        <template v-slot:append>
+                          <v-text-field
+                            v-model="input_register.altura"
+                            class="mt-0 pt-0"
+                            hide-details
+                            single-line
+                            type="number"
+                            style="width: 60px"
+                          ></v-text-field>
+                        </template>
+                      </v-slider>
+                    </v-col>
+                    <v-col cols="12" center>
+                      <v-select
+                        :items="['Masculino', 'Feminino']"
+                        v-model="input_register.genero"
+                        label="Género"
+                        color="#7189ff"
+                        required
+                      ></v-select>
+                    </v-col>
                   </v-form>
+                  <v-btn
+                    color="#f95738"
+                    dark
+                    v-bind="attrs"
+                    v-on:click="registar()"
+                    >Registar</v-btn
+                  >
 
-                  <v-dialog v-model="dialog" persistent max-width="600px">
+                  <!-- <v-dialog v-model="dialog" persistent max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
                       <div class="text-center my-8">
                         <v-btn
@@ -258,7 +320,7 @@
                         </v-btn>
                       </v-card-actions>
                     </v-card>
-                  </v-dialog>
+                  </v-dialog> -->
                 </v-card-text>
               </v-col>
             </v-row>
@@ -273,8 +335,8 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import Footer from "@/components/Footer.vue";
-import axios from 'axios';
-import sjcl from 'sjcl'
+import axios from "axios";
+import sjcl from "sjcl";
 
 export default {
   name: "Login",
@@ -287,20 +349,20 @@ export default {
   },
   data: () => ({
     input: {
-            username: "",
-            password: ""
-        },
+      username: "",
+      password: "",
+    },
     input_register: {
-            username: "",
-            password: "",
-            email: "",
-            nome: "",
-            idade: 2,
-            peso: 70,
-            altura: 170, 
-            genero: "",
-            foto_perfil:""
-        },
+      username: "",
+      password: "",
+      email: "",
+      nome: "",
+      idade: 2,
+      peso: 70,
+      altura: 170,
+      genero: "",
+      foto_perfil: "",
+    },
     step: 1,
     //date: new Date().toISOString().substr(0, 10),
     menu: false,
@@ -311,113 +373,92 @@ export default {
     maxAltura: 250,
   }),
   methods: {
-      login() {
-          if(this.input.username != "" && this.input.password != "") {
-              var loginInfo = {
-                username: this.input.username,
-                password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password))
-              }
-              console.log(sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(loginInfo.password)));
-              axios
-                .post('http://localhost:4576/api/login/user', loginInfo)
-                .then(response => { 
-                  //console.log(response);
-                  const status = JSON.parse(response.status);
-                  //redirect logic
-                  if (status == '200'){
-                    localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('username', this.input.username);
-                    this.$router.push('/perfil');
-                  }
+    login() {
+      if (this.input.username != "" && this.input.password != "") {
+        var loginInfo = {
+          username: this.input.username,
+          password: sjcl.codec.hex.fromBits(
+            sjcl.hash.sha256.hash(this.input.password)
+          ),
+        };
+        console.log(
+          sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(loginInfo.password))
+        );
+        axios
+          .post("http://localhost:4576/api/login/user", loginInfo)
+          .then((response) => {
+            //console.log(response);
+            const status = JSON.parse(response.status);
+            //redirect logic
+            if (status == "200") {
+              localStorage.setItem("token", response.data.token);
+              localStorage.setItem("username", this.input.username);
+              this.$router.push("/perfil");
+            }
 
-                  //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
+            //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
 
-                 // else self.$router.push('/Login');
-                  //console.log(response);
-                  //redirect("/PaginaInicial_User");
-                  //  this.variavelRecebidaDaAPI = response.data.bpi
-                })
-                .finally(() => this.loading = false) 
-  
-          } else {
-              console.log("A username and password must be present");
-          }
-      },
-      registar(){
-        let genero_registo = true;
-        if(this.input_register.genero != "Masculino"){
-          genero_registo = false;
-        }
-        var registoInfo = {
-            email: this.input_register.email,
-            password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input_register.password)),
-            username: this.input_register.username,
-            nome: this.input_register.nome,
-            data: this.input_register.date,
-            peso: this.input_register.peso,
-            altura: this.input_register.altura, 
-            genero: genero_registo
-        } 
+            // else self.$router.push('/Login');
+            //console.log(response);
+            //redirect("/PaginaInicial_User");
+            //  this.variavelRecebidaDaAPI = response.data.bpi
+          })
+          .finally(() => (this.loading = false));
+      } else {
+        console.log("A username and password must be present");
+      }
+    },
+    async registar() {
+      function carrega_foto(x) {
+        return new Promise((resolve) => {
+          let blob = new Blob([x]),fileReader = new FileReader();
+          fileReader.readAsArrayBuffer(blob);
+          fileReader.onload = function () {
+            resolve(Buffer.from(this.result).toString("base64"));
+          };
+      });
+    }
 
-        //ELE ENTRA NO 'onload' QUANDO OS BYTES TIVEREM LIDOS
-        //ERA BOM TER UMA VERIFICACAO SE O USER FEZ UPLOAD DE UM FICHEIRO OU NAO
-      
-        let blob = new Blob([this.input_register.imagem]),fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(blob);
-        fileReader.onload = function(){
+    //FALTA VERIFICAR SE O EMAIL E A PASS SAO CORRETOS OU EXISTEM OU QQ COISA ASSIM
 
-          registoInfo.foto_perfil = Buffer.from(this.result).toString('base64');
-          
-          //processo inverso
-          //const myBuffer = Buffer.from(someBase64String, 'base64');
+      let genero_registo = true;
+      if (this.input_register.genero != "Masculino") {
+        genero_registo = false;
+      }
+      var registoInfo = {
+        email: this.input_register.email,
+        password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input_register.password)),
+        username: this.input_register.username,
+        nome: this.input_register.nome,
+        data: this.input_register.date,
+        peso: this.input_register.peso,
+        altura: this.input_register.altura,
+        genero: genero_registo,
+      };
+      registoInfo.foto_perfil = await carrega_foto(this.input_register.imagem);
 
-
-          axios
-            .post('http://localhost:4576/api/register/user', registoInfo)
-            .then(response => {
-              
-              const status = JSON.parse(response.status);
-
-              if (status == '200'){
-                var login_info = {
+      axios
+          .post('http://localhost:4576/api/register/user',registoInfo)
+          .then(response => {
+            const status = JSON.parse(response.status);
+            if (status == '200'){
+                 var login_info = {
                   username: registoInfo.username,
                   password: registoInfo.password
-                }
-                  axios
+                } 
+                axios
                     .post('http://localhost:4576/api/login/user',login_info)
                     .then(response2 => {
                       const status2 = JSON.parse(response2.status);
                       if(status2 == '200'){
-                        localStorage.setItem('user-token', response2.data.token);
+                        localStorage.setItem('token', response2.data.token);
                         localStorage.setItem('username', registoInfo.username);
                         this.$router.push('/perfil');
                       }
-                    })
-              }
-            }) 
-
-        } 
-        
-        
-          /* if(this.input_register.username != "" && this.input_register.password != "" && this.input_register.nome != "" 
-          && this.input_register.idade != 0 && this.input_register.peso != 0 && this.input_register.altura != 0 && this.input_register.genero != "") {
-              axios
-                .post('http://localhost:4576/api/register/user', registoInfo)
-                .then(response => { 
-                  console.log(registoInfo)
-                  console.log(response);
-                  //const status = JSON.parse(response.status);
-                  //redirect logic
-                  //if (status == '200')
-                    ////this.$router.push('/');
-                })
-                .finally(() => this.loading = false)
-  
-          } else {
-              console.log(registoInfo)
-              console.log("A username and password must be present");
-          } */
-      }
-  }
+                    }) 
+            }
+          })
+    },
+  },
 };
 </script>
