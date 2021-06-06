@@ -71,4 +71,29 @@ public class gestao_treinos {
         return true;
     }
 
+    public JSONArray getCodigos(){
+        List<String> a = tDao.getCodigos();
+        JSONArray arr = new JSONArray();
+        for(int i = 0;i<a.size();i++){
+            arr.put(a.get(i));
+        }
+        return arr;
+    }
+
+    public JSONObject getTreinoInfo(String codigo){
+        Treino t = tDao.findbyCodigo(codigo);
+        JSONObject obj = new JSONObject();
+        obj.put("nome",t.getNome());
+        obj.put("duracao",t.getDuracao());
+        obj.put("dificuldade",t.getDificuldade());
+        obj.put("codigo",t.getCodigo());
+        return obj;
+    }
+
+    public JSONObject getNomeTreino(String codigo){
+        JSONObject ret = new JSONObject();
+        ret.put("nome",codigo + " - " + tDao.getTreinoNome(codigo));
+        return ret;
+    }
+
 }

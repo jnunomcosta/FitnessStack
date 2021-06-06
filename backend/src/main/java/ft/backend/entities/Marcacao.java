@@ -29,6 +29,9 @@ public class Marcacao implements Serializable {
 	@Temporal(TemporalType.TIME)	
 	private java.util.Date hora;
 
+	@Column(name="Cor", nullable=true)
+	private String color;
+
 	private void setID(int value) {
 		this.ID = value;
 	}
@@ -63,6 +66,14 @@ public class Marcacao implements Serializable {
 	
 	public Treino getTreino() {
 		return treino;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String toString() {

@@ -28,6 +28,7 @@ import ft.backend.beans.*;
 import ft.backend.responses.RespostaOk;
 import ft.backend.utils.*;
 import ft.backend.entities.*;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/treinos")
@@ -202,6 +203,27 @@ public class TreinoController {
         ret.put("exercicios", exercicios);
         return ResponseEntity.ok().body(ret.toString());
 
+    }
+
+    @GetMapping(value = "/getCodigos")
+    public ResponseEntity<String> getCodigos(/*@RequestHeader String token,*/){
+
+        //verificar token aqui
+        JSONArray codigos = gt.getCodigos();
+        return ResponseEntity.ok().body(codigos.toString());
+    }
+
+    @GetMapping(value = "/getTreinoInfo")
+    public ResponseEntity<String> getTreinoInfo(/*@RequestHeader String token,*/@RequestParam String codigo){
+
+        //verificar token aqui
+        //JSONArray codigos = gt.getCodigos();
+        return ResponseEntity.ok().body(gt.getTreinoInfo(codigo).toString());
+    }
+
+    @GetMapping(value = "/getNomeTreino")
+    public ResponseEntity<String> getNomeTreino(/*@RequestHeader String token,*/@RequestParam String codigo){
+        return ResponseEntity.ok().body(gt.getNomeTreino(codigo).toString());
     }
 
 }
