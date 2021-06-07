@@ -2,6 +2,10 @@ package ft.backend.beans;
 
 import ft.backend.entities.Treinador;
 import ft.backend.repositories.TreinadorDAO;
+
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,6 +126,24 @@ public class gestao_utilizadores {
 
     public Utilizador getUserByUsername(String username){
         return uDao.findUtilizador_Username(username); 
+    }
+
+
+    public JSONArray getUsers(){
+
+        JSONArray res = new JSONArray();
+        
+        List<Utilizador> l = uDao.findAll();
+        for(Utilizador e: l){
+            JSONObject exe = new JSONObject();
+            exe.put("nome", e.getNome());
+            exe.put("username", e.getEmail());
+            exe.put("email",e.getEmail());
+            
+            res.put(exe);
+        }
+
+        return res;
     }
 
 }

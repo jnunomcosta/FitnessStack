@@ -171,4 +171,13 @@ public class UtilizadorController {
         }
     }
 
+
+
+
+    @GetMapping(value = "/listar")
+    public String getUsers(){
+
+        return gestao_utilizadores.getUsers().toString();
+    }
+
 }

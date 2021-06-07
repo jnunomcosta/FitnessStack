@@ -79,4 +79,5 @@ public class gestao_treinadores {
     public Treinador getTreinadorByUsername(String username){
         return tDao.findTreinador_Username(username);
     }
+
 }

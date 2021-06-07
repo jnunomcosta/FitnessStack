@@ -73,6 +73,7 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
+import axios from "axios";
 
 export default {
   name: "ProcurarAluno",
@@ -82,6 +83,19 @@ export default {
   },
   created() {
     document.title = "Alunos";
+  },
+  mounted(){
+    axios
+      .get("http://localhost:4576/api/user/listar")//,{headers: {'token': localStorage.getItem("token")}})      
+      .then(response => {
+        this.rows= response.data;
+        console.log("adasdsadsadhhhhhhhhhhhh"+response.data)
+
+      })
+      .catch(e => console.log("erro" +e))
+
+      console.log("dasjdamsjdsnajdzzzzzzzzzzzz");
+  
   },
   data() {
     return {
@@ -94,11 +108,6 @@ export default {
         { text: "Email", value: "email" }
       ],
       rows: [
-        {
-          nome: "Joao",
-          username: "joao10",
-          email: "joao@gmail.com"
-        }
       ],
     };
   },
