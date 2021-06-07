@@ -32,7 +32,7 @@
           <v-divider class="mx-8 mt-6"></v-divider>
           <div
             class="text-center"
-            v-for="item in avaliacoes"
+            v-for="item in treino.avaliacoes"
             :key="item.username"
           >
             <v-row>
@@ -122,6 +122,7 @@
                     ></v-rating>
                     <v-text-field
                       color="#f95738"
+                      v-model="comentario"
                       label="Deixe-nos o seu comentário."
                       required
                     >
@@ -130,8 +131,8 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="#f95738" text v-on:click="submit"> Sair </v-btn>
-                  <v-btn color="#f95738" text v-on:click="submit">
+                  <v-btn color="#f95738" text @click="dialog1 = false">Sair</v-btn>
+                  <v-btn color="#f95738" text @click="dialog1 = false" v-on:click="submit()">
                     Confirmar
                   </v-btn>
                 </v-card-actions>
@@ -158,38 +159,9 @@ export default {
     return {
       scrollInvoked: 0,
       dialog1: false,
-      avaliacoes: [
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        }
-      ],
+      rating: "",
+      comentario: "",
+      avaliacoes: [],
       treino: {
         nome: "",
         duracao: "",
@@ -198,6 +170,7 @@ export default {
         //treinador: "",
         data: "",
         exercicios: [{ nome: "", series: 0, repeticoes: 0, descanso: 0 }],
+        avaliacoes: [],
       },
     };
   },
@@ -206,8 +179,28 @@ export default {
       this.$router.push("/iniciarTreino/" + this.$route.params.codigo);
     },
     onScroll () {
-        this.scrollInvoked++
-      }
+      this.scrollInvoked++
+    },
+    submit(){
+      //var cod_treino = this.$route.params.codigo;
+      console.log(this.rating);
+      console.log(this.comentario);
+      var post_body = {
+        cod_treino: this.$route.params.codigo,
+        avaliacao: this.rating,
+        comentario: this.comentario,
+      };
+      this.treino.avaliacoes.push({
+        username: localStorage.getItem("username"),
+        avaliacao: this.rating,
+        comentario: this.comentario,
+      });
+      axios
+        .post("http://localhost:4576/api/treinos/avaliacao",post_body,{headers: {'token': localStorage.getItem("token")}})
+        .then(response => {
+          console.log(response);
+        });
+    }  
   },
   mounted() {
     axios
