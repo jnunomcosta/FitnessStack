@@ -201,6 +201,18 @@ public class TreinoController {
             exercicios.put(ex_aux);
         }
         ret.put("exercicios", exercicios);
+        JSONArray cm = new JSONArray();
+        for(Avaliacao_Treino c : t.getORM_Avaliacoes_treino()){
+            JSONObject ex_aux = new JSONObject();
+            ex_aux.put("avaliacao",c.getClassificacao());
+            ex_aux.put("comentario", c.getComentario());
+            //ex_aux.put("repeticoes", c.getDuracao());
+            exercicios.put(ex_aux);
+        }
+        ret.put("comentarios", cm);
+
+
+
         return ResponseEntity.ok().body(ret.toString());
 
     }
