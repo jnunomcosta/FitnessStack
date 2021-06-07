@@ -142,8 +142,8 @@ export default {
       duracao_descanso: 3,
       series: 0,
       series_total: 5,
-      flag_repeticoes: false,
-      flag_duracao: true,
+      flag_repeticoes: true,
+      flag_duracao: false,
       //page:0
       //interval: 2000,
     };
@@ -161,7 +161,7 @@ export default {
     //}
     //},
     countDownTimer_serie() {
-      if (this.series>0){
+      if (this.series>-1){
         if (this.duracao_serie > -1) {
           setTimeout(() => {
             this.duracao_serie -= 1;

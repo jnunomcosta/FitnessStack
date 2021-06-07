@@ -29,7 +29,6 @@ public class MediaController {
 
     @GetMapping(value = "/photo/{path}") 
     public ResponseEntity<InputStreamResource> getImagem(@PathVariable String path){
-        //ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
         ConteudoMedia u = gcm.getConteudo(path);
         if(u!=null){
             return ResponseEntity.ok()
@@ -37,12 +36,11 @@ public class MediaController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(new InputStreamResource(new ByteArrayInputStream(u.getConteudo())));
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     @GetMapping(value = "/video/{path}")
     public ResponseEntity<InputStreamResource> getVideo(@PathVariable String path){
-        //ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
         ConteudoMedia u = gcm.getConteudo(path);
         if(u!=null){
             return ResponseEntity.ok()
@@ -56,7 +54,6 @@ public class MediaController {
 
     @GetMapping(value = "/audio/{path}")
     public ResponseEntity<InputStreamResource> getAudio(@PathVariable String path){
-        //ConteudoMedia u = rep_users.getOne(Integer.parseInt(path));
         ConteudoMedia u = gcm.getConteudo(path);
         if(u!=null){
             return ResponseEntity.ok()
@@ -64,7 +61,7 @@ public class MediaController {
                 .contentType(MediaType.parseMediaType("audio/mp3"))
                 .body(new InputStreamResource(new ByteArrayInputStream(u.getConteudo())));
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
 }

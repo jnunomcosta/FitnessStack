@@ -1,5 +1,6 @@
 package ft.backend.beans;
 
+import ft.backend.entities.InformacaoFisica;
 import ft.backend.entities.Treinador;
 import ft.backend.repositories.TreinadorDAO;
 
@@ -46,6 +47,17 @@ public class gestao_utilizadores {
             ret.put("altura", u.getAltura());
             ret.put("genero", u.getGenero() ? "Masculino" : "Feminino");
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
+
+            JSONArray arr = new JSONArray();
+            for(InformacaoFisica i : u.getInformacao_fisica()){
+                JSONObject o = new JSONObject();
+                o.put("peso",i.getPeso());
+                o.put("m_gorda",i.getM_gorda());
+                o.put("m_muscular",i.getM_muscular());
+                o.put("data",i.getData());
+                arr.put(o);
+            }
+            ret.put("info_fisica",arr);
             return ret;
         }
         else{
@@ -64,6 +76,14 @@ public class gestao_utilizadores {
         }
         else{
             return null;
+        }
+    }
+
+    public void novaInfoFisica(String username,InformacaoFisica i){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            u.getInformacao_fisica().add(i);
+            uDao.save(u);
         }
     }
 
