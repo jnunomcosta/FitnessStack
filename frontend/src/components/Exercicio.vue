@@ -20,12 +20,10 @@
               height="150px"
             >
             </v-img>
-            <!--<v-card-title v-text="title.body"></v-card-title>-->
             <v-card-title>{{ title.nome }}</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <!-- <InfoExercicio /> -->
               <v-dialog transition="dialog-bottom-transition" max-width="600">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -89,27 +87,21 @@
                         
                         <v-col md="8">
                         <div>
-                          <!-- <v-avatar tile rounded size="200" class="mt-8 mb-4">
-                            <v-img
-                              max-height="200"
-                              max-width="200"
-                              :src="
-                                'http://localhost:4576' +
-                                title.conteudo_media[0]
-                              "
-                            ></v-img>
-                            
-                          </v-avatar>  -->
-                          <!-- <v-container> -->
                           <v-carousel :show-arrows="false" >
                             <v-carousel-item
                               v-for="(item,i) in title.conteudo_media"
                               :key="i"
-                              :src="'http://localhost:4576'+item"
-                            ></v-carousel-item>
-                          </v-carousel>
-                          <!-- </v-container> -->
-                          
+                            >
+                            <template v-if="item.includes('photo')">
+                              <img :src="'http://localhost:4576' + item" width="500" height="600">
+                            </template>
+                            <template v-else>
+                              <video width="500" height="600" controls>
+                                <source :src="'http://localhost:4576' + item" type="video/mp4">
+                              </video>
+                            </template>
+                            </v-carousel-item>
+                          </v-carousel> 
                         </div>
                         </v-col>
                         </v-row>
@@ -128,28 +120,21 @@
 
 <script>
 import axios from "axios";
-/* import InfoExercicio from "./InfoExercicio.vue"
- */
+
 export default {
-  /* components: {
-    InfoExercicio
-  }, */
+  components: {
+    
+  }, 
   name: "Exercicio",
   data() {
     return {
       titles: [],
       page: 1,
+      
     };
   },
   computed: {
-    //url() {
-      /* return "https://jsonplaceholder.typicode.com/posts?_page=" + this.page; */
-      //return "http://localhost:4576/api/exercicio/listar";
-    //},
   },
-  /* created() {
-    this.fetchData();
-  }, */
   mounted() {
     axios
       .get("http://localhost:4576/api/exercicio/listar")
@@ -158,26 +143,6 @@ export default {
       })
   },
   methods: {
-    /* async fetchData() {
-      const response = await axios.get(this.url);
-      this.titles = response.data;
-    }, */
-    /*infiniteScrolling(entries, observer, isIntersecting) {
-      setTimeout(() => {
-        this.page++;
-        axios
-          .get(this.url)
-          .then((response) => {
-            if (response.data.length > 1) {
-              response.data.forEach((item) => this.titles.push(item));
-            } else {
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }, 500);
-    },*/
   },
 };
 </script>

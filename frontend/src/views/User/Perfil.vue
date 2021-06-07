@@ -142,6 +142,8 @@
                         <v-col cols="12" md="12">
                           Digite a palavra-passe antiga.
                           <v-text-field
+                           type="password"
+                            v-model="old_password"
                             color="#f95738"
                             prepend-icon="mdi-lock"
                             label="Palavra-Passe Antiga"
@@ -149,6 +151,8 @@
                           ></v-text-field>
                           Digite a palavra-passe nova.
                           <v-text-field
+                           type="password"
+                            v-model="new_password"
                             color="#f95738"
                             prepend-icon="mdi-lock-question"
                             label="Palavra-Passe Nova"
@@ -163,7 +167,7 @@
                     <v-btn color="#f95738" text @click="dialog3 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog3 = false">
+                    <v-btn color="#f95738" text @click="setPassword(old_password,new_password);dialog3 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -370,7 +374,9 @@ import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
 import VueApexCharts from "vue-apexcharts";
 
+
 import axios from "axios";
+import sjcl from "sjcl";
 
 export default {
   name: "Progresso",
@@ -623,6 +629,31 @@ export default {
         })
         .finally(() => console.log("hi"));//msg erro a mudar username));
     },
+    setPassword(oldP,newP){
+        axios
+        .post(
+          "http://localhost:4576/api/user/mudarPassword",
+            {
+              "username":localStorage.getItem("username"),
+              "new_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
+              "old_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
+              }
+            , {headers: {'token': localStorage.getItem("token")}}
+        )
+        .then((response) => {
+
+          const status = JSON.parse(response.status);
+            
+            if (status == "200") {
+              console.log("mudei a pass")
+            }
+            
+        
+          
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar username));
+    }
+    
   },
 };
 </script>

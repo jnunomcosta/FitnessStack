@@ -67,7 +67,7 @@ public class gestao_exercicios {
             exe.put("descricao", e.getDescricao());
             JSONArray imgs = new JSONArray();
             for(ConteudoMedia c : e.getORM_ConteudoMedia()){
-                if(c.getExtensao()){
+                if(!c.getExtensao()){
                     imgs.put("/api/assets/photo/"+c.getID());
                 }
                 else{

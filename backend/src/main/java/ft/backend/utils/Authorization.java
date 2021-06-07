@@ -15,6 +15,7 @@ public class Authorization {
     private static String secret = "augustooooo";
     private static long duration = 1000 * 60 * 60 * 10; //10 hrs
 
+    //tipo -> 0 = utilizador | 1 = treinador | 2 = administrador FALTA ISSO
     public static String generateToken(String data,boolean tipo){
         JSONObject json = new JSONObject();
         json.put("treinador_utilizador", tipo);

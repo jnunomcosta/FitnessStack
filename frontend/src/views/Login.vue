@@ -39,6 +39,10 @@
                       v-model="modo_login"
                       label="É Treinador?"
                     />
+                    <v-checkbox
+                      v-model="modo_login_admin"
+                      label="É Administrador?"
+                    />
                   </v-form>
                   <!--<h3 class="text-center mt-4">
                     Esqueceu-se da password? <a href="#">Clique aqui</a>
@@ -295,6 +299,7 @@ export default {
       password: "",
     },
     modo_login: false,
+    modo_login_admin: false,
     input_register: {
       username: "",
       password: "",
@@ -316,7 +321,7 @@ export default {
   }),
   methods: {
     login() {
-      if(this.modo_login == false){ //utilizador
+      if(this.modo_login == false && this.modo_login_admin==false){ //utilizador
         if (this.input.username != "" && this.input.password != "") {
         var loginInfo = {
           username: this.input.username,
@@ -346,7 +351,8 @@ export default {
         console.log("A username and password must be present");
       }
       }
-      else{ //treinador
+      else{
+        if (this.modo_login_admin==false) {//treinador
         if (this.input.username != "" && this.input.password != "") {
         var loginInfoTreinador = {
           username: this.input.username,
@@ -374,6 +380,18 @@ export default {
       } else {
         console.log("A username and password must be present");
       }
+      }
+      }
+
+      if(this.modo_login_admin == true){
+        var loginInfoAdmin = {
+          username: this.input.username,
+          password: this.input.password,
+          //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
+        };
+        console.log(loginInfoAdmin);
+
+
       }
       
     },
