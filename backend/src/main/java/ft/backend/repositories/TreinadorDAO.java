@@ -9,10 +9,10 @@ import ft.backend.entities.Treinador;
 
 public interface TreinadorDAO extends JpaRepository<Treinador,Integer> {
     
-    @Query(value = "SELECT * FROM Treinador u WHERE u.username = :username",nativeQuery = true)
+    @Query(value = "SELECT * FROM treinador u WHERE u.username = :username",nativeQuery = true)
     public Treinador findTreinador_Username(@Param("username") String username);
 
-    @Query(value = "SELECT * FROM Treinador u WHERE u.email = :email",nativeQuery = true)
+    @Query(value = "SELECT * FROM treinador u WHERE u.email = :email",nativeQuery = true)
     public Utilizador findTreinador_Email(@Param("email") String email);
 
 }

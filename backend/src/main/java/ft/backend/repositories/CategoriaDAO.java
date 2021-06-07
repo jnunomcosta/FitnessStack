@@ -8,7 +8,7 @@ import ft.backend.entities.Categoria;
 
 public interface CategoriaDAO extends JpaRepository<Categoria,Integer>{
     
-    @Query(value = "SELECT * FROM Categoria u WHERE u.categoria = :categoria",nativeQuery = true)
+    @Query(value = "SELECT * FROM categoria u WHERE u.categoria = :categoria",nativeQuery = true)
     public Categoria findCategoria(@Param("categoria") String categoria);
 
 }

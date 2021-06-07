@@ -138,5 +138,37 @@ public class UtilizadorController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+    @PostMapping(value = "/mudarPassword")
+    public ResponseEntity<String> mudarPassword(@RequestHeader String token, @RequestBody String t){
+        JSONObject obj;
+        String username = null;
+        try{
+            obj = new JSONObject(Authorization.extractClaims(token));
+            if(!obj.getBoolean("treinador_utilizador")){
+                username = obj.getString("username");
+                if(!gestao_utilizadores.usernameExisteU(username)){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        obj = new JSONObject(t);
+        String oldP = obj.getString("old_password");
+        String newP = obj.getString("new_password");
+
+        boolean b = gestao_utilizadores.mudarPassword(username, oldP,newP);
+        if (b){
+            return ResponseEntity.ok().body(null);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 
 }
