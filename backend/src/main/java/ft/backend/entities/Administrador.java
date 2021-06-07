@@ -17,6 +17,12 @@ public class Administrador implements Serializable {
 	
 	@Column(name="Email", nullable=true, length=1024)	
 	private String email;
+
+	@Column(name="Username", nullable=true, length=1024)
+	private String username;
+
+	@Column(name="Nome", nullable=true, length=1024)
+	private String nome;
 	
 	@Column(name="Password", nullable=true, length=1024)	
 	private String password;
@@ -47,6 +53,22 @@ public class Administrador implements Serializable {
 	
 	public String getPassword() {
 		return password;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	
 	public String toString() {
