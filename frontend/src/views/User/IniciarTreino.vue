@@ -139,11 +139,12 @@ export default {
       dialog1: false,
       slides: ["First", "Second", "Third", "Fourth", "Fifth"],
       duracao_serie: 2,
-      duracao_descanso: 3,
+      duracao_descanso: 2,
       series: 0,
       series_total: 5,
       flag_repeticoes: false,
       flag_duracao: true,
+      terminar_series: false
       //page:0
       //interval: 2000,
     };
@@ -161,8 +162,8 @@ export default {
     //}
     //},
     countDownTimer_serie() {
-      if (this.series>0){
-        if (this.duracao_serie > -1) {
+      if (this.series>-1){
+        if (this.duracao_serie > -1 && this.terminar_series==false) {
           setTimeout(() => {
             this.duracao_serie -= 1;
             this.countDownTimer_serie();
@@ -191,7 +192,7 @@ export default {
             this.countDownTimer_serie();
           }
           this.playSound();
-          this.duracao_descanso = 3;
+          this.duracao_descanso = 2;
         }
       }
     },
@@ -201,6 +202,7 @@ export default {
         this.series++;
         if (this.flag_repeticoes) this.countDownTimer_descanso();
       }
+      else this.terminar_series=true;
     },
 
     playSound() {

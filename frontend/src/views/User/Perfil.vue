@@ -175,26 +175,57 @@
 
         <v-col cols="12" md="5">
           <v-card>
-            <v-card-title
+            
+            <v-card-text>
+              <v-row>
+                <v-col cols="12" md="5">
+                  <h2 class="font-weight-black"
               >Peso atual: {{ utilizador.peso }}kg
-              <v-dialog v-model="dialog4" persistent max-width="300px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    class="mx-4"
-                    color="#f95738"
-                    small
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <v-icon dense>mdi-lead-pencil</v-icon>
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Atualizar peso</span>
-                  </v-card-title>
-                  <v-card-text>
+              
+              
+              
+            </h2>
+            <v-spacer class="mt-4"></v-spacer>
+
+                  <p>
+                    Massa Gorda {{ utilizador.m_gorda }}%
+                    
+                  </p>
+
+                  <p>
+                    Massa Muscular {{ utilizador.m_muscular }}%
+                    
+                  </p>
+                </v-col>
+
+                <v-col cols="12" md="4">
+                  <p>Altura {{ utilizador.altura }}cm</p>
+                  <p>IMC {{ imc }}</p>
+                  <p>IMC ideal: 18.5 - 24.9</p>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-dialog v-model="dialog6" persistent max-width="500px">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn  
+                                            
+                          dark  
+                          class="mx-4 "
+                          style="margin-top: 80px"
+                          color="#f95738"
+                          small
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          Atualizar dados
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline"
+                            >Atualizar dados</span
+                          >
+                        </v-card-title>
+                        <v-card-text>
                     <v-text-field
                       color="#f95738"
                       type="number"
@@ -203,103 +234,11 @@
                       label="Peso (kg)"
                       required
                     >
-                      ></v-text-field
-                    >
+                      ></v-text-field>
+                    
                   </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="#f95738" text @click="dialog4 = false">
-                      Sair
-                    </v-btn>
-                    <v-btn color="#f95738" text @click="dialog4 = false">
-                      Atualizar
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-spacer></v-spacer>
-              Meta: 70kg
-            </v-card-title>
-            <div style="margin-left: 50px; margin-right: 50px">
-              <br />
-              <v-progress-linear
-                color="#f95738"
-                height="20"
-                value="20"
-                striped
-              ></v-progress-linear>
-            </div>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12" md="6">
-                  <p>Altura {{ utilizador.altura }}cm</p>
-
-                  <p>
-                    Massa Gorda {{ utilizador.m_gorda }}%
-                    <v-dialog v-model="dialog5" persistent max-width="500px">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="mx-4"
-                          color="#f95738"
-                          small
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon dense> mdi-lead-pencil </v-icon>
-                        </v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline"
-                            >Atualizar % de massa gorda</span
-                          >
-                        </v-card-title>
                         <v-card-text>
-                          <v-text-field
-                            color="#f95738"
-                            type="number"
-                            :max="maxPercentagem"
-                            :min="minPercentagem"
-                            label="Massa gorda (%)"
-                            required
-                          ></v-text-field>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="#f95738" text @click="dialog5 = false">
-                            Sair
-                          </v-btn>
-                          <v-btn color="#f95738" text @click="dialog5 = false">
-                            Atualizar
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </p>
 
-                  <p>
-                    Massa Muscular {{ utilizador.m_muscular }}%
-                    <v-dialog v-model="dialog6" persistent max-width="500px">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          class="mx-4"
-                          color="#f95738"
-                          small
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          <v-icon dense> mdi-lead-pencil </v-icon>
-                        </v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline"
-                            >Atualizar % de massa muscular</span
-                          >
-                        </v-card-title>
-                        <v-card-text>
                           <v-text-field
                             color="#f95738"
                             type="number"
@@ -309,6 +248,17 @@
                             required
                           ></v-text-field>
                         </v-card-text>
+                        <v-card-text>
+                          <v-text-field
+                            color="#f95738"
+                            type="number"
+                            :max="maxPercentagem"
+                            :min="minPercentagem"
+                            label="Massa gorda (%)"
+                            required
+                          ></v-text-field>
+
+                        </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
                           <v-btn color="#f95738" text @click="dialog6 = false">
@@ -320,12 +270,7 @@
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
-                  </p>
-                </v-col>
-
-                <v-col cols="12" md="6">
-                  <p>IMC {{ imc }}</p>
-                  <p>IMC ideal: 18.5 - 24.9</p>
+                    
                 </v-col>
               </v-row>
             </v-card-text>
