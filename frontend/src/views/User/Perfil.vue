@@ -6,9 +6,9 @@
       <v-row
         style="
           margin-left: 75px;
-          margin-top: 100px;
+          padding-top: 100px;
+          padding-bottom: 100px;
           margin-right: 25px;
-          margin-bottom: 25px;
         "
       >
         <v-col cols="12" md="2">
@@ -202,19 +202,19 @@
                   </p>
                 </v-col>
 
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="7">
                   <p>Altura {{ utilizador.altura }}cm</p>
                   <p>IMC {{ imc }}</p>
                   <p>IMC ideal: 18.5 - 24.9</p>
                 </v-col>
-                <v-col cols="12" md="3">
+              </v-row>
+              <div>
                   <v-dialog v-model="dialog6" persistent max-width="500px">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn  
                                             
                           dark  
                           class="mx-4 "
-                          style="margin-top: 80px"
                           color="#f95738"
                           small
                           v-bind="attrs"
@@ -274,9 +274,7 @@
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
-                    
-                </v-col>
-              </v-row>
+              </div>
             </v-card-text>
           </v-card>
 

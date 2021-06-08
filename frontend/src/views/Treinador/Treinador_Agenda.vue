@@ -1,11 +1,11 @@
 <template>
   <div class="agenda">
     <NavBar />
-    <v-row style="margin-top: 90px; margin-bottom: 40px">
-      <v-col cols="12" md="1">
+    <v-row>
+      <v-col cols="12" md="1" >
         <SideBar />
       </v-col>
-      <v-col cols="12" md="10">
+      <v-col cols="12" md="10" style="padding-top: 100px; padding-bottom: 100px">
         <AgendarTreino />
       </v-col>
     </v-row>

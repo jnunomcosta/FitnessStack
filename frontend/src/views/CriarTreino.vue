@@ -1,13 +1,13 @@
 <template>
-  <v-app>
     <div class="criar_treino_page">
       <NavBar />
-      <v-row class="mt-10">
+      <v-row style="padding-bottom:60px">
         <v-col cols="12" md="1">
           <SideBar />
         </v-col>
-        <v-col cols="12" md="5">
-          <v-card-text class="mt-16 pt-10" style="margin-bottom: 180px">
+        <v-col cols="12" md="5" style="padding-top: 100px">
+          <v-card class="pt-16">
+          <v-card-text>
             <h1 class="text-center display-2" style="color: #f95738">
               Criar Treino
             </h1>
@@ -44,18 +44,20 @@
               >
               </v-combobox>
             </v-form>
-            <div class="text-center my-16">
+            <div class="text-center mt-16">
               <v-btn v-on:click="confirmar()" color="#f95738" dark
                 >Confirmar</v-btn
               >
             </div>
           </v-card-text>
+          </v-card>
         </v-col>
-        <v-col style="margin-top:80px; max-width:800px" cols="12" md="5" >
+        <v-col  cols="12" md="5" style="padding-top: 100px">
           <v-card v-scroll.self="onScroll" class=" overflow-y-auto" max-height="800"> 
-          <v-card-text class="mt-3">
+          <v-card-text>
             <h1 class="text-center display-1">Exercícios</h1>
           </v-card-text>
+        
           <!-- <v-data-table
             :headers="blocosHeaders"
             :items="blocos"
@@ -95,6 +97,7 @@
           </draggable> 
           </v-card>
         </v-col>
+        <v-col cols="12" md="1"></v-col>
       </v-row>
       <v-dialog v-model="dialog" persistent max-width="600px">
         <template v-slot:activator="{ on, attrs }">
@@ -175,7 +178,6 @@
         </v-card>
       </v-dialog>
     </div>
-  </v-app>
 </template>
 
 <script>
@@ -310,3 +312,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.criar_treino_page {
+  background-color: #d3d3d2;
+}
+</style>

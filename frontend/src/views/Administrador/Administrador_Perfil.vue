@@ -7,9 +7,9 @@
       <v-row
         style="
           margin-left: 75px;
-          margin-top: 100px;
+          padding-top: 100px;
+          padding-bottom: 100px;
           margin-right: 25px;
-          margin-bottom: 25px;
         "
       >
       <v-col cols="12" md="3">

@@ -1,11 +1,11 @@
 <template>
   <div class="treinadores">
     <NavBar />
-    <v-row style="margin-top: 90px">
+    <v-row>
       <v-col cols="12" md="1">
         <SideBar />
       </v-col>
-      <v-col cols="12" md="10">
+      <v-col cols="12" md="10" style="padding-top: 90px">
         <v-dialog transition="dialog-bottom-transition" max-width="700">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -121,6 +121,6 @@ export default {
 
 <style>
 .treinadores {
-  background-color: #f4f5f5;
+  background-color: #d3d3d2;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="notFound">
-    <v-app-bar color="#000314" elevate-on-scroll dark>
+    <v-app-bar color="#000314" elevate-on-scroll dark fixed>
       <div class="d-flex align-center">
         <router-link to="/">
           <v-img
@@ -34,12 +34,18 @@
         </v-col>
       </v-row>
     </v-container>
+    <Footer />
   </div>
 </template>
 
 <script>
+import Footer from "@/components/Footer.vue";
+
 export default {
   name: "NotFound",
+  components: {
+    Footer,
+  },
   created() {
     document.title = "404 Not Found";
   },

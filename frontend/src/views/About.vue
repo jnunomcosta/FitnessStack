@@ -8,13 +8,11 @@
     <p>{{ countDown }}</p>
     <v-btn color="#7189ff" text v-on:click="countDownTimer()">Registar</v-btn>
     <!-- <v-btn color="#7189ff" text v-on:click="playSound()">Alarm</v-btn> -->
-    <Footer />
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import Footer from "@/components/Footer.vue";
 
 import axios from 'axios';
 
@@ -22,7 +20,6 @@ export default {
   name: "About",
   components: {
     NavBar,
-    Footer,
   },
   created() {
     document.title = "Sobre o Fitness Stack";

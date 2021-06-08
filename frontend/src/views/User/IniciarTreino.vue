@@ -1,22 +1,26 @@
 <template>
   <div class="profile">
     <NavBar />
-    <h1 class="text-center display-2" style="color: #f95738; margin-top: 90px">
-      {{ treino.nome }}
-    </h1>
-    <v-row
-      class="mt-4"
-      style="
-        color: #f95738;
-        margin-top: 60px;
-        margin-right: 50px;
-        margin-left: 100px;
-      "
-    >
+
+    <v-row>
       <v-col cols="12" md="1">
         <SideBar />
       </v-col>
-      <v-col cols="12" md="12">
+      <v-col
+        cols="12"
+        md="10"
+        class="mt-4 pb-16"
+        align="center"
+        style="
+          color: #f95738;
+        "
+      >
+        <h1
+          class="text-center display-2 mb-6"
+          style="color: #f95738; padding-top: 70px"
+        >
+          {{ treino.nome }}
+        </h1>
         <v-carousel
           ref="carousel"
           v-model="slide"
@@ -126,12 +130,10 @@
             </v-sheet>
           </v-carousel-item>
         </v-carousel>
+        <v-btn v-on:click="terminarTreino()" color="#f95738" dark>Terminar treino</v-btn>
+
       </v-col>
     </v-row>
-
-    <div class="text-center my-16">
-<v-btn v-on:click="terminarTreino()" color="#f95738" dark>Terminar treino</v-btn>
-    </div>
   </div>
 </template>
 

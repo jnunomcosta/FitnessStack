@@ -1,11 +1,11 @@
 <template>
-  <div class="treinadores">
+  <div class="alunos">
     <NavBar />
-    <v-row style="margin-top: 90px">
+    <v-row >
       <v-col cols="12" md="1">
         <SideBar />
       </v-col>
-      <v-col cols="12" md="10" >
+      <v-col cols="12" md="10" style="padding-top: 90px">
        <v-dialog
       v-model="dialog"
       fullscreen
@@ -109,6 +109,6 @@ export default {
 
 <style>
 .alunos {
-  background-color: #f4f5f5;
+  background-color: #d3d3d2;
 }
 </style>

@@ -261,14 +261,12 @@
           </v-window-item>
         </v-window>
       </v-content>
-      <Footer />
     </div>
   </v-app>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import Footer from "@/components/Footer.vue";
 import axios from "axios";
 import sjcl from "sjcl";
 
@@ -276,7 +274,6 @@ export default {
   name: "Login",
   components: {
     NavBar,
-    Footer,
   },
   created() {
     document.title = "Fitness Stack";

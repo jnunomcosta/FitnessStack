@@ -1,12 +1,14 @@
 <template>
   <div class="profile">
     <NavBar />
-    <h1 class="text-center display-2" style="color: #f95738; margin-top: 90px">
+    <SideBar />
+
+    <h1 class="text-center display-2" style="color: #f95738; padding-top: 90px">
       {{ treino.nome }}
     </h1>
-    <v-row class="mt-4">
+    <v-row style="padding-bottom: 300px">
       <v-col cols="12" md="1">
-        <SideBar />
+
       </v-col>
       <v-col cols="12" md="4">
         <v-card>
@@ -27,7 +29,7 @@
             <h3>Código: {{ $route.params.codigo }}</h3>
           </v-list-item-content>
         </v-card>
-        <v-card v-scroll.self="onScroll" style="margin-right: 90px max-width:700px" class="mt-4 overflow-y-auto" max-height="400" >
+        <v-card v-scroll.self="onScroll" style="margin-right: 90px max-width:700px" class="mt-4 pt-2 overflow-y-auto" max-height="400" >
            <h2 class="text-center" style="color: #f95738">Avaliações</h2>
           <v-divider class="mx-8 mt-6"></v-divider>
           <div
@@ -60,8 +62,8 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="1"> </v-col>
-      <v-col cols="12" md="6">
-        <v-card v-scroll.self="onScroll" style="color: #f95738; margin-right: 90px" class="mt-4 overflow-y-auto" max-height="800">  
+      <v-col cols="12" md="5">
+        <v-card v-scroll.self="onScroll" style="color: #f95738" class="pt-4 overflow-y-auto" max-height="800">  
 
           <h2 class="text-center">Exercícios</h2>
           <v-divider class="mx-8 mt-6"></v-divider>
