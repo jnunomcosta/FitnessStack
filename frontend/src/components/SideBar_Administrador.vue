@@ -89,7 +89,7 @@ export default {
   },
    mounted () {
     axios
-      .get("http://localhost:4576/api/admin/getSideBarAdminInfo/"+localStorage.getItem("username"))//,{headers: {'token': localStorage.getItem("token")}})      
+      .get("http://localhost:4576/api/admin/getSideBarAdminInfo/"+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})      
       .then(response => {
         this.nome = response.data.nome;
         this.username = response.data.username;

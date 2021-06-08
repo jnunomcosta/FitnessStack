@@ -7,17 +7,11 @@
           <v-window-item :value="1">
             <v-row class="mt-10">
               <v-col cols="12" md="8">
-                <v-card-text class="mt-16 pt-10" style="margin-bottom: 180px">
+                <v-card-text class="mt-16 pt-8" style="margin-bottom: 180px">
                   <h1 class="text-center display-2" style="color: #f95738">
                     Entre no Fitness Stack
                   </h1>
-                  <div class="text-center mt-4">
-                    <v-btn class="mx-2" color="black" outlined>
-                      Entrar com
-                      <v-icon large class="ml-2">mdi-google-plus</v-icon>
-                    </v-btn>
-                  </div>
-                  <v-form class="px-16 mx-8">
+                  <v-form class="px-16 mx-8 mt-6">
                     <v-text-field
                       label="Nome de Utilizador"
                       name="Username"
@@ -47,7 +41,7 @@
                   <!--<h3 class="text-center mt-4">
                     Esqueceu-se da password? <a href="#">Clique aqui</a>
                   </h3>-->
-                  <div class="text-center my-16">
+                  <div class="text-center my-6">
                     <v-btn v-on:click="login()" color="#f95738" dark
                       >Login</v-btn
                     >
@@ -86,13 +80,7 @@
                   <h1 class="text-center display-2" style="color: #f95738">
                     Criar Conta
                   </h1>
-                  <div class="text-center mt-4">
-                    <v-btn class="mx-2" color="black" outlined>
-                      Registar com
-                      <v-icon large class="ml-2">mdi-google-plus</v-icon>
-                    </v-btn>
-                  </div>
-                  <v-form class="px-16 mx-8">
+                  <v-form class="px-16 mx-8 mt-6">
                     <v-text-field
                       label="Nome Completo*"
                       name="Name"
@@ -397,7 +385,7 @@ export default {
             const status = JSON.parse(response.status);
             
             if (status == "200") {
-             // localStorage.setItem("token", response.data.token);
+              localStorage.setItem("token", response.data.token);
               localStorage.setItem("username", this.input.username);
               this.$router.push("/administrador/perfil");
             }

@@ -56,7 +56,7 @@ public class RegisterController {
         }
         
         if(!gestao_utilizadores.registerUser(u)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         } 
 
         return ResponseEntity.ok().body("");
@@ -84,7 +84,7 @@ public class RegisterController {
         }
 
         if(!gestao_treinadores.registerTreinador(u)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
         return ResponseEntity.ok().body("");

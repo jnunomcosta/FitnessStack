@@ -212,7 +212,7 @@ export default {
 
     axios
       //.get("http://localhost:4576/api/admin/getAdminInfo",{headers: {'token': localStorage.getItem("token")}})
-      .get("http://localhost:4576/api/admin/getAdminInfo/"+localStorage.getItem("username"))
+      .get("http://localhost:4576/api/admin/getAdminInfo/"+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
        
             this.admin.username=response.data.username;
@@ -232,7 +232,7 @@ export default {
               "username": localStorage.getItem("username"),
               "email": new_email
               }
-            )//,{headers: {'token': localStorage.getItem("token")}})
+            ,{headers: {'token': localStorage.getItem("token")}})
         
         .then((response) => {
           console.log(response  )
@@ -249,7 +249,7 @@ export default {
               "username_antigo": localStorage.getItem("username"),
               "username_novo": new_username,
               }
-        )//, {headers: {'token': localStorage.getItem("token")}})
+        , {headers: {'token': localStorage.getItem("token")}})
         
         .then((response) => {
           console.log(response  )
@@ -270,7 +270,7 @@ export default {
               "new_password": newP,//sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
               "old_password": oldP,//sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
               }
-        )//, {headers: {'token': localStorage.getItem("token")}})
+        , {headers: {'token': localStorage.getItem("token")}})
         
         .then((response) => {
 

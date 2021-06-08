@@ -41,7 +41,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("null");
         }
         JSONObject obj = new JSONObject();
-        obj.put("token", Authorization.generateToken(pl.getUsername(), false));
+        obj.put("token", Authorization.generateToken(pl.getUsername(), 0));
 
         return ResponseEntity.ok().body(obj.toString());
     }
@@ -53,7 +53,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("null");
         }
         JSONObject obj = new JSONObject();
-        obj.put("token", Authorization.generateToken(pl.getUsername(), true));
+        obj.put("token", Authorization.generateToken(pl.getUsername(), 1));
 
         return ResponseEntity.ok().body(obj.toString());
     }
@@ -65,12 +65,11 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("null");
         }
 
-        //FALTA GERAR UM TOKEN PARA O ADMINISTRADOR!
 
-        //JSONObject obj = new JSONObject();
-        //obj.put("token", Authorization.generateToken(pl.getUsername(), true));
+        JSONObject obj = new JSONObject();
+        obj.put("token", Authorization.generateToken(pl.getUsername(), 2));
 
-        return ResponseEntity.ok().body("");
+        return ResponseEntity.ok().body(obj.toString());
     }
 
 }

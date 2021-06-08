@@ -200,7 +200,7 @@ export default {
   }),
   mounted() {
     axios
-      .get("http://localhost:4576/api/treinador/getTreinadorInfo",{headers: {'token': localStorage.getItem("token")}})
+      .get("http://localhost:4576/api/treinador/getTreinadorInfo?username="+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
         this.treinador = response.data;
       })
