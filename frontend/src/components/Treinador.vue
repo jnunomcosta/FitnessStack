@@ -186,7 +186,8 @@ export default {
   },
   methods: {
     async fetchData() {
-      const response = await axios.get(this.url);
+      const response = await axios.get(this.url,{headers: {'token': localStorage.getItem("token")}});
+      console.log("dsadsadsa"+response.data);
       this.titles = response.data;
     },
     /*infiniteScrolling(entries, observer, isIntersecting) {

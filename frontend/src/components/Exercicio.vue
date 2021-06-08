@@ -137,7 +137,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:4576/api/exercicio/listar")
+      .get("http://localhost:4576/api/exercicio/listar",{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.titles = response.data;
       })

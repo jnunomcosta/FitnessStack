@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ft.backend.beans.gestao_exercicios;
 import ft.backend.beans.gestao_treinadores;
-import ft.backend.beans.gestao_treinos;
-import ft.backend.beans.gestao_utilizadores;
-import ft.backend.responses.RespostaOk;
-import ft.backend.utils.Authorization;
+import ft.backend.beans.gestao_verificacoes;
+
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -31,48 +30,45 @@ public class ExercicioController {
     @Autowired 
     gestao_treinadores gu;
 
+    @Autowired
+    gestao_verificacoes verify;
+
     @PostMapping(value = "/novo")
     public ResponseEntity<String> novoExercicio(@RequestHeader String token, @RequestBody String t){
-        JSONObject obj;
-        String username;
-        try{
-            obj = new JSONObject(Authorization.extractClaims(token));
-            if(obj.getBoolean("treinador_utilizador")){
-                username = obj.getString("username");
-                if(!gu.usernameExisteT(username)){
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-                }
-            }
-            else{
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        obj = new JSONObject(t);
-
-        Exercicio e = new Exercicio();
-        e.setNome(obj.getString("nome"));
-        e.setDescricao("descricao");
-        e.setDuracao_media(obj.getFloat("duracao_media"));
-        e.setMaterial_necessario(obj.getString("material_necessario"));
-
-        ge.criaExercicio(e,gu.getTreinadorByUsername(username),obj.getJSONArray("conteudo_media"));
         
-        return ResponseEntity.ok().body("");
+        String username = verify.verifyTreinador(token);
+
+        if(username!=null){
+
+            JSONObject obj = new JSONObject(t);
+
+            Exercicio e = new Exercicio();
+            e.setNome(obj.getString("nome"));
+            e.setDescricao("descricao");
+            e.setDuracao_media(obj.getFloat("duracao_media"));
+            e.setMaterial_necessario(obj.getString("material_necessario"));
+
+            ge.criaExercicio(e,gu.getTreinadorByUsername(username),obj.getJSONArray("conteudo_media"));
+        
+            return ResponseEntity.ok().body("");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping(value = "/getNomesExercicios")
     public ResponseEntity<String> getNomesExercicios(@RequestHeader String token){
-        return ResponseEntity.ok().body(ge.getNomeExercicios().toString());
+        if(verify.verifyTreinador(token) != null || verify.verifyUser(token) != null  || verify.verifyAdmin(token)!=null) {
+            return ResponseEntity.ok().body(ge.getNomeExercicios().toString());
+        }       
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping(value = "/listar")
-    public String getExercicios(){
-        //falta verificar o token
-        return ge.getExercicios().toString();
+    public ResponseEntity<String> getExercicios(@RequestHeader String token){
+        if(verify.verifyTreinador(token) != null || verify.verifyUser(token) != null || verify.verifyAdmin(token)!=null) {
+            return ResponseEntity.ok().body(ge.getExercicios().toString());
+         } 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
-
 
 }

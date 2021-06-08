@@ -4,8 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -49,63 +48,68 @@ public class TreinoController {
     @Autowired
     gestao_exercicios gExercicios;
 
+    @Autowired
+    gestao_verificacoes verify;
+
     @GetMapping(value = "/pesquisar")
-    public ResponseEntity<List<Treino>> pesquisar(@RequestParam Optional<Integer> id){
-        List<Treino> res = new ArrayList<>();
+    public ResponseEntity<List<Treino>> pesquisar(@RequestParam Optional<Integer> id,@RequestHeader String token){
+     
+        if(verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null){
+            List<Treino> res = new ArrayList<>();
 
-        if(id.isPresent()){
-            res.add(gt.pesquisarTreino(id.get()));
+            if(id.isPresent()){
+             res.add(gt.pesquisarTreino(id.get()));
+            }
+            else res = gt.pesquisarTreino();  
+
+
+            return ResponseEntity.ok().body(res);
         }
-        else res = gt.pesquisarTreino();  
 
-        return ResponseEntity.ok().body(res);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PostMapping(value = "/avaliacao")
     public ResponseEntity<RespostaOk> comentar(@RequestHeader String token, @RequestBody String s){
-        JSONObject obj;
-        String username = null;
-        try{
-            obj = new JSONObject(Authorization.extractClaims(token));
-            if(!obj.getBoolean("treinador_utilizador")){
-                username = obj.getString("username");
-                if(!gUtilizadores.usernameExisteU(username)){
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-                }
+
+        if(verify.verifyUser(token)  != null ){
+            
+        
+            JSONObject obj = new JSONObject(s);
+
+            String username = obj.getString("username");
+            String treino = obj.getString("cod_treino");
+            float aval = obj.getFloat("avaliacao");
+            String comentario = obj.getString("comentario");
+
+            Avaliacao_Treino at = new Avaliacao_Treino();
+            at.setUser(gUtilizadores.getUserByUsername(username));
+            at.setClassificacao(aval);
+            at.setComentario(comentario);
+
+            if(gt.avaliacao(treino, at)){
+                return ResponseEntity.ok().body(new RespostaOk());
             }
-            else{
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        obj = new JSONObject(s);
-
-        String treino = obj.getString("cod_treino");
-        float aval = obj.getFloat("avaliacao");
-        String comentario = obj.getString("comentario");
-
-        Avaliacao_Treino at = new Avaliacao_Treino();
-        at.setUser(gUtilizadores.getUserByUsername(username));
-        at.setClassificacao(aval);
-        at.setComentario(comentario);
-
-        if(gt.avaliacao(treino, at)){
-            return ResponseEntity.ok().body(new RespostaOk());
-        }
-
-        return ResponseEntity.badRequest().body(null);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping(value = "/listar")
-    public ResponseEntity<String> getTreinos(){
-        return ResponseEntity.ok().body(gt.listarTreinos().toString());
+    public ResponseEntity<String> getTreinos(@RequestHeader String token){
+
+        if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null){
+            return ResponseEntity.ok().body(gt.listarTreinos().toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PostMapping(value = "/novoTreino")
     public ResponseEntity<String> novoTreino(@RequestHeader String token,@RequestBody String s){
+      
+     if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null ){
+
+      
         JSONObject obj;
         boolean flag = true;
         String username;
@@ -201,10 +205,15 @@ public class TreinoController {
         gt.guardaTreino(treino);
 
         return ResponseEntity.ok().body("{\"codigo\":\""+treino.getCodigo()+"\"}");
+     }
+     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping(value="/getTreino")
-    public ResponseEntity<String> getTreino(/*@RequestHeader String token,*/@RequestParam String codigo){
+    public ResponseEntity<String> getTreino(@RequestHeader String token,@RequestParam String codigo){
+
+      if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null){
+
         Treino t = gt.getTreino(codigo);
         JSONObject ret = new JSONObject();
         ret.put("nome", t.getNome());
@@ -240,28 +249,42 @@ public class TreinoController {
         ret.put("avaliacoes", cm);
 
         return ResponseEntity.ok().body(ret.toString());
+     }
+     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
     }
 
     @GetMapping(value = "/getCodigos")
-    public ResponseEntity<String> getCodigos(/*@RequestHeader String token,*/){
+    public ResponseEntity<String> getCodigos(@RequestHeader String token){
+
+     if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null ){
 
         //verificar token aqui
         JSONArray codigos = gt.getCodigos();
         return ResponseEntity.ok().body(codigos.toString());
+     }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+ 
     }
 
     @GetMapping(value = "/getTreinoInfo")
-    public ResponseEntity<String> getTreinoInfo(/*@RequestHeader String token,*/@RequestParam String codigo){
+    public ResponseEntity<String> getTreinoInfo(@RequestHeader String token,@RequestParam String codigo){
 
-        //verificar token aqui
-        //JSONArray codigos = gt.getCodigos();
+      if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null){
         return ResponseEntity.ok().body(gt.getTreinoInfo(codigo).toString());
+      }
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping(value = "/getNomeTreino")
-    public ResponseEntity<String> getNomeTreino(/*@RequestHeader String token,*/@RequestParam String codigo){
+    public ResponseEntity<String> getNomeTreino(@RequestHeader String token,@RequestParam String codigo){
+
+      if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null ){
         return ResponseEntity.ok().body(gt.getNomeTreino(codigo).toString());
+      }
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
 }

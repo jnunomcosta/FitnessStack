@@ -62,9 +62,7 @@ public class Utilizador implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Treino> historico_treinos = new java.util.HashSet<>();
 
-	@ManyToOne(targetEntity=Treinador.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
-	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=true) })	
-	private Treinador treinador_responsavel;	
+		
 
 	@ManyToOne(targetEntity=ConteudoMedia.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) })	
@@ -167,13 +165,7 @@ public class Utilizador implements Serializable {
 		return treinos_favoritos;
 	}
 
-	public Treinador getTreinador_responsavel() {
-		return treinador_responsavel;
-	}
 
-	public void setTreinador_responsavel(Treinador treinador_responsavel) {
-		this.treinador_responsavel = treinador_responsavel;
-	}
 
 	public ConteudoMedia getFoto_perfil() {
 		return foto_perfil;

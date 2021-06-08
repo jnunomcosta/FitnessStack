@@ -86,7 +86,7 @@ export default {
   },
   mounted(){
     axios
-      .get("http://localhost:4576/api/user/listar")//,{headers: {'token': localStorage.getItem("token")}})      
+      .get("http://localhost:4576/api/user/listar",{headers: {'token': localStorage.getItem("token")}})      
       .then(response => {
         this.rows= response.data;
         console.log("adasdsadsadhhhhhhhhhhhh"+response.data)

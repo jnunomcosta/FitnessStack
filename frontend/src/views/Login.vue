@@ -397,7 +397,7 @@ export default {
             const status = JSON.parse(response.status);
             
             if (status == "200") {
-             // localStorage.setItem("token", response.data.token);
+              localStorage.setItem("token", response.data.token);
               localStorage.setItem("username", this.input.username);
               this.$router.push("/administrador/perfil");
             }

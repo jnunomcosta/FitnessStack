@@ -27,6 +27,17 @@ public class Authorization {
                 .signWith(SignatureAlgorithm.HS256,secret).compact(); 
     }
 
+    public static String generateToken(String data,int tipo){//0 - user 1-trein 2 admin
+        JSONObject json = new JSONObject();
+        json.put("tipo", tipo);
+        json.put("username",data);
+        return Jwts.builder()
+                .setSubject(json.toString())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + duration))
+                .signWith(SignatureAlgorithm.HS256,secret).compact(); 
+    }
+
     public static String extractClaims(String jwt) throws Exception {
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(secret))

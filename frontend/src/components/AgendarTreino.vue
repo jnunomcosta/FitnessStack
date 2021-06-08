@@ -253,12 +253,12 @@ export default {
   mounted() {
     this.$refs.calendar.checkChange();
     axios
-      .get("http://localhost:4576/api/treinos/getCodigos")
+      .get("http://localhost:4576/api/treinos/getCodigos",{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.items = response.data
       })
     axios
-      .get("http://localhost:4576/api/agenda/getAgenda?username="+localStorage.getItem("username"))
+      .get("http://localhost:4576/api/agenda/getAgenda?username="+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         console.log(response.data)
         response.data.forEach(x => {
@@ -310,12 +310,12 @@ export default {
         cor: cor,
       }
       axios
-        .post("http://localhost:4576/api/agenda/novaMarcacao",body)
+        .post("http://localhost:4576/api/agenda/novaMarcacao",body,{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           console.log(response)
         })  
       axios
-        .get("http://localhost:4576/api/treinos/getNomeTreino?codigo="+this.select)
+        .get("http://localhost:4576/api/treinos/getNomeTreino?codigo="+this.select,{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           evento.name = this.select + " - " + response.data.nome;
           this.events.push(evento); 
@@ -325,7 +325,7 @@ export default {
     showEvent({ nativeEvent, event }) {
       var splited = event.name.split("-",1);
       axios
-        .get("http://localhost:4576/api/treinos/getTreinoInfo?codigo="+splited[0])
+        .get("http://localhost:4576/api/treinos/getTreinoInfo?codigo="+splited[0],{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           this.treino_info = response.data
         })
