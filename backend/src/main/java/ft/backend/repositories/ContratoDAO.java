@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 import ft.backend.entities.Categoria;
 import ft.backend.entities.Contrato;
 
-public interface ContratoDAO extends JpaRepository<Categoria,Integer>{
+public interface ContratoDAO extends JpaRepository<Contrato,Integer>{
     
-    @Query(value = "SELECT * FROM contrato u WHERE u.UtilizadorID = :utilizador limit 1",nativeQuery = true)
+    @Query(value = "SELECT * FROM contrato u WHERE u.UtilizadorID = :utilizador",nativeQuery = true)
     public Contrato findContratoIdUser(@Param("utilizador") int utilizador);
 
     @Query(value = "SELECT * FROM contrato u WHERE u.TreinadorID = :treinador",nativeQuery = true)

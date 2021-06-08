@@ -160,7 +160,7 @@ public class UtilizadorController {
         String username= verify.verifyUser(token);
         if( username != null){
 
-            Contrato c= gestao_contratos.getContratoUser(username);
+            Contrato c = gestao_contratos.getContratoUser(username);
             if(c!=null){
                 JSONObject obj = new JSONObject();
 
@@ -173,8 +173,6 @@ public class UtilizadorController {
 
             }
                  
-
-        
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
