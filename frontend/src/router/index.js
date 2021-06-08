@@ -18,12 +18,14 @@ import Treinador_Exercicio from '../views/Treinador/Treinador_Exercicios.vue'
 import Treinador_Treinos from '../views/Treinador/Treinador_Treinos.vue'
 import Treinador_Alunos from '../views/Treinador/Treinador_Alunos.vue'
 
+import Administrador_Login from '../views/Administrador/Administrador_Login.vue'
 import Administrador_Perfil from '../views/Administrador/Administrador_Perfil.vue'
 import Administrador_Exercicios from '../views/Administrador/Administrador_Exercicios.vue'
 import Administrador_Treinos from '../views/Administrador/Administrador_Treinos.vue'
 import Administrador_Alunos from '../views/Administrador/Administrador_Alunos.vue'
 import Administrador_Treinadores from '../views/Administrador/Administrador_Treinadores.vue'
 import Administrador_Administradores from '../views/Administrador/Administrador_Administradores.vue'
+
 
 Vue.use(VueRouter)
 
@@ -112,6 +114,11 @@ const routes = [
     path: '/treinador/alunos',
     name: 'Treinador_Alunos',
     component: Treinador_Alunos
+  },
+  {
+    path: '/administrador/login',
+    name: 'Administrador_Login',
+    component: Administrador_Login
   },
   {
     path: '/administrador/alunos',
