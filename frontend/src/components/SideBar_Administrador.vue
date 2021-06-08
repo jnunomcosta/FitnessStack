@@ -10,11 +10,11 @@
     >
       <v-list-item class="px-2 py-2">
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          <v-img src="https://picsum.photos/200"></v-img>
         </v-list-item-avatar>
         <v-list-item-content class="ma-0 pa-0" >
-          <v-list-item-title class="title">John Leider<v-icon dense color="#f95738" class="ml-2">mdi-shield-account</v-icon></v-list-item-title>
-          <v-list-item-subtitle>username</v-list-item-subtitle>
+          <v-list-item-title class="title">{{nome}}<v-icon dense color="#f95738" class="ml-2">mdi-shield-account</v-icon></v-list-item-title>
+          <v-list-item-subtitle> {{username }} </v-list-item-subtitle>
         </v-list-item-content>
 
         <v-btn icon @click.stop="mini = !mini">
@@ -66,10 +66,16 @@
 </template>
 
       <script>
+
+import axios from "axios";
+
+  
 export default {
   data() {
     return {
       drawer: true,
+      nome: "",
+      username: "",
       items: [
         { title: "Perfil", icon: "mdi-account", link: "/administrador/Perfil"},
         { title: "Exercícios", icon: "mdi-dumbbell", link: "/administrador/Exercicios" },
@@ -81,5 +87,16 @@ export default {
       mini: true,
     };
   },
+   mounted () {
+    axios
+      .get("http://localhost:4576/api/admin/getSideBarAdminInfo/"+localStorage.getItem("username"))//,{headers: {'token': localStorage.getItem("token")}})      
+      .then(response => {
+        this.nome = response.data.nome;
+        this.username = response.data.username;
+      })
+      .finally(() => this.loading = false)
+  },
+  
+  
 };
 </script>

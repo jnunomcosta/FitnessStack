@@ -1,7 +1,12 @@
 package ft.backend.beans;
 
+import ft.backend.entities.InformacaoFisica;
 import ft.backend.entities.Treinador;
 import ft.backend.repositories.TreinadorDAO;
+
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +47,17 @@ public class gestao_utilizadores {
             ret.put("altura", u.getAltura());
             ret.put("genero", u.getGenero() ? "Masculino" : "Feminino");
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
+
+            JSONArray arr = new JSONArray();
+            for(InformacaoFisica i : u.getInformacao_fisica()){
+                JSONObject o = new JSONObject();
+                o.put("peso",i.getPeso());
+                o.put("m_gorda",i.getM_gorda());
+                o.put("m_muscular",i.getM_muscular());
+                o.put("data",i.getData());
+                arr.put(o);
+            }
+            ret.put("info_fisica",arr);
             return ret;
         }
         else{
@@ -60,6 +76,14 @@ public class gestao_utilizadores {
         }
         else{
             return null;
+        }
+    }
+
+    public void novaInfoFisica(String username,InformacaoFisica i){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            u.getInformacao_fisica().add(i);
+            uDao.save(u);
         }
     }
 
@@ -122,6 +146,24 @@ public class gestao_utilizadores {
 
     public Utilizador getUserByUsername(String username){
         return uDao.findUtilizador_Username(username); 
+    }
+
+
+    public JSONArray getUsers(){
+
+        JSONArray res = new JSONArray();
+        
+        List<Utilizador> l = uDao.findAll();
+        for(Utilizador e: l){
+            JSONObject exe = new JSONObject();
+            exe.put("nome", e.getNome());
+            exe.put("username", e.getEmail());
+            exe.put("email",e.getEmail());
+            
+            res.put(exe);
+        }
+
+        return res;
     }
 
 }

@@ -24,6 +24,10 @@ public class Avaliacao_Treino implements Serializable {
 	
 	@Column(name="Comentario", nullable=true, length=2048)	
 	private String comentario;
+
+	@ManyToOne(targetEntity=Utilizador.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
+	@JoinColumns(value={ @JoinColumn(name="UserID", referencedColumnName="ID", nullable=true) })
+	private Utilizador user;
 	
 	private void setID(int value) {
 		this.ID = value;
@@ -51,6 +55,14 @@ public class Avaliacao_Treino implements Serializable {
 	
 	public String getComentario() {
 		return comentario;
+	}
+
+	public Utilizador getUser() {
+		return user;
+	}
+
+	public void setUser(Utilizador user) {
+		this.user = user;
 	}
 	
 	public String toString() {

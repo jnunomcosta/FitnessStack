@@ -140,6 +140,7 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
+import axios from "axios";
 
 export default {
   name: "ProcurarTreinador",
@@ -149,6 +150,19 @@ export default {
   },
   created() {
     document.title = "Treinadores";
+  },
+   mounted(){
+    axios
+      .get("http://localhost:4576/api/treinador/listar")//,{headers: {'token': localStorage.getItem("token")}})      
+      .then(response => {
+        this.rows= response.data;
+        console.log("adasdsadsadhhhhhhhhhhhh"+response.data)
+
+      })
+      .catch(e => console.log("erro" +e))
+
+      console.log("dasjdamsjdsnajdzzzzzzzzzzzz");
+  
   },
   data() {
     return {
@@ -162,12 +176,7 @@ export default {
         { text: "Descrição", value: "descricao" },
       ],
       rows: [
-        {
-          nome: "paulo",
-          username: "paulo30",
-          email: "paulo@gmail.com",
-          descricao: "Ola sou o paulo e sou licenciado em desporto",
-        },
+
       ],
     };
   },

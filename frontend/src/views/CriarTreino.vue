@@ -198,7 +198,6 @@ export default {
   data() {
     return {
       dialog: false,
-      //items: ["Flexões", "Prancha", "Agachamentos"],
       items: [],
       exercicio: "",
       modo: "",
@@ -211,7 +210,7 @@ export default {
         dificuldade: "",
       },
       select_categorias: [],
-      categorias: ["Pernas", "Braços", "Peito", "Cardio"],
+      categorias: ["Pernas", "Braços", "Peito", "Cardio", "Força"],
       select_dificuldade: "",
       dificuldades: ["Iniciante", "Intermédio", "Avançado"],
       blocosHeaders: [
@@ -225,26 +224,7 @@ export default {
         { text: "Repetições/Duração", value: "valor_repeticao" },
         { text: "Descanso", value: "valor_descanso" },
       ],
-      blocos: [
-        /* {
-          nome: "Flexões",
-          series: 3,
-          repeticao: 15,
-          tipo: true,
-          valor_repeticao: "15 reps",
-          descanso: 30,
-          valor_descanso: "30s",
-        },
-        {
-          nome: "Prancha",
-          series: 3,
-          repeticao: 15,
-          tipo: true,
-          valor_repeticao: "30s",
-          descanso: 30,
-          valor_descanso: "30s",
-        }, */
-      ],
+      blocos: [],
     };
   },
   mounted() {
@@ -283,6 +263,9 @@ export default {
           console.log(response);
           if (response.status == '200'){
             console.log("GR8 SUCC");
+            this.$router.push('/treinos');
+            //VER SE ELE E TREINADOR OU UTILIZADOR ANTES DO PUSH
+            //SENDO QUE O TREINADOR TEM DE IR PARA /treinador/treinos
           }
         })
     },

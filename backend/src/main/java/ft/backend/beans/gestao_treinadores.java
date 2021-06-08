@@ -62,6 +62,21 @@ public class gestao_treinadores {
         return ret;
     }
 
+    public JSONObject getTreinadorInformation(String username){
+        Treinador u = tDao.findTreinador_Username(username);
+        if(u != null){
+            JSONObject ret = new JSONObject();
+            ret.put("email", u.getEmail());
+            ret.put("nome",u.getNome());
+            ret.put("username", username);
+            ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
+            return ret;
+        }
+        else{
+            return null;
+        }
+    }
+
     public JSONObject getSideBarTreinadorInformation(String username){
         Treinador u = tDao.findTreinador_Username(username);
         if(u != null){
@@ -79,4 +94,5 @@ public class gestao_treinadores {
     public Treinador getTreinadorByUsername(String username){
         return tDao.findTreinador_Username(username);
     }
+
 }

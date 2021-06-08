@@ -73,7 +73,7 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
-
+import axios from "axios";
 export default {
   name: "ProcurarTreino",
   components: {
@@ -83,6 +83,20 @@ export default {
   created() {
     document.title = "Treinos";
   },
+
+  mounted(){
+    axios
+      .get("http://localhost:4576/api/admin/listar")//,{headers: {'token': localStorage.getItem("token")}})      
+      .then(response => {
+        this.rows= response.data;
+        console.log("adasdsadsadhhhhhhhhhhhh"+response.data)
+
+      })
+      .catch(e => console.log("erro" +e))
+
+      console.log("dasjdamsjdsnajdzzzzzzzzzzzz");
+  
+  },
   data() {
     return {
       singleSelect: false,
@@ -90,19 +104,15 @@ export default {
       search: "",
       columns: [
         { text: "Nome", value: "nome" },
+        { text: "Username", value: "username" },
         { text: "Email", value: "email" }
       ],
       rows: [
-        {
-          nome: "10 Min Ab Workout",
-          email: "10 min"
-        }
+
       ],
     };
   },
-  methods: {
-    
-  },
+
 };
 </script>
 

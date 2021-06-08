@@ -288,7 +288,7 @@
             <v-card-subtitle
               >Média de minutos de treino por dia</v-card-subtitle
             >
-          </v-card>  -->
+          </v-card>  
 
           <v-card class="mt-7">
             <v-card-title class="justify-center">
@@ -304,7 +304,7 @@
                 :series="series_categorias"
               ></apexchart>
             </div>
-          </v-card>
+          </v-card>-->
         </v-col>
 
         <v-col cols="12" md="5">

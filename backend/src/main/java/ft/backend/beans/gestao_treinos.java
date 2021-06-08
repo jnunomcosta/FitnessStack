@@ -30,9 +30,9 @@ public class gestao_treinos {
         return tDao.findAllTreinos();
     }
 
-    public boolean comentar(int id, Avaliacao_Treino at){
+    public boolean avaliacao(String codigo, Avaliacao_Treino at){
         boolean b = false;
-        Treino t = tDao.findbyId(id);
+        Treino t = tDao.findbyCodigo(codigo);
         if(t!=null){
             t.getORM_Avaliacoes_treino().add(at);
             tDao.save(t);

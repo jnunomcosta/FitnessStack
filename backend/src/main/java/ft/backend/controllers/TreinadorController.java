@@ -31,6 +31,35 @@ public class TreinadorController {
         return a.toString();
     }
 
+    @GetMapping(value = "/getTreinadorInfo")
+    public ResponseEntity<String> getInfoTreinador(@RequestHeader String token){
+        JSONObject obj;
+        String username = null;
+        try{
+            obj = new JSONObject(Authorization.extractClaims(token));
+            if(obj.getBoolean("treinador_utilizador")){
+                username = obj.getString("username");
+                if(!gestao_treinadores.usernameExisteT(username)){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        obj = gestao_treinadores.getTreinadorInformation(username);
+        if(obj!=null){
+            return ResponseEntity.ok().body(obj.toString());
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
     @GetMapping(value = "/getSideBarTreinadorInfo")
     public ResponseEntity<String> getSideBarInfoUser(@RequestHeader String token) {
         JSONObject obj;

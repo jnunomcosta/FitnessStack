@@ -390,9 +390,27 @@ export default {
           //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
         };
         console.log(loginInfoAdmin);
+        axios
+          .post("http://localhost:4576/api/login/administrador", loginInfoAdmin)
+          .then((response) => {
 
+            const status = JSON.parse(response.status);
+            
+            if (status == "200") {
+             // localStorage.setItem("token", response.data.token);
+              localStorage.setItem("username", this.input.username);
+              this.$router.push("/administrador/perfil");
+            }
 
+            //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
+            
+            //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+
+          })
+          .finally(() => (this.loading = false));
       }
+
+      
       
     },
     async registar() {

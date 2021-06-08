@@ -37,22 +37,22 @@
         </v-container>
       </v-col>
     </v-row>
-    <CriarTreino />
+     <v-btn fab dark large color="#f95738" fixed right bottom to="/criartreino">
+      <v-icon>mdi-plus</v-icon>
+     </v-btn>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Treinador.vue";
-import CriarTreino from "@/components/CriarTreino.vue";
+import axios from 'axios';
 
 export default {
   name: "ProcurarTreino",
   components: {
     NavBar,
     SideBar,
-    CriarTreino,
   },
   created() {
     document.title = "Treinos";
@@ -73,26 +73,15 @@ export default {
       ],
       treinos: [
         {
-          nome: "10 Min Ab Workout",
-          duracao: "10 min",
-          categoria: "Abdominais",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "07/05/2021",
-          avaliacao: "4.6/5",
-          favoritos: "true",
-          codigo: "12345",
-        },
-        {
-          nome: "12 Min Happy Cardio",
-          duracao: "12 min",
-          categoria: "Cardio",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "05/05/2021",
-          avaliacao: "4.2/5",
-          favoritos: "true",
-          codigo: "67890",
+          nome: "",
+          duracao: "",
+          categoria: "",
+          dificuldade: "",
+          treinador: "",
+          data: "",
+          avaliacao: "",
+          favoritos: "",
+          codigo: "",
         },
       ],
     };
@@ -100,9 +89,18 @@ export default {
   methods: {
     verTreino: function (value) {
       console.log("ROW VALUES:", value);
-      this.$router.push("/treinos/" + value.codigo);
+      //this.$router.push("/treino/" + value.codigo);
+      //FALTA UMA VISTA PARA O TREINO PARA O TREINADOR
     },
   },
+  mounted () {
+    axios
+      .get('http://localhost:4576/api/treinos/listar')
+      .then(response => {
+        this.treinos = response.data 
+      })
+      .finally(() => this.loading = false)
+  }
 };
 </script>
 

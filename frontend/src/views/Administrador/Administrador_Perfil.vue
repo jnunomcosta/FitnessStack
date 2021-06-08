@@ -23,11 +23,11 @@
                 <v-img src="https://picsum.photos/200"></v-img>
               </v-avatar>
             </div>
-            <v-card-title class="justify-center">Xana</v-card-title>
-            <v-card-subtitle> xanareigada </v-card-subtitle>
+            <v-card-title class="justify-center"> {{ admin.nome }}</v-card-title>
+            <v-card-subtitle> {{ admin.username }} </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            <div class="mt-4 body-2">xana@gmail.com</div>
-             <div class="mt-4 body-2">Administrador desde 1999</div>
+            <div class="mt-4 body-2"> {{ admin.email }} </div>
+
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -52,6 +52,7 @@
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo nome de utilizador.
                           <v-text-field
+                            v-model="new_nome"
                             color="#f95738"
                             prepend-icon="mdi-account-lock"
                             label="Nome de Utilizador"
@@ -66,7 +67,7 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog1 = false">
+                    <v-btn color="#f95738" text @click="setUsername(new_nome);dialog1 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -96,6 +97,7 @@
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo email.
                           <v-text-field
+                            v-model="new_email"
                             color="#f95738"
                             prepend-icon="mdi-email"
                             label="Email"
@@ -110,7 +112,7 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog2 = false">
+                    <v-btn color="#f95738" text @click="setEmail(new_email);dialog2 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -142,6 +144,7 @@
                         <v-col cols="12" md="12">
                           Digite a palavra-passe antiga.
                           <v-text-field
+                            v-model="old_pass"
                             color="#f95738"
                             prepend-icon="mdi-lock"
                             label="Palavra-Passe Antiga"
@@ -149,6 +152,7 @@
                           ></v-text-field>
                           Digite a palavra-passe nova.
                           <v-text-field
+                            v-model="new_pass"
                             color="#f95738"
                             prepend-icon="mdi-lock-question"
                             label="Palavra-Passe Nova"
@@ -163,7 +167,7 @@
                     <v-btn color="#f95738" text @click="dialog3 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog3 = false">
+                    <v-btn color="#f95738" text @click="setPassword(old_pass,new_pass);dialog3 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -186,6 +190,10 @@
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
 
+
+import axios from "axios";
+//import sjcl from "sjcl";
+
 export default {
   name: "Progresso",
   components: {
@@ -195,7 +203,102 @@ export default {
   created() {
     document.title = "Fitness Stack";
   },
+
+
+  mounted() {
+
+
+
+
+    axios
+      //.get("http://localhost:4576/api/admin/getAdminInfo",{headers: {'token': localStorage.getItem("token")}})
+      .get("http://localhost:4576/api/admin/getAdminInfo/"+localStorage.getItem("username"))
+      .then((response) => {
+       
+            this.admin.username=response.data.username;
+            this.admin.email=response.data.email;
+            this.admin.nome=response.data.nome;
+
+
+      })
+      .finally(() => (this.loading = false));
+  },
+  methods: {
+    setEmail(new_email) {
+      axios
+        .post(
+          "http://localhost:4576/api/admin/mudarEmail",
+            {
+              "username": localStorage.getItem("username"),
+              "email": new_email
+              }
+            )//,{headers: {'token': localStorage.getItem("token")}})
+        
+        .then((response) => {
+          console.log(response  )
+          this.admin.email=new_email
+          
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar email));
+    },
+    setUsername(new_username) {
+      axios
+        .post(
+          "http://localhost:4576/api/admin/mudarUsername",
+            {
+              "username_antigo": localStorage.getItem("username"),
+              "username_novo": new_username,
+              }
+        )//, {headers: {'token': localStorage.getItem("token")}})
+        
+        .then((response) => {
+          console.log(response  )
+          this.admin.username= new_username
+          localStorage.setItem("token",response.token)
+          localStorage.setItem("username",new_username)
+        
+          
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar username));
+    },
+    setPassword(oldP,newP){
+        axios
+        .post(
+          "http://localhost:4576/api/admin/mudarPassword",
+            {
+              "username":localStorage.getItem("username"),
+              "new_password": newP,//sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
+              "old_password": oldP,//sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
+              }
+        )//, {headers: {'token': localStorage.getItem("token")}})
+        
+        .then((response) => {
+
+          const status = JSON.parse(response.status);
+            
+            if (status == "200") {
+              console.log("mudei a pass")
+            }
+            
+        
+          
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar username));
+    }
+    
+  },
+
+
+
   data: () => ({
+
+    admin:{
+      username:"",
+      email:"",
+      nome:"",
+    },
+
+
     dialog1: false,
     dialog2: false,
     dialog3: false,

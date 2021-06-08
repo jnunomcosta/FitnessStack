@@ -61,10 +61,38 @@ public class TreinoController {
         return ResponseEntity.ok().body(res);
     }
 
-    @PostMapping(value = "/comentar")
-    public ResponseEntity<RespostaOk> comentar(@RequestParam int IdTreino, @RequestBody Avaliacao_Treino s){
+    @PostMapping(value = "/avaliacao")
+    public ResponseEntity<RespostaOk> comentar(@RequestHeader String token, @RequestBody String s){
+        JSONObject obj;
+        String username = null;
+        try{
+            obj = new JSONObject(Authorization.extractClaims(token));
+            if(!obj.getBoolean("treinador_utilizador")){
+                username = obj.getString("username");
+                if(!gUtilizadores.usernameExisteU(username)){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
 
-        if(gt.comentar(IdTreino, s)){
+        obj = new JSONObject(s);
+
+        String treino = obj.getString("cod_treino");
+        float aval = obj.getFloat("avaliacao");
+        String comentario = obj.getString("comentario");
+
+        Avaliacao_Treino at = new Avaliacao_Treino();
+        at.setUser(gUtilizadores.getUserByUsername(username));
+        at.setClassificacao(aval);
+        at.setComentario(comentario);
+
+        if(gt.avaliacao(treino, at)){
             return ResponseEntity.ok().body(new RespostaOk());
         }
 
@@ -201,6 +229,16 @@ public class TreinoController {
             exercicios.put(ex_aux);
         }
         ret.put("exercicios", exercicios);
+        JSONArray cm = new JSONArray();
+        for(Avaliacao_Treino c : t.getORM_Avaliacoes_treino()){
+            JSONObject ex_aux = new JSONObject();
+            ex_aux.put("avaliacao",c.getClassificacao());
+            ex_aux.put("comentario", c.getComentario());
+            ex_aux.put("username", c.getUser().getUsername());
+            cm.put(ex_aux);
+        }
+        ret.put("avaliacoes", cm);
+
         return ResponseEntity.ok().body(ret.toString());
 
     }

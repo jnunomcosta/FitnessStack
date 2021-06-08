@@ -1,5 +1,6 @@
 package ft.backend.controllers;
 
+import ft.backend.entities.InformacaoFisica;
 import ft.backend.entities.Utilizador;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import ft.backend.beans.gestao_utilizadores;
 import ft.backend.utils.Authorization;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 
 @RestController
@@ -169,6 +172,47 @@ public class UtilizadorController {
         else{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @PostMapping(value = "/novaInfoFisica")
+    public ResponseEntity<String> novaInfoFisica(@RequestHeader String token,@RequestBody String t){
+        JSONObject obj;
+        String username = null;
+        try{
+            obj = new JSONObject(Authorization.extractClaims(token));
+            if(!obj.getBoolean("treinador_utilizador")){
+                username = obj.getString("username");
+                if(!gestao_utilizadores.usernameExisteU(username)){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        obj = new JSONObject(t);
+
+        InformacaoFisica i = new InformacaoFisica();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        i.setData(df.parse(obj.getString("data"),new ParsePosition(0)));
+        i.setPeso(obj.getFloat("peso"));
+        i.setM_muscular(obj.getFloat("m_muscular"));
+        i.setM_gorda(obj.getFloat("m_gorda"));
+
+        gestao_utilizadores.novaInfoFisica(username,i);
+        return ResponseEntity.ok().body("");
+
+    }
+
+    @GetMapping(value = "/listar")
+    public String getUsers(){
+
+        return gestao_utilizadores.getUsers().toString();
     }
 
 }
