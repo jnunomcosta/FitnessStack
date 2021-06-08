@@ -16,6 +16,7 @@ import Treinador_Perfil from '../views/Treinador/Treinador_Perfil.vue'
 import Treinador_Agenda from '../views/Treinador/Treinador_Agenda.vue'
 import Treinador_Exercicio from '../views/Treinador/Treinador_Exercicios.vue'
 import Treinador_Treinos from '../views/Treinador/Treinador_Treinos.vue'
+import Treinador_Treino from '../views/Treinador/Treinador_Treino.vue'
 import Treinador_Alunos from '../views/Treinador/Treinador_Alunos.vue'
 
 import Administrador_Perfil from '../views/Administrador/Administrador_Perfil.vue'
@@ -76,7 +77,8 @@ const routes = [
   {
     path: '/iniciarTreino/:codigo',
     name: 'IniciarTreino',
-    component: IniciarTreino
+    component: IniciarTreino,
+    props: true
   },
   {
     path: '/criartreino',
@@ -107,6 +109,11 @@ const routes = [
     path: '/treinador/treinos',
     name: 'Treinos_Treinador',
     component: Treinador_Treinos
+  },
+  {
+    path: '/treinador/treino/:codigo',
+    name: 'Treinador_Treino',
+    component: Treinador_Treino
   },
   {
     path: '/treinador/alunos',

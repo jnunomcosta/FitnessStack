@@ -89,8 +89,7 @@ export default {
   methods: {
     verTreino: function (value) {
       console.log("ROW VALUES:", value);
-      //this.$router.push("/treino/" + value.codigo);
-      //FALTA UMA VISTA PARA O TREINO PARA O TREINADOR
+      this.$router.push("/treinador/treino/" + value.codigo);
     },
   },
   mounted () {

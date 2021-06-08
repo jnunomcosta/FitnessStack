@@ -2,7 +2,7 @@
   <div class="profile">
     <NavBar />
     <h1 class="text-center display-2" style="color: #f95738; margin-top: 90px">
-      Titulo do treino
+      {{ treino.nome }}
     </h1>
     <v-row
       class="mt-4"
@@ -24,7 +24,7 @@
           hide-delimiter-background
           show-arrows-on-hover
         >
-          <v-carousel-item v-for="(slide, i) in slides" :key="i">
+          <v-carousel-item v-for="item in treino.exercicios" :key="item.nome">
             <v-sheet color="grey" height="100%">
               <v-row class="fill-height" align="center" justify="center">
                 <v-col cols="12" md="1"> </v-col>
@@ -45,12 +45,11 @@
                       </div>
 
                       <v-list-item-content class="black--text">
-                        <h2>{{ i }}</h2>
-                        <h2>NOME DO EXERCÍCIO</h2>
-                        <h2>{{ series }} / {{ series_total }} Séries</h2>
+                        <h2>{{ item.nome }}</h2>
+                        <h2>{{ series }} / {{ item.series }} Séries</h2>
 
                         <v-row class="text-center" style="text-align: center">
-                          <v-col v-if="flag_duracao" cols="12" md="6">
+                          <v-col v-if="tipoDuracao(item.tipo)" cols="12" md="6">
                             <p
                               class="
                                 pa-4
@@ -60,10 +59,21 @@
                                 rounded-pill
                               "
                             >
-                              Duração: {{ duracao_serie }} segundos
+                              Duração: {{ item.duracao }} segundos
                             </p>
                           </v-col>
-                          <v-col v-if="flag_repeticoes" cols="12" md="6">
+                          <v-col v-if="tipoRepeticoes(item.tipo)" cols="12" md="6">
+                            <p
+                              class="
+                                pa-4
+                                grey
+                                lighten-2
+                                text-no-wrap
+                                rounded-pill
+                              "
+                            >
+                              Repetições: {{ item.duracao }} repetições
+                            </p>
                             <v-btn
                               color="black"
                               dark
@@ -83,7 +93,7 @@
                                 rounded-pill
                               "
                             >
-                              Descanso: {{ duracao_descanso }} segundos
+                              Descanso: {{ item.descanso  }} segundos
                             </p>
                           </v-col>
                         </v-row>
@@ -104,10 +114,11 @@
                   </h3>
                   <v-card elevation="17" color="white" class="black--text">
                     <div class="text-center mx-4">
-                      <h4>Nome</h4>
-                      <h5>Séries</h5>
-                      <h5>Duração</h5>
-                      <h5>Descanso</h5>
+                      <h4>{{ item[item.nome+1].nome }} </h4>
+                      <h5>{{ item[item.nome+1].series }} Séries</h5>
+                      <h5 v-if="tipoRepeticoes(item[item.nome+1].tipo)">{{ item[item.nome+1].duracao }}  repetições</h5>
+                      <h5 v-if="tipoDuracao(item[item.nome+1].tipo)">{{ item[item.nome+1].duracao }}  segundos</h5>
+                      <h5>{{ item[item.nome+1].descanso }} </h5>
                     </div>
                   </v-card> </v-col
                 ><v-col cols="12" md="3"></v-col>
@@ -118,14 +129,16 @@
       </v-col>
     </v-row>
 
-    
-<v-btn color="#f95738" dark>Avaliar treino</v-btn>
+    <div class="text-center my-16">
+<v-btn v-on:click="terminarTreino()" color="#f95738" dark>Terminar treino</v-btn>
+    </div>
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
+import axios from "axios";
 
 export default {
   name: "IniciarTreino",
@@ -144,15 +157,32 @@ export default {
       series_total: 5,
       flag_repeticoes: false,
       flag_duracao: true,
-      terminar_series: false
-      //page:0
-      //interval: 2000,
+      terminar_series: false,
+      treino: {
+        nome: "",
+        duracao: "",
+        categorias: [{ categoria: "" }],
+        dificuldade: "",
+        //treinador: "",
+        data: "",
+        exercicios: [{ nome: "", series: 0, tipo: "", repeticoes: 0, descanso: 0 }],
+        avaliacoes: [],
+      },
+
+      //exercicios: [{ nome: "", series: 0, repeticoes: 0, descanso: 0 }],
+      
     };
   },
   methods: {
     //pageChange(i){ console.log('current Index', i); },
-
+    tipoRepeticoes: function (bool) {
+      return bool;
+    },
+    tipoDuracao: function (bool) {
+      return (!bool);
+    },
     terminarTreino: function () {
+      this.$router.push('/treino/' + this.$route.params.codigo)
       //this.refs.carousel.goToPage(1);
       //this.$refs.carousel[0].goToPage(this.$refs.carousel[0].getNextPage());
     },
@@ -162,8 +192,8 @@ export default {
     //}
     //},
     countDownTimer_serie() {
-      if (this.series>-1){
-        if (this.duracao_serie > -1 && this.terminar_series==false) {
+      if (this.terminar_series==false){
+        if (this.duracao_serie > -1) {
           setTimeout(() => {
             this.duracao_serie -= 1;
             this.countDownTimer_serie();
@@ -176,7 +206,10 @@ export default {
           }
         }
       }
-      else this.series=0;
+      else {
+        this.series=0;
+        this.terminar_series=false;
+      }
     },
 
     countDownTimer_descanso() {
@@ -215,5 +248,17 @@ export default {
       this.$router.push('/treinos??')
     }
   },
+  mounted() {
+    axios
+      .get(
+        "http://localhost:4576/api/treinos/getTreino?codigo=" +
+          this.$route.params.codigo
+      )
+      .then((response) => {
+        this.treino = response.data;
+      })
+      .finally(() => (this.loading = false));
+  },
+  
 };
 </script>

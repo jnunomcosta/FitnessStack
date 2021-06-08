@@ -32,7 +32,7 @@
           <v-divider class="mx-8 mt-6"></v-divider>
           <div
             class="text-center"
-            v-for="item in avaliacoes"
+            v-for="item in treino.avaliacoes"
             :key="item.username"
           >
             <v-row>
@@ -92,53 +92,7 @@
           </v-simple-table>
         </v-card>
 
-        <div class="text-center my-16">
-          <v-btn v-on:click="iniciarTreino()" color="#f95738" dark
-            >Iniciar treino</v-btn
-          >
-          <v-container class="text-center">
-            <v-dialog v-model="dialog1" persistent max-width="380px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn color="#f95738" dark v-bind="attrs" v-on="on"
-                  >Terminar treino</v-btn
-                >
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="headline text-center"
-                    >Dê-nos o seu feedback acerca deste treino!</span
-                  >
-                </v-card-title>
-                <v-card-text>
-                  <div class="text-center mt-12">
-                    <v-rating
-                      v-model="rating"
-                      color="#f95738"
-                      background-color="grey darken-1"
-                      empty-icon="$ratingFull"
-                      half-increments
-                      hover
-                      large
-                    ></v-rating>
-                    <v-text-field
-                      color="#f95738"
-                      label="Deixe-nos o seu comentário."
-                      required
-                    >
-                    </v-text-field>
-                  </div>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="#f95738" text v-on:click="submit"> Sair </v-btn>
-                  <v-btn color="#f95738" text v-on:click="submit">
-                    Confirmar
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-container>
-        </div>
+        
       </v-col>
     </v-row>
   </div>
@@ -158,38 +112,9 @@ export default {
     return {
       scrollInvoked: 0,
       dialog1: false,
-      avaliacoes: [
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        },
-        {
-          username: "username",
-          avaliacao: 4,
-          comentario:
-            "comentario kjhgfdfghjklkjhgfdfghjkjhgfdfghjklkjhgffghjklkjhgfdfghjkl",
-        }
-      ],
+      rating: "",
+      comentario: "",
+      avaliacoes: [],
       treino: {
         nome: "",
         duracao: "",
@@ -198,16 +123,16 @@ export default {
         //treinador: "",
         data: "",
         exercicios: [{ nome: "", series: 0, repeticoes: 0, descanso: 0 }],
+        avaliacoes: [],
       },
     };
   },
   methods: {
-    iniciarTreino: function () {
-      this.$router.push("/iniciarTreino/" + this.$route.params.codigo);
-    },
+    
     onScroll () {
-        this.scrollInvoked++
-      }
+      this.scrollInvoked++
+    },
+    
   },
   mounted() {
     axios

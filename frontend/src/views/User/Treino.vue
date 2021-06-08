@@ -176,7 +176,8 @@ export default {
   },
   methods: {
     iniciarTreino: function () {
-      this.$router.push("/iniciarTreino/" + this.$route.params.codigo);
+      //this.$router.push("/iniciarTreino/" + this.$route.params.codigo);
+      this.$router.push({ name: 'IniciarTreino', path: "iniciarTreino/" + this.$route.params.codigo , params: {treino: this.treino }})
     },
     onScroll () {
       this.scrollInvoked++
