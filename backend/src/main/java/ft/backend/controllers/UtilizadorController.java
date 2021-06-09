@@ -34,6 +34,21 @@ public class UtilizadorController {
 
 
 
+
+    @GetMapping(value = "/getUser")
+    public ResponseEntity<String> getInfoUser(@RequestHeader String token, @RequestParam String username){
+
+
+        if( verify.verifyUser(token) !=null  || verify.verifyTreinador(token) !=null  || verify.verifyAdmin(token) !=null  ){
+
+            JSONObject obj = gestao_utilizadores.getUserInformation(username);
+            if(obj!=null){
+                return ResponseEntity.ok().body(obj.toString());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
     @GetMapping(value = "/getUserInfo")
     public ResponseEntity<String> getInfoUser(@RequestHeader String token){
 

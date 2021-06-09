@@ -15,7 +15,7 @@
     <template v-slot:default="dialog">
       <v-card>
         <v-toolbar color="#f95738" dark
-          ><h3>João Ratão</h3>
+          ><h3>{{ utilizador.nome }} </h3>
           <v-spacer></v-spacer>
           <v-btn icon @click="dialog.value = false"
             ><v-icon>mdi-close</v-icon></v-btn
@@ -26,27 +26,27 @@
           <div>
             <v-avatar class="ma-3" width="250" height="300" tile>
               <v-img
-                src="https://randomuser.me/api/portraits/men/93.jpg"
+                 :src="'http://localhost:4576' + utilizador.foto_perfil"
               ></v-img>
             </v-avatar>
           </div>
           <div class="ma-2">
             <v-card-title
-              >Joao Ratão<v-icon dense color="#f95738" class="ml-2"
+              >{{utilizador.nome}}<v-icon dense color="#f95738" class="ml-2"
                 >mdi-weight-lifter</v-icon
               ></v-card-title
             >
-            <v-card-subtitle>joniratatui</v-card-subtitle>
+            <v-card-subtitle>{{ utilizador.username  }} </v-card-subtitle>
 
             <v-card-text>
               <v-row align="center" class="mx-0">
-                <div class="body-2">joniratatui@gmail.com</div>
+                <div class="body-2">{{ utilizador.email }} </div>
               </v-row>
 
 
               <v-divider></v-divider>
               <div class="my-4">
-                Olá sou o João e tenho 30 anos. QUERO FICAR MAGRO
+                {{ data.comentario}} 
               </div>
             </v-card-text>
           </div>
@@ -70,8 +70,30 @@
 
 
 
+
 <script>
+import axios from "axios";  
 export default {
   name: "InfoAlunoSolicitacao",
+  props:["data"],
+  data: () => ({
+
+    utilizador:null
+  }),
+  mounted(){
+   
+    axios
+      .get("http://localhost:4576/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
+      .then((response) => {
+        
+        this.utilizador = response.data;
+console.log("hellooo"+JSON.stringify(this.data))
+       console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
+      })
+      .finally(() => (this.loading = false));
+
+       
+  }
+
 };
 </script>

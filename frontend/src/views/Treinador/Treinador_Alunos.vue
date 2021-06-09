@@ -104,6 +104,7 @@ export default {
   created() {
     document.title = "Alunos";
   },
+  
 };
 </script>
 

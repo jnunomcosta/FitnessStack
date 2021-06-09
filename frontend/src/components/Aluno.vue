@@ -25,7 +25,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <InfoAluno/>
+              <InfoAluno  :data="title"/>
 
             </v-card-actions>
           </v-card>
@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     url() {
-      return "https://jsonplaceholder.typicode.com/posts?_page=" + this.page;
+      return "http://localhost:4576/api/treinador/getAlunosAtivos"
     },
   },
   created() {
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     async fetchData() {
-      const response = await axios.get(this.url);
+      const response = await axios.get(this.url, {headers: {'token': localStorage.getItem("token")}});
       this.titles = response.data;
     },
     /*infiniteScrolling(entries, observer, isIntersecting) {
