@@ -28,7 +28,7 @@
           hide-delimiter-background
           show-arrows-on-hover
         >
-          <v-carousel-item v-for="item in treino.exercicios" :key="item.nome">
+          <v-carousel-item v-for="(item,i) in treino.exercicios" :key="i">
             <v-sheet color="grey" height="100%">
               <v-row class="fill-height" align="center" justify="center">
                 <v-col cols="12" md="1"> </v-col>
@@ -40,6 +40,7 @@
                     style="text-align: center"
                   >
                     <div class="text-center mx-4">
+                      i
                       <div class="mx-auto text-center">
                         <v-avatar tile class="mt-4" size="200">
                           <v-img
@@ -117,12 +118,12 @@
                     Próximo exercício
                   </h3>
                   <v-card elevation="17" color="white" class="black--text">
-                    <div class="text-center mx-4">
-                      <!-- <h4>{{ item[item.nome+1].nome }} </h4>
-                      <h5>{{ item[item.nome+1].series }} Séries</h5>
-                      <h5 v-if="tipoRepeticoes(item[item.nome+1].tipo)">{{ item[item.nome+1].duracao }}  repetições</h5>
-                      <h5 v-if="tipoDuracao(item[item.nome+1].tipo)">{{ item[item.nome+1].duracao }}  segundos</h5>
-                      <h5>{{ item[item.nome+1].descanso }} </h5> -->
+                    <div v-if=" i+1 < Object.keys(treino.exercicios).length" class="text-center mx-4">
+                      <h4>{{ item[i+1].nome }} </h4>
+                      <h5>{{ item[i+1].series }} Séries</h5>
+                      <h5 v-if="tipoRepeticoes(item[i+1].tipo)">{{ item[i+1].duracao }}  repetições</h5>
+                      <h5 v-if="tipoDuracao(item[i+1].tipo)">{{ item[i+1].duracao }}  segundos</h5>
+                      <h5>{{ item[i+1].descanso }} </h5>
                     </div>
                   </v-card> </v-col
                 ><v-col cols="12" md="3"></v-col>

@@ -29,18 +29,9 @@
                       type="password"
                       color="#f95738"
                     />
-                    <v-checkbox
-                      v-model="modo_login"
-                      label="É Treinador?"
-                    />
-                    <v-checkbox
-                      v-model="modo_login_admin"
-                      label="É Administrador?"
-                    />
+                    <v-checkbox v-model="modo_login" label="É Treinador?" />
                   </v-form>
-                  <!--<h3 class="text-center mt-4">
-                    Esqueceu-se da password? <a href="#">Clique aqui</a>
-                  </h3>-->
+                  
                   <div class="text-center my-6">
                     <v-btn v-on:click="login()" color="#f95738" dark
                       >Login</v-btn
@@ -169,11 +160,7 @@
                   <v-dialog v-model="dialog" persistent max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
                       <div class="text-center my-8">
-                        <v-btn
-                          color="#f95738"
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
+                        <v-btn color="#f95738" dark v-bind="attrs" v-on="on"
                           >Registar</v-btn
                         >
                       </div>
@@ -245,16 +232,12 @@
                       </v-card-text>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn
-                          color="#7189ff"
-                          text
-                          v-on:click="registar()"                   
-                        >
+                        <v-btn color="#7189ff" text v-on:click="registar()">
                           Registar
                         </v-btn>
                       </v-card-actions>
                     </v-card>
-                  </v-dialog> 
+                  </v-dialog>
                 </v-card-text>
               </v-col>
             </v-row>
@@ -284,7 +267,6 @@ export default {
       password: "",
     },
     modo_login: false,
-    modo_login_admin: false,
     input_register: {
       username: "",
       password: "",
@@ -306,102 +288,71 @@ export default {
   }),
   methods: {
     login() {
-      if(this.modo_login == false && this.modo_login_admin==false){ //utilizador
+      if (this.modo_login == false) {
+        //utilizador
         if (this.input.username != "" && this.input.password != "") {
-        var loginInfo = {
-          username: this.input.username,
-          password: sjcl.codec.hex.fromBits(
-            sjcl.hash.sha256.hash(this.input.password)
-          ),
-        };
-        axios
-          .post("http://localhost:4576/api/login/user", loginInfo)
-          .then((response) => {
-            
-            const status = JSON.parse(response.status);
-            
-            if (status == "200") {
-              localStorage.setItem("token", response.data.token);
-              localStorage.setItem("username", this.input.username);
-              this.$router.push("/perfil");
-            }
+          var loginInfo = {
+            username: this.input.username,
+            password: sjcl.codec.hex.fromBits(
+              sjcl.hash.sha256.hash(this.input.password)
+            ),
+          };
+          axios
+            .post("http://localhost:4576/api/login/user", loginInfo)
+            .then((response) => {
+              const status = JSON.parse(response.status);
 
-            //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
-            
-            //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+              if (status == "200") {
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("username", this.input.username);
+                this.$router.push("/perfil");
+              }
 
-          })
-          .finally(() => (this.loading = false));
+              //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
+
+              //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+            })
+            .finally(() => (this.loading = false));
+        } else {
+          console.log("A username and password must be present");
+        }
       } else {
-        console.log("A username and password must be present");
-      }
-      }
-      else{
-        if (this.modo_login_admin==false) {//treinador
+        //treinador
         if (this.input.username != "" && this.input.password != "") {
-        var loginInfoTreinador = {
-          username: this.input.username,
-          password: this.input.password,
-          //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
-        };
-        axios
-          .post("http://localhost:4576/api/login/treinador", loginInfoTreinador)
-          .then((response) => {
+          var loginInfoTreinador = {
+            username: this.input.username,
+            password: this.input.password,
+            //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
+          };
+          axios
+            .post(
+              "http://localhost:4576/api/login/treinador",
+              loginInfoTreinador
+            )
+            .then((response) => {
+              const status = JSON.parse(response.status);
 
-            const status = JSON.parse(response.status);
-            
-            if (status == "200") {
-              localStorage.setItem("token", response.data.token);
-              localStorage.setItem("username", this.input.username);
-              this.$router.push("/treinador/perfil");
-            }
+              if (status == "200") {
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("username", this.input.username);
+                this.$router.push("/treinador/perfil");
+              }
 
-            //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
-            
-            //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+              //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
 
-          })
-          .finally(() => (this.loading = false));
-      } else {
-        console.log("A username and password must be present");
+              //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+            })
+            .finally(() => (this.loading = false));
+        } else {
+          console.log("A username and password must be present");
+        }
       }
-      }
-      }
-
-      if(this.modo_login_admin == true){
-        var loginInfoAdmin = {
-          username: this.input.username,
-          password: this.input.password,
-          //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
-        };
-        console.log(loginInfoAdmin);
-        axios
-          .post("http://localhost:4576/api/login/administrador", loginInfoAdmin)
-          .then((response) => {
-
-            const status = JSON.parse(response.status);
-            
-            if (status == "200") {
-              localStorage.setItem("token", response.data.token);
-              localStorage.setItem("username", this.input.username);
-              this.$router.push("/administrador/perfil");
-            }
-
-            //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
-            
-            //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
-
-          })
-          .finally(() => (this.loading = false));
-      }
-
-      
-      
     },
     async registar() {
       function carrega_foto(x) {
         return new Promise((resolve) => {
-          let blob = new Blob([x]),fileReader = new FileReader();
+          let blob = new Blob([x]),
+            fileReader = new FileReader();
           fileReader.readAsArrayBuffer(blob);
           fileReader.onload = function () {
             resolve(Buffer.from(this.result).toString("base64"));
@@ -409,7 +360,7 @@ export default {
         });
       }
 
-    //FALTA VERIFICAR SE O EMAIL E A PASS SAO CORRETOS OU EXISTEM OU QQ COISA ASSIM
+      //FALTA VERIFICAR SE O EMAIL E A PASS SAO CORRETOS OU EXISTEM OU QQ COISA ASSIM
 
       let genero_registo = true;
       if (this.input_register.genero != "Masculino") {
@@ -417,7 +368,9 @@ export default {
       }
       var registoInfo = {
         email: this.input_register.email,
-        password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input_register.password)),
+        password: sjcl.codec.hex.fromBits(
+          sjcl.hash.sha256.hash(this.input_register.password)
+        ),
         username: this.input_register.username,
         nome: this.input_register.nome,
         data: this.input_register.date,
@@ -428,26 +381,26 @@ export default {
       registoInfo.foto_perfil = await carrega_foto(this.input_register.imagem);
 
       axios
-          .post('http://localhost:4576/api/register/user',registoInfo)
-          .then(response => {
-            const status = JSON.parse(response.status);
-            if (status == '200'){
-                 var login_info = {
-                  username: registoInfo.username,
-                  password: registoInfo.password
-                } 
-                axios
-                    .post('http://localhost:4576/api/login/user',login_info)
-                    .then(response2 => {
-                      const status2 = JSON.parse(response2.status);
-                      if(status2 == '200'){
-                        localStorage.setItem('token', response2.data.token);
-                        localStorage.setItem('username', registoInfo.username);
-                        this.$router.push('/perfil');
-                      }
-                    }) 
-            }
-          })
+        .post("http://localhost:4576/api/register/user", registoInfo)
+        .then((response) => {
+          const status = JSON.parse(response.status);
+          if (status == "200") {
+            var login_info = {
+              username: registoInfo.username,
+              password: registoInfo.password,
+            };
+            axios
+              .post("http://localhost:4576/api/login/user", login_info)
+              .then((response2) => {
+                const status2 = JSON.parse(response2.status);
+                if (status2 == "200") {
+                  localStorage.setItem("token", response2.data.token);
+                  localStorage.setItem("username", registoInfo.username);
+                  this.$router.push("/perfil");
+                }
+              });
+          }
+        });
     },
   },
 };

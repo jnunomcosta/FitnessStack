@@ -11,8 +11,9 @@
           margin-right: 25px;
         "
       >
-        <v-col cols="12" md="2">
-          
+        <v-col cols="12" md="3">
+        </v-col>
+          <v-col cols="12" md="6">
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
@@ -164,6 +165,8 @@
               </v-dialog>
             </v-container>
           </v-card>
+        </v-col>
+        <v-col cols="12" md="3">
         </v-col>
       </v-row>
     </div>
