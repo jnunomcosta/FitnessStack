@@ -42,8 +42,8 @@ public class gestao_utilizadores {
             ret.put("nome",u.getNome());
             ret.put("username", username);
             ret.put("peso", u.getPeso());
-            ret.put("m_gorda", 20);
-            ret.put("m_muscular", 78);
+            ret.put("m_gorda", u.getMassaGorda());
+            ret.put("m_muscular", u.getMassaMuscular());
             ret.put("altura", u.getAltura());
             ret.put("genero", u.getGenero() ? "Masculino" : "Feminino");
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
@@ -83,6 +83,9 @@ public class gestao_utilizadores {
         Utilizador u = uDao.findUtilizador_Username(username);
         if(u != null){
             u.getInformacao_fisica().add(i);
+            u.setMassaGorda(i.getM_gorda());
+            u.setMassaMuscular(i.getM_muscular());
+            u.setPeso(i.getPeso());
             uDao.save(u);
         }
     }

@@ -2,7 +2,7 @@
   <div class="navbar">
     <v-app-bar color="#000314" elevate-on-scroll dark fixed>
       <div class="d-flex align-center">
-        <router-link to="/perfil">
+        <router-link to="/">
           <v-img
             alt="Fitness Stack Logo"
             class="shrink mr-2 ml-8"
