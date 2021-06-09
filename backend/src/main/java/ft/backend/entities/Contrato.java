@@ -23,7 +23,7 @@ public class Contrato implements Serializable {
 
 	@ManyToOne(targetEntity=Utilizador.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns(value={ @JoinColumn(name="UtilizadorID", referencedColumnName="ID", nullable=false) })	
-	private Treinador utilizador;
+	private Utilizador utilizador;
 
 	@Column(name="Comentario", nullable=false, length=255)	
 	private String comentario;
@@ -44,11 +44,11 @@ public class Contrato implements Serializable {
 	}
 
 	
-	public Treinador getUtilizador() {
+	public Utilizador getUtilizador() {
 		return utilizador;
 	}
 
-	public void setUtilizador(Treinador utilizador) {
+	public void setUtilizador(Utilizador utilizador) {
 		this.utilizador = utilizador;
 	}
 

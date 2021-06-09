@@ -231,6 +231,7 @@ public class TreinoController {
         JSONArray exercicios = new JSONArray();
         for(Bloco c : t.getORM_Blocos_exercicios()){
             JSONObject ex_aux = new JSONObject();
+            ex_aux.put("tipo",c.isTipo());
             ex_aux.put("nome", c.getExercicio().getNome());
             ex_aux.put("series", c.getSeries());
             ex_aux.put("repeticoes", c.getDuracao());

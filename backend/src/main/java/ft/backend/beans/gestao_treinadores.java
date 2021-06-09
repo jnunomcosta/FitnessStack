@@ -70,6 +70,7 @@ public class gestao_treinadores {
             ret.put("nome",u.getNome());
             ret.put("username", username);
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
+            ret.put("descricao",u.getDescricao());
             return ret;
         }
         else{

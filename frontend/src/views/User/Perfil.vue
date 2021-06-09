@@ -231,6 +231,7 @@
                         </v-card-title>
                         <v-card-text>
                     <v-text-field
+                      v-model="input_peso"
                       color="#f95738"
                       type="number"
                       :max="maxPeso"
@@ -244,6 +245,7 @@
                         <v-card-text>
 
                           <v-text-field
+                            v-model="input_muscular"
                             color="#f95738"
                             type="number"
                             :max="maxPercentagem"
@@ -254,6 +256,7 @@
                         </v-card-text>
                         <v-card-text>
                           <v-text-field
+                            v-model="input_gorda"
                             color="#f95738"
                             type="number"
                             :max="maxPercentagem"
@@ -268,7 +271,7 @@
                           <v-btn color="#f95738" text @click="dialog6 = false">
                             Sair
                           </v-btn>
-                          <v-btn color="#f95738" text @click="dialog6 = false">
+                          <v-btn color="#f95738" text @click="pesagem(input_peso,input_muscular,input_gorda);dialog6 = false">
                             Atualizar
                           </v-btn>
                         </v-card-actions>
@@ -591,7 +594,43 @@ export default {
       .finally(() => (this.loading = false));
   },
   methods: {
-    setEmail(new_email) {
+
+    pesagem(new_peso,new_muscular,new_gorda) {
+
+
+        var data = new Date(),
+        dia  = data.getDate().toString(),
+        diaF = (dia.length == 1) ? '0'+dia : dia,
+        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = (mes.length == 1) ? '0'+mes : mes,
+        anoF = data.getFullYear();
+                
+      axios
+        .post(
+          "http://localhost:4576/api/user/novaInfoFisica",
+            {
+              "data":anoF+"/"+mesF+"/"+diaF,
+              "peso": new_peso,
+              "m_muscular":new_muscular,
+              "m_gorda":new_gorda
+              }
+            , {headers: {'token': localStorage.getItem("token")}}
+        )
+        .then((response) => {
+              console.log(response);
+              this.utilizador.m_gorda=new_gorda;
+              this.utilizador.m_muscular=new_muscular
+              this.utilizador.peso=new_peso
+              this.imc =
+          (this.utilizador.peso /
+            (this.utilizador.altura * this.utilizador.altura)) *
+          10000;
+
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar email));*/
+
+    },
+      setEmail(new_email) {
       axios
         .post(
           "http://localhost:4576/api/user/mudarEmail",
