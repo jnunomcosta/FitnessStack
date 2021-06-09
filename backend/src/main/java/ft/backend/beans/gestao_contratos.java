@@ -44,4 +44,19 @@ public class gestao_contratos {
         
         return ret;
     }
+    public boolean acceptContrato(String username,String treinador){
+        Contrato ret =null;
+        Utilizador u = utilizadorDAO.findUtilizador_Username(username);
+        if (u!=null ){
+            ret = contratoDAO.findContratoIdUser(u.getID());
+            
+            if (ret.isEstado()==false && ret.getTreinador_responsavel().getUsername().equals(treinador)){
+                ret.setEstado(true);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

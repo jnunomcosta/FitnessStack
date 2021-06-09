@@ -15,17 +15,17 @@
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-card hover class="white">
             <v-img
-              :src="'https://picsum.photos/200'"
+               :src="'http://localhost:4576' + title.foto_utilizador"
               class="white--text align-end"
               height="150px"
             >
             </v-img>
             <!--<v-card-title v-text="title.body"></v-card-title>-->
-            <v-card-title>João Ratão</v-card-title>
+            <v-card-title> {{ title.utilizador }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <InfoAlunoSolicitacao/>
+              <InfoAlunoSolicitacao :data="title"/>
 
               <!-- <v-dialog v-model="dialog" persistent max-width="700">
                 <template v-slot:activator="{ on, attrs }">
@@ -117,7 +117,7 @@ export default {
   },
   computed: {
     url() {
-      return "https://jsonplaceholder.typicode.com/posts?_page=" + this.page;
+      return "http://localhost:4576/api/treinador/getAlunosPendentes"
     },
   },
   created() {
@@ -125,8 +125,9 @@ export default {
   },
   methods: {
     async fetchData() {
-      const response = await axios.get(this.url);
+      const response = await axios.get(this.url, {headers: {'token': localStorage.getItem("token")}});
       this.titles = response.data;
+      
     },
     /*infiniteScrolling(entries, observer, isIntersecting) {
       setTimeout(() => {

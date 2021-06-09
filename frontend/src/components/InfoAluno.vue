@@ -247,7 +247,7 @@
       <template v-slot:default="dialog">
         <v-card>
           <v-toolbar color="#f95738" dark
-            ><h3>João Ratão</h3>
+            ><h3>{{ utilizador.nome  }}</h3>
             <v-spacer></v-spacer>
             <v-btn icon @click="dialog.value = false"
               ><v-icon>mdi-close</v-icon></v-btn
@@ -413,6 +413,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
+import axios from "axios";
 
 export default {
   name: "InfoAluno",
@@ -420,6 +421,7 @@ export default {
     apexchart: VueApexCharts,
   },
   data: () => ({
+    utilizador:null,
     time: null,
     menu2: false,
     modal2: false,
@@ -634,8 +636,26 @@ export default {
       "Party",
     ],
   }),
+
+
+
+  props:["data"],
+
+
+
   mounted() {
     this.$refs.calendar.checkChange();
+
+
+    axios
+      .get("http://localhost:4576/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
+      .then((response) => {
+        
+        this.utilizador = response.data;
+console.log("hellooo"+JSON.stringify(this.data))
+       console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
+      })
+      .finally(() => (this.loading = false));
   },
   methods: {
     viewDay({ date }) {

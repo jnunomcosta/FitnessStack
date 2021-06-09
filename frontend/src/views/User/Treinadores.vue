@@ -8,7 +8,9 @@
       <v-col cols="12" md="10" style="padding-top: 90px">
         <v-dialog transition="dialog-bottom-transition" max-width="700">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn v-if="this.treinador!=null"
+            <v-btn 
+              v-model="butao_treinador"
+              v-show="treinador!=null"
               class="mx-6"
               v-bind="attrs"
               v-on="on"
@@ -68,9 +70,13 @@
               </div>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="#f95738" text @click="dialog.value = false">
+                <v-btn  color="#f95738" text @click="dialog.value = false">
                   Cancelar contrato
                 </v-btn>
+                <v-btn v-if="contrato.estado==false" color="#f95738" text @click="dialog.value = false">
+                  Reenviar Pedido
+                </v-btn>
+
               </v-card-actions>
             </v-card>
           </template>
