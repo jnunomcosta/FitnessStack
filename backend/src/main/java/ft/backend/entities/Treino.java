@@ -50,12 +50,13 @@ public class Treino implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Bloco> ORM_blocos_exercicios = new java.util.HashSet<>();
 	
-	@OneToMany(targetEntity=Avaliacao_Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
-	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
+	@OneToMany(targetEntity=Avaliacao_Treino.class, fetch=FetchType.LAZY/*, cascade = {CascadeType.ALL}*/)
+	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.HashSet<>();
 
-	@OneToMany(targetEntity=Categoria.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
+	@OneToMany(targetEntity=Categoria.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Categoria> ORM_categorias = new java.util.HashSet<>();

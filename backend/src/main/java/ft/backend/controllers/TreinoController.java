@@ -14,14 +14,7 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import ft.backend.beans.*;
 import ft.backend.responses.RespostaOk;
@@ -72,9 +65,8 @@ public class TreinoController {
     @PostMapping(value = "/avaliacao")
     public ResponseEntity<RespostaOk> comentar(@RequestHeader String token, @RequestBody String s){
 
-        if(verify.verifyUser(token)  != null ){
-            
-        
+        if(verify.verifyUser(token) != null){
+
             JSONObject obj = new JSONObject(s);
 
             String username = obj.getString("username");
@@ -106,75 +98,39 @@ public class TreinoController {
 
     @PostMapping(value = "/novoTreino")
     public ResponseEntity<String> novoTreino(@RequestHeader String token,@RequestBody String s){
-      
-     if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null ){
 
-      
-        JSONObject obj;
-        boolean flag = true;
-        String username;
-        try{
-            obj = new JSONObject(Authorization.extractClaims(token));
-            if(obj.getBoolean("treinador_utilizador")){
-                username = obj.getString("username");
-                if(!gTreinadores.usernameExisteT(username)){
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
-                }
+        String username = null;
+        boolean falg = false;
+        if((username = verify.verifyUser(token)) == null){
+            if((username = verify.verifyTreinador(token)) == null){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
-            else{
-                flag = false;
-                username = obj.getString("username");
-                if(!gUtilizadores.usernameExisteU(username)){
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
-                }
-            }
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
+            falg = true;
         }
 
         Treino treino = new Treino();
-        obj = new JSONObject(s);
+        JSONObject obj = new JSONObject(s);
 
-        if(!flag){
+        if(!falg){
             Utilizador u = gUtilizadores.getUserByUsername(username);
             if(u == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
             treino.setCriador_u(u);
         }
         else{
             Treinador t = gTreinadores.getTreinadorByUsername(username);
             if(t == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
             treino.setCriador_t(t);
         }
-
-        /* if(obj.has("criador_utilizador")){
-            Utilizador u = gUtilizadores.getUserByUsername(obj.getString("criador_utilizador"));
-            if(u == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-            }
-            treino.setCriador_u(u);
-        }
-        else{
-            if(obj.has("criador_treinador")){
-                Treinador t = gTreinadores.getTreinadorByUsername(obj.getString("criador_treinador"));
-                if(t == null){
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-                }
-                treino.setCriador_t(t);
-            }
-        } */
 
         treino.setDificuldade(obj.getString("dificuldade"));
         treino.setCodigo(Date_Utils.generateCode());
         treino.setNome(obj.getString("nome"));
         treino.setDescricao(obj.getString("descricao"));
 
-        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        //Date dn = df.parse(obj.getString("data_criacao"),new ParsePosition(0));
         treino.setData_criacao(new Date());
 
         //treino.setDuracao(obj.getFloat("duracao"));
@@ -205,8 +161,6 @@ public class TreinoController {
         gt.guardaTreino(treino);
 
         return ResponseEntity.ok().body("{\"codigo\":\""+treino.getCodigo()+"\"}");
-     }
-     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping(value="/getTreino")
@@ -286,6 +240,19 @@ public class TreinoController {
       }
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @DeleteMapping(value="/deleteTreino")
+    public ResponseEntity<String> deleteTreino(@RequestHeader String token,@RequestBody String cods){
+        if(verify.verifyAdmin(token) != null){
+            JSONArray arr = new JSONArray(cods);
+            for(int i=0;i<arr.length();i++){
+                String cod = arr.getString(i);
+                gt.deleteTreino(cod);
+            }
+            return ResponseEntity.ok().body(null);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
 }

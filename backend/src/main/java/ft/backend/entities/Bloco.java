@@ -17,7 +17,7 @@ public class Bloco implements Serializable {
 	
 	@ManyToOne(targetEntity=Exercicio.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumns(value={ @JoinColumn(name="ExercicioID", referencedColumnName="ID", nullable=false) }, foreignKey=@ForeignKey(name="FKBloco735558"))	
+	@JoinColumns(value={ @JoinColumn(name="ExercicioID", referencedColumnName="ID", nullable=true) }, foreignKey=@ForeignKey(name="FKBloco735558"))
 	private Exercicio exercicio;
 	
 	@Column(name="Descanso", nullable=true)	

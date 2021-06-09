@@ -96,4 +96,10 @@ public class gestao_treinos {
         return ret;
     }
 
+    public boolean deleteTreino(String codigo){
+        Treino t = tDao.findbyCodigo(codigo);
+        tDao.delete(t);
+        return true;
+    }
+
 }

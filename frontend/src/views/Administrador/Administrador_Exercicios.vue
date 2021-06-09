@@ -27,28 +27,23 @@
         </v-container>
         <v-container align="center" justify="space-around">
           <v-card>
-            <v-data-table
-              
+            <v-data-table         
               v-model="selected"
               :headers="columns"
               :items="rows"
               :single-select="singleSelect"
               show-select
-              item-key="codigo"
+              item-key="nome"
               :search="search"
               @click:row="verExercicio"
               >
-              
             </v-data-table>
             
           </v-card>
         </v-container>
         
       </v-col>
-      <v-dialog v-model="dialog" persistent max-width="600px">
-    
-    
-      <template v-slot:activator="{ on, attrs }">
+
       <v-btn
         fab
         dark
@@ -58,12 +53,10 @@
         right
         bottom
         v-bind="attrs"
-        v-on="on"
+        v-on:click="apagarExercicio()"
       >
         <v-icon>mdi-delete</v-icon>
       </v-btn>
-    </template>
-      </v-dialog>
      
     </v-row>
     
@@ -74,6 +67,7 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
+import axios from 'axios';
 
 export default {
   name: "ProcurarExercicio",
@@ -92,41 +86,37 @@ export default {
       columns: [
         { text: "Nome do Exercicio", value: "nome" },
         { text: "Duração", value: "duracao" },
-        { text: "Categoria", value: "categoria" },
-        { text: "Dificuldade", value: "dificuldade" },
-        { text: "Treinador", value: "treinador" },
-        { text: "Publicado em", value: "data" },
-        { text: "Avaliação", value: "avaliacao" },
-        { text: "Favoritos", value: "favoritos" },
-        { text: "Código", value: "codigo" }
+        { text: "Material Necessário", value: "material" },
+        { text: "Descrição", value: "descricao" }
       ],
-      rows: [
-        {
-          nome: "10 Min Ab Workout",
-          duracao: "10 min",
-          categoria: "Abdominais",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "07/05/2021",
-          avaliacao: "4.6/5",
-          favoritos: "true",
-          codigo: "12345",
-        },
-        {
-          nome: "12 Min Happy Cardio",
-          duracao: "12 min",
-          categoria: "Cardio",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "05/05/2021",
-          avaliacao: "4.2/5",
-          favoritos: "true",
-          codigo: "67890",
-        },
-      ],
+      rows: [],
     };
   },
+  mounted() {
+    axios
+      .get('http://localhost:4576/api/exercicio/listar',{headers: {'token': localStorage.getItem("token")}})
+      .then(response => {
+        this.rows = response.data 
+      })
+  },
   methods: {
+    apagarExercicio(){
+      let deletbody = [];
+      this.selected.forEach(element => {
+        deletbody.push(element.id);
+      });
+      axios 
+        .delete('http://localhost:4576/api/exercicio/deleteExercicios',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .then(response => {
+          //ERRO 500 e porque o exercicio esta num treino!
+          if(response.status == 200){
+            this.$router.push("/administrador/exercicios/");
+          }
+        }) 
+    },
+    verExercicio(){
+
+    }
     //verExercicio: function (value) {
       //console.log("ROW VALUES:", value);
       //this.$router.push("/treinos/" + value.codigo);

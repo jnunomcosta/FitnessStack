@@ -28,7 +28,6 @@
         <v-container align="center" justify="space-around">
           <v-card>
             <v-data-table
-              
               v-model="selected"
               :headers="columns"
               :items="rows"
@@ -45,10 +44,7 @@
         </v-container>
         
       </v-col>
-      <v-dialog v-model="dialog" persistent max-width="600px">
-    
-    
-      <template v-slot:activator="{ on, attrs }">
+      
       <v-btn
         fab
         dark
@@ -58,12 +54,11 @@
         right
         bottom
         v-bind="attrs"
-        v-on="on"
+        v-on:click="apagarTreino()"
       >
         <v-icon>mdi-delete</v-icon>
       </v-btn>
-    </template>
-      </v-dialog>
+    
      
     </v-row>
     
@@ -74,6 +69,7 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
+import axios from 'axios';
 
 export default {
   name: "ProcurarTreino",
@@ -87,6 +83,7 @@ export default {
   data() {
     return {
       singleSelect: false,
+      dialog: false,
       selected: [],
       search: "",
       columns: [
@@ -97,39 +94,35 @@ export default {
         { text: "Treinador", value: "treinador" },
         { text: "Publicado em", value: "data" },
         { text: "Avaliação", value: "avaliacao" },
-        { text: "Favoritos", value: "favoritos" },
         { text: "Código", value: "codigo" }
       ],
       rows: [
-        {
-          nome: "10 Min Ab Workout",
-          duracao: "10 min",
-          categoria: "Abdominais",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "07/05/2021",
-          avaliacao: "4.6/5",
-          favoritos: "true",
-          codigo: "12345",
-        },
-        {
-          nome: "12 Min Happy Cardio",
-          duracao: "12 min",
-          categoria: "Cardio",
-          dificuldade: "Iniciante",
-          treinador: "Pamela Reif",
-          data: "05/05/2021",
-          avaliacao: "4.2/5",
-          favoritos: "true",
-          codigo: "67890",
-        },
       ],
     };
   },
+  mounted() {
+    axios
+      .get('http://localhost:4576/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
+      .then(response => {
+        this.rows = response.data 
+      })
+  },
   methods: {
-    verTreino: function (value) {
-      console.log("ROW VALUES:", value);
-      this.$router.push("/treinos/" + value.codigo);
+    apagarTreino(){
+      let deletbody = [];
+      this.selected.forEach(element => {
+        deletbody.push(element.codigo);
+      });
+      axios 
+        .delete('http://localhost:4576/api/treinos/deleteTreino',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .then(response => {
+          if(response.status == 200){
+            this.$router.push("/administrador/treinos/");
+          }
+        }) 
+    },
+    verTreino(){
+
     },
   },
 };

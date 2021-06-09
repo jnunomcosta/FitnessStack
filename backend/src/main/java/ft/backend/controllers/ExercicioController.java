@@ -1,17 +1,12 @@
 package ft.backend.controllers;
 
 import ft.backend.entities.Exercicio;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ft.backend.beans.gestao_exercicios;
 import ft.backend.beans.gestao_treinadores;
@@ -68,6 +63,19 @@ public class ExercicioController {
         if(verify.verifyTreinador(token) != null || verify.verifyUser(token) != null || verify.verifyAdmin(token)!=null) {
             return ResponseEntity.ok().body(ge.getExercicios().toString());
          } 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @DeleteMapping(value="/deleteExercicios")
+    public ResponseEntity<String> deleteExercicios(@RequestHeader String token,@RequestBody String exs){
+        if(verify.verifyAdmin(token) != null){
+            JSONArray arr = new JSONArray(exs);
+            for(int i=0;i<arr.length();i++){
+                int cod = arr.getInt(i);
+                ge.deleteExercicio(cod);
+            }
+            return ResponseEntity.ok().body(null);
+        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 

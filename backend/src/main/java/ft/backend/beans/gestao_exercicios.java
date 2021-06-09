@@ -61,6 +61,7 @@ public class gestao_exercicios {
         List<Exercicio> l = eDao.findAll();
         for(Exercicio e: l){
             JSONObject exe = new JSONObject();
+            exe.put("id",e.getID());
             exe.put("nome", e.getNome());
             exe.put("duracao",e.getDuracao_media());
             exe.put("material", e.getMaterial_necessario());
@@ -79,6 +80,12 @@ public class gestao_exercicios {
         }
 
         return res;
+    }
+
+    public boolean deleteExercicio(int id){
+        Exercicio e = exercicioDAO.getOne(id);
+        exercicioDAO.delete(e);
+        return true;
     }
 
 }
