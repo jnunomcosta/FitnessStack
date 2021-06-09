@@ -173,6 +173,58 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+
+              
+
+              <v-dialog v-model="dialog4" persistent max-width="400px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="#f95738"
+                    dark
+                    class="ml-1 mb-1"
+                    small
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dense> mdi-camera</v-icon>
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Alterar foto de perfil</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      
+              <v-file-input
+                      id="imagem"
+                      label="Imagem de Perfil"
+                      name="imagem_perfil"
+                      prepend-icon="mdi-camera"
+                    />
+
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#f95738" text @click="dialog4 = false">
+                      Sair
+                    </v-btn>
+                    <v-btn color="#f95738" text @click="dialog4 = false">
+                      Atualizar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+
+
+
+
+
+
+
             </v-container>
           </v-card>
         </v-col>
