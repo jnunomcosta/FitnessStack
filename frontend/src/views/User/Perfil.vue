@@ -197,8 +197,9 @@
                   <v-card-text>
                     <v-container>
                       
-              <v-file-input
+                    <v-file-input
                       id="imagem"
+                      v-model="imagem_inputa"
                       label="Imagem de Perfil"
                       name="imagem_perfil"
                       prepend-icon="mdi-camera"
@@ -211,20 +212,12 @@
                     <v-btn color="#f95738" text @click="dialog4 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog4 = false">
+                    <v-btn color="#f95738" text @click="setImagem(imagem_inputa);dialog4 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-
-
-
-
-
-
-
-
             </v-container>
           </v-card>
         </v-col>
@@ -448,6 +441,7 @@ export default {
     dialog4: false,
     dialog5: false,
     dialog6: false,
+    imagem_inputa: null,
     infos: {
       nome: "10 Min Ab Workout",
       username: "10 min",
@@ -633,7 +627,6 @@ export default {
   }),
   mounted() {
     axios
-      //.get("http://localhost:4576/rest/utilizadores/getUserInfo?username="+localStorage.getItem("username"))
       .get("http://localhost:4576/api/user/getUserInfo",{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
         
@@ -735,12 +728,27 @@ export default {
             
             if (status == "200") {
               console.log("mudei a pass")
-            }
-            
-        
-          
+            }   
         })
         .finally(() => console.log("hi"));//msg erro a mudar username));
+    },
+    async setImagem(imagem_inputa){
+      function carrega_foto(x) {
+        return new Promise((resolve) => {
+          let blob = new Blob([x]),
+            fileReader = new FileReader();
+          fileReader.readAsArrayBuffer(blob);
+          fileReader.onload = function () {
+            resolve(Buffer.from(this.result).toString("base64"));
+          };
+        });
+      }
+
+      let foto = await carrega_foto(imagem_inputa);
+      axios.post("http://localhost:4576/api/user/mudarImagem",{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
+           .then(response => {
+             console.log(response);
+           })
     }
     
   },

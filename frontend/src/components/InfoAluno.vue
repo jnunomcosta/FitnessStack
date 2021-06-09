@@ -118,7 +118,9 @@
                         </v-btn>
                       </v-toolbar>
                       <v-card-text>
-                        <span v-html="selectedEvent.details"></span>
+                        <h3 class="text-center">{{treino_info.nome}}</h3>
+                        <h3 class="text-center">{{treino_info.dificuldade}}</h3>
+                        <h3 class="text-center">{{treino_info.duracao}}</h3>
                       </v-card-text>
                       <v-card-actions>
                         <v-btn
@@ -136,89 +138,79 @@
             </v-col>
 
             <v-col cols="12" md="4" class="mt-16">
-              <v-combobox
-                v-model="select"
-                :items="items"
-                label="Combobox"
-                multiple
-                color="#f95738"
-                dense
-              ></v-combobox>
-
-              <template>
-                <v-menu
-                  ref="menu"
-                  v-model="menu_1"
-                  :close-on-content-click="false"
-                  :return-value.sync="date"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="date_1"
-                      label="Picker in menu"
-                      prepend-icon="mdi-calendar"
-                      color="#f95738"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="date_1" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn text color="#f95738" @click="menu_1 = false">
-                      Cancel
-                    </v-btn>
-                    <v-btn
-                      text
-                      color="#f95738"
-                      @click="$refs.menu.save(date_1)"
-                    >
-                      OK
-                    </v-btn>
-                  </v-date-picker>
-                </v-menu>
+              <v-autocomplete
+                    label="Código Treino*"
+                    v-model="select"
+                    :items="items"
+                    required
+                  >
+              </v-autocomplete>
+            <template>
+            <v-menu
+              ref="menu"
+              v-model="menu_1"
+              :close-on-content-click="false"
+              :return-value.sync="date"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date_1"
+                  label="Data"
+                  prepend-icon="mdi-calendar"
+                  color="#f95738"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="date_1" no-title scrollable>
                 <v-spacer></v-spacer>
-              </template>
+                <v-btn text color="#f95738" @click="menu_1 = false">
+                  Cancelar
+                </v-btn>
+                <v-btn text color="#f95738" @click="$refs.menu.save(date_1)">
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+            <v-spacer></v-spacer>
+          </template>
 
-              <template>
-                <v-dialog
-                  ref="dialog"
-                  v-model="modal2"
-                  :return-value.sync="time"
-                  persistent
-                  width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="time"
-                      label="Picker in dialog"
-                      prepend-icon="mdi-clock-time-four-outline"
-                      readonly
-                      color="#f95738"
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-time-picker v-if="modal2" v-model="time" full-width>
-                    <v-spacer></v-spacer>
-                    <v-btn text color="#f95738" @click="modal2 = false">
-                      Cancel
-                    </v-btn>
-                    <v-btn
-                      text
-                      color="#f95738"
-                      @click="$refs.dialog.save(time)"
-                    >
-                      OK
-                    </v-btn>
-                  </v-time-picker>
-                </v-dialog>
+          <template>
+            <v-dialog
+              ref="dialog"
+              v-model="modal2"
+              :return-value.sync="time"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="time"
+                  label="Hora"
+                  prepend-icon="mdi-clock-time-four-outline"
+                  readonly
+                  color="#f95738"
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
               </template>
-              <div class="text-center mt-10">
-            <v-btn color="#f95738" dark> Confirmar </v-btn>
+              <v-time-picker v-if="modal2" v-model="time" full-width>
+                <v-spacer></v-spacer>
+                <v-btn text color="#f95738" @click="modal2 = false">
+                  Cancelar
+                </v-btn>
+                <v-btn text color="#f95738" @click="$refs.dialog.save(time)">
+                  OK
+                </v-btn>
+              </v-time-picker>
+            </v-dialog>
+          </template>
+          <div class="text-center mt-10">
+            <v-btn color="#f95738" v-on:click="confirmar()" dark> Confirmar </v-btn>
           </div>
             </v-col>
           </v-row>
@@ -425,8 +417,8 @@ export default {
   data: () => ({
     utilizador:null,
     imc:0,
-
-
+    select:"",
+    items:[],
     time: null,
     menu2: false,
     modal2: false,
@@ -440,6 +432,7 @@ export default {
     dialog4: false,
     dialog5: false,
     dialog6: false,
+    treino_info: {},
     infos: {
       nome: "10 Min Ab Workout",
       username: "10 min",
@@ -643,12 +636,31 @@ export default {
   }),
   props:["data"],
   mounted() {
-    
+    axios
+      .get("http://localhost:4576/api/treinos/getCodigos",{headers: {'token': localStorage.getItem("token")}})
+      .then(response => {
+        this.items = response.data
+      })
+    axios
+      .get("http://localhost:4576/api/agenda/getAgenda?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
+      .then(response => {
+        console.log(response.data)
+        response.data.forEach(x => {
+          var objjjj = {
+            name: x.name,
+            start: new Date(x.start),
+            end: new Date(x.end),
+            color: x.color,
+          }
+          console.log(objjjj);
+          this.events.push(objjjj);
+        });
+        console.log(this.events);
+      }) 
 
     axios
       .get("http://localhost:4576/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
-      .then((response) => {
-        
+      .then((response) => { 
         this.utilizador = response.data;
         console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(this.utilizador))
         console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
@@ -660,10 +672,38 @@ export default {
       .finally(() => (this.loading = false));
 
     this.$refs.calendar.checkChange();
-  
   },
   methods: {
-
+    confirmar(){
+      var d = new Date(this.date_1 + ' ' + this.time);
+      console.log(d);
+      var da = new Date(d);
+      da.setHours(da.getHours()+1);
+      var cor = this.colors[this.rnd(0, this.colors.length - 1)]
+      var evento = {
+        name: this.select,
+        start: d,
+        end: da,
+        color: cor,
+      }
+      var body = {
+        treino: this.select,
+        data_hora: this.date_1 + ' ' + this.time,
+        utilizador: this.data.utilizador,
+        cor: cor,
+      }
+      axios
+        .post("http://localhost:4576/api/agenda/novaMarcacao",body,{headers: {'token': localStorage.getItem("token")}})
+        .then(response => {
+          console.log(response)
+        })  
+      axios
+        .get("http://localhost:4576/api/treinos/getNomeTreino?codigo="+this.select,{headers: {'token': localStorage.getItem("token")}})
+        .then(response => {
+          evento.name = this.select + " - " + response.data.nome;
+          this.events.push(evento); 
+        })  
+    },
     removeContrato(){
       console.log("wiiiiiiiiiiiiiiiii")
        axios
@@ -677,13 +717,6 @@ export default {
            })
           .finally(() => (this.loading = false));
     },
-
-
-
-
-
-
-
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -701,6 +734,12 @@ export default {
       this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
+      var splited = event.name.split("-",1);
+      axios
+        .get("http://localhost:4576/api/treinos/getTreinoInfo?codigo="+splited[0],{headers: {'token': localStorage.getItem("token")}})
+        .then(response => {
+          this.treino_info = response.data
+        })
       const open = () => {
         this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
@@ -719,7 +758,7 @@ export default {
       nativeEvent.stopPropagation();
     },
     updateRange({ start, end }) {
-      const events = [];
+      /* const events = [];
 
       const min = new Date(`${start.date}T00:00:00`);
       const max = new Date(`${end.date}T23:59:59`);
@@ -739,10 +778,12 @@ export default {
           end: second,
           color: this.colors[this.rnd(0, this.colors.length - 1)],
           timed: !allDay,
-        });
-      }
+        }); 
 
-      this.events = events;
+      }*/
+      console.log(start.toISOString());
+      console.log(end.toISOString());
+      //this.events = events;
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;

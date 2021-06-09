@@ -186,8 +186,9 @@
                   <v-card-text>
                     <v-container>
                       
-              <v-file-input
+                    <v-file-input
                       id="imagem"
+                      v-model="imagem_input"
                       label="Imagem de Perfil"
                       name="imagem_perfil"
                       prepend-icon="mdi-camera"
@@ -206,32 +207,6 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             </v-container>
           </v-card>
         </v-col>
@@ -264,6 +239,7 @@ export default {
     dialog4: false,
     dialog5: false,
     dialog6: false,
+    imagem_input: null,
     treinador : {
       username: "",
       foto_perfil: "",
@@ -279,6 +255,11 @@ export default {
       })
       .finally(() => (this.loading = false));
   },
+  methods: {
+    atualizarFoto(){
+      
+    }
+  }
   
 };
 </script>

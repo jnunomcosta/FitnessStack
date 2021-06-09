@@ -21,9 +21,6 @@ import java.text.SimpleDateFormat;
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/user")
 public class UtilizadorController {
-    
-
- 
 
     @Autowired
     gestao_utilizadores gestao_utilizadores;
@@ -31,9 +28,6 @@ public class UtilizadorController {
     gestao_verificacoes verify;
     @Autowired
     gestao_contratos gestao_contratos;
-
-
-
 
     @GetMapping(value = "/getUser")
     public ResponseEntity<String> getInfoUser(@RequestHeader String token, @RequestParam String username){
@@ -135,6 +129,20 @@ public class UtilizadorController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
          
+    }
+
+    @PostMapping(value="/mudarImagem")
+    public ResponseEntity<String> mudarImagem(@RequestHeader String token, @RequestBody String t){
+
+        String username = verify.verifyUser(token);
+        if(username != null){
+            JSONObject obj = new JSONObject(t);
+            if(gestao_utilizadores.mudarImagem(username,obj.getString("nova_foto"))){
+                return ResponseEntity.ok().body(null);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PostMapping(value = "/novaInfoFisica")

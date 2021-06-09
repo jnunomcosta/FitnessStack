@@ -321,8 +321,7 @@ export default {
         if (this.input.username != "" && this.input.password != "") {
           var loginInfoTreinador = {
             username: this.input.username,
-            password: this.input.password,
-            //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
+            password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
           };
           axios
             .post(

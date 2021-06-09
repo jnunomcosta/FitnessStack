@@ -4,6 +4,7 @@ import ft.backend.entities.InformacaoFisica;
 import ft.backend.entities.Treinador;
 import ft.backend.repositories.TreinadorDAO;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -144,6 +145,16 @@ public class gestao_utilizadores {
         }
 
 
+        return false;
+    }
+
+    public boolean mudarImagem(String username,String imagem){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u!=null){
+            u.getFoto_perfil().setConteudo(Base64.getDecoder().decode(imagem));
+            uDao.save(u);
+            return true;
+        }
         return false;
     }
 

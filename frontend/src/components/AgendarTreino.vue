@@ -251,7 +251,7 @@ export default {
     ],
   }),
   mounted() {
-    this.$refs.calendar.checkChange();
+    //this.$refs.calendar.checkChange();
     axios
       .get("http://localhost:4576/api/treinos/getCodigos",{headers: {'token': localStorage.getItem("token")}})
       .then(response => {

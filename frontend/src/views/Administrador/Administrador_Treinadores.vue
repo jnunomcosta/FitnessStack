@@ -294,13 +294,13 @@ export default {
         descricao: this.input_register.descricao
       };
       registoInfo.foto_perfil = await carrega_foto(this.input_register.imagem);
-
+      console.log(registoInfo);
       axios
-        .post("http://localhost:4576/api/register/treinador", registoInfo)
+        .post("http://localhost:4576/api/register/treinador", registoInfo,{headers: {'token': localStorage.getItem("token")}})
         .then((response) => {
           //const status = JSON.parse(response.status);
           console.log(response);
-        });
+        }); 
     },
 
     //verTreino: function (value) {
