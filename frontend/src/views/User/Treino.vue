@@ -102,7 +102,7 @@
             <v-dialog v-model="dialog1" persistent max-width="380px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn width=180 color="#f95738" dark v-bind="attrs" v-on="on"
-                  >Terminar treino</v-btn
+                  >Avaliar treino</v-btn
                 >
               </template>
               <v-card>
@@ -171,7 +171,7 @@ export default {
         dificuldade: "",
         //treinador: "",
         data: "",
-        exercicios: [{ nome: "", series: 0, repeticoes: 0, descanso: 0 }],
+        exercicios: [{ nome: "", tipo:"", series: 0, repeticoes: 0, descanso: 0 }],
         avaliacoes: [],
       },
     };
