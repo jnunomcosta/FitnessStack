@@ -46,21 +46,18 @@
           </v-col>
         </v-row>
       </v-content>
-      <Footer />
     </div>
   </v-app>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-import Footer from "@/components/Footer.vue";
 //import axios from "axios";
 
 export default {
   name: "Login Admin",
   components: {
     NavBar,
-    Footer,
   },
   created() {
     document.title = "Fitness Stack";

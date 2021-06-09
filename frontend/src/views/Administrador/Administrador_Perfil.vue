@@ -20,7 +20,7 @@
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
-                <v-img src="https://picsum.photos/200"></v-img>
+                <v-img src="@/assets/favicon.png"></v-img>
               </v-avatar>
             </div>
             <v-card-title class="justify-center"> {{ admin.nome }}</v-card-title>

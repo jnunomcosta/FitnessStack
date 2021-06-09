@@ -24,7 +24,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-dialog transition="dialog-bottom-transition" max-width="600">
+              <v-dialog transition="dialog-bottom-transition" width=1000>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     class="mx-2 my-2"
@@ -38,7 +38,7 @@
                   </v-btn>
                 </template>
                 <template v-slot:default="dialog">
-                  <v-card>
+                  <v-card >
                     <v-toolbar color="#f95738" dark
                       ><h3>{{ title.nome }}</h3>
                       <v-spacer></v-spacer>
@@ -48,7 +48,7 @@
                     </v-toolbar>
                     <v-card-text>
                       <v-row class="w-100">
-                      <v-col cols="12" md="4">   
+                      <v-col cols="12" md="3">   
                       <div class="d-flex flex-no-wrap justify-space-between">
                         <div class="mt-6">
                           <v-list-item two-line>
@@ -85,18 +85,18 @@
                         </div>
                         </v-col>
                         
-                        <v-col md="8">
+                        <v-col md="9">
                         <div>
-                          <v-carousel :show-arrows="false" >
+                          <v-carousel :show-arrows="false" class="mt-6" height=400 width=700>
                             <v-carousel-item
                               v-for="(item,i) in title.conteudo_media"
                               :key="i"
                             >
                             <template v-if="item.includes('photo')">
-                              <img :src="'http://localhost:4576' + item" width="500" height="600">
+                              <img :src="'http://localhost:4576' + item">
                             </template>
                             <template v-else>
-                              <video width="500" height="600" controls>
+                              <video controls>
                                 <source :src="'http://localhost:4576' + item" type="video/mp4">
                               </video>
                             </template>

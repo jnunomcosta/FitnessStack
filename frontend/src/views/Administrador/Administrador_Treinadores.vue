@@ -64,33 +64,46 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="justify-center">
+      <v-card-title>
         Adicionar treinador
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12" md="12">
-              <v-text-field label="Nome*" required></v-text-field>
+              <v-text-field
+              v-model="data.nome"
+              label="Nome*" 
+              color="#f95738"
+              required
+              ></v-text-field>
             
               <v-text-field
-                label="Username*"
+                v-model="data.username"
+                label="Nome de utilizador*"
+                color="#f95738"
               ></v-text-field>
 
               <v-text-field
+                v-model="data.email"
                 label="Email*"
+                color="#f95738"
               ></v-text-field>
             
               <v-text-field
+                v-model="data.password"
                 label="Password*"
                 type="password"
+                color="#f95738"
                 persistent-hint
                 required
               ></v-text-field>
         
             
               <v-text-field
-                label="Breve descrição"
+                v-model="data.descricao"
+                label="Descrição"
+                color="#f95738"
                 required
               ></v-text-field>
             </v-col>
@@ -178,6 +191,13 @@ export default {
       rows: [
 
       ],
+      data: {
+        nome:"",
+        username:"",
+        email:"",
+        password:"",
+        descricao:""
+      }
     };
   },
   methods: {

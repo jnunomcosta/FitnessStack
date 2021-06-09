@@ -10,7 +10,7 @@
     >
       <v-list-item class="px-2 py-2">
         <v-list-item-avatar>
-          <v-img src="https://picsum.photos/200"></v-img>
+          <v-img src="@/assets/favicon.png"></v-img>
         </v-list-item-avatar>
         <v-list-item-content class="ma-0 pa-0" >
           <v-list-item-title class="title">{{nome}}<v-icon dense color="#f95738" class="ml-2">mdi-shield-account</v-icon></v-list-item-title>

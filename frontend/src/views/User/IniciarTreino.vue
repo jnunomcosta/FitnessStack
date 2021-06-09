@@ -118,11 +118,11 @@
                   </h3>
                   <v-card elevation="17" color="white" class="black--text">
                     <div class="text-center mx-4">
-                      <h4>{{ item[item.nome+1].nome }} </h4>
+                      <!-- <h4>{{ item[item.nome+1].nome }} </h4>
                       <h5>{{ item[item.nome+1].series }} Séries</h5>
                       <h5 v-if="tipoRepeticoes(item[item.nome+1].tipo)">{{ item[item.nome+1].duracao }}  repetições</h5>
                       <h5 v-if="tipoDuracao(item[item.nome+1].tipo)">{{ item[item.nome+1].duracao }}  segundos</h5>
-                      <h5>{{ item[item.nome+1].descanso }} </h5>
+                      <h5>{{ item[item.nome+1].descanso }} </h5> -->
                     </div>
                   </v-card> </v-col
                 ><v-col cols="12" md="3"></v-col>
