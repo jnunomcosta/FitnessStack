@@ -129,6 +129,7 @@ export default {
       this.titles = response.data;
       
     },
+  
     /*infiniteScrolling(entries, observer, isIntersecting) {
       setTimeout(() => {
         this.page++;

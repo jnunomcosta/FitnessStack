@@ -52,11 +52,62 @@ public class gestao_contratos {
             
             if (ret.isEstado()==false && ret.getTreinador_responsavel().getUsername().equals(treinador)){
                 ret.setEstado(true);
+                contratoDAO.save(ret);
                 return true;
             }
         }
 
         return false;
     }
+    public boolean removeContrato(String username,String treinador){
+        Contrato ret =null;
+        Utilizador u = utilizadorDAO.findUtilizador_Username(username);
+        if (u!=null ){
+            ret = contratoDAO.findContratoIdUser(u.getID());
+            contratoDAO.delete(ret);
+            return true;
+            
+        }
 
+        return false;
+    }
+    
+    public boolean removeContratoUser(String username){
+        
+        Utilizador u = utilizadorDAO.findUtilizador_Username(username);
+        if (u!=null ){
+
+            Contrato ret = contratoDAO.findContratoIdUser(u.getID());
+            if(ret!=null){
+                contratoDAO.delete(ret);
+                return true;
+            }
+            
+        }
+
+        return false;
+    }
+    
+    public boolean criarContrato(String username,String treinador,String comentario){
+        
+        Utilizador u= utilizadorDAO.findUtilizador_Username(username);
+        Treinador t = treinadorDAO.findTreinador_Username(treinador);
+        Contrato c = contratoDAO.findContratoIdUser(u.getID());
+
+
+        if ( u !=null && t!=null && c==null){
+           
+            Contrato ret=new Contrato();
+            ret.setComentario(comentario);
+            ret.setEstado(false);
+            ret.setTreinador_responsavel(t);
+            ret.setUtilizador(u);
+
+            contratoDAO.save(ret);
+            return true;
+            
+        }
+
+        return false;
+    }
 }

@@ -127,6 +127,7 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
                           <v-text-field
+                            v-model="input_c"
                             color="#f95738"
                             label="Mensagem"
                             required
@@ -140,7 +141,7 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog2 = false">
+                    <v-btn color="#f95738" text @click="solicitar(title.username,input_c);dialog2 = false">
                       Solicitar contrato
                     </v-btn>
                   </v-card-actions>
@@ -190,6 +191,27 @@ export default {
       console.log("dsadsadsa"+response.data);
       this.titles = response.data;
     },
+    solicitar(treinador,comment){
+
+      console.log("ndfjds"+ JSON.stringify(treinador))
+      console.log("zzzzzzzzzz"+ JSON.stringify(comment))
+      axios
+      .post("http://localhost:4576/api/user/criarContrato",
+      {
+        treinador:treinador,
+        comentario:comment
+      },
+      {headers: {'token': localStorage.getItem("token")}})
+
+      .then((response) => {
+        
+      console.log("sucesso")
+
+       console.log("dkansdjnsadjnsa"+ JSON.stringify(response.data))
+      })
+      .finally(() => (console.log("jo")));
+    }
+    }
     /*infiniteScrolling(entries, observer, isIntersecting) {
       setTimeout(() => {
         this.page++;
@@ -205,6 +227,6 @@ export default {
           });
       }, 500);
     },*/
-  },
+  
 };
 </script>

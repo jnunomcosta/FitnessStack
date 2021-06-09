@@ -57,7 +57,7 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Recusar contrato
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog2 = false">
+                    <v-btn color="#f95738" text @click="accept();dialog2 = false">
                       Aceitar contrato
                     </v-btn>
                   </v-card-actions>
@@ -93,6 +93,21 @@ console.log("hellooo"+JSON.stringify(this.data))
       .finally(() => (this.loading = false));
 
        
+  },
+  methods:{
+    accept(){
+
+      console.log("bum diaaaa")
+      axios
+      .post("http://localhost:4576/api/treinador/aceitarContrato",{username:this.data.utilizador},{headers: {'token': localStorage.getItem("token")}})
+      .then((response) => {
+        
+      console.log("sucesso")
+
+       console.log("dkansdjnsadjnsa"+ JSON.stringify(response.data))
+      })
+      .finally(() => (this.loading = false));
+    }
   }
 
 };

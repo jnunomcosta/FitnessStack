@@ -247,7 +247,7 @@
       <template v-slot:default="dialog">
         <v-card>
           <v-toolbar color="#f95738" dark
-            ><h3>{{ utilizador.nome  }}</h3>
+            ><h3>{{ utilizador.nome }} </h3>
             <v-spacer></v-spacer>
             <v-btn icon @click="dialog.value = false"
               ><v-icon>mdi-close</v-icon></v-btn
@@ -257,24 +257,26 @@
             <v-card style="text-align: center">
               <div class="mx-auto text-center">
                 <v-avatar class="mt-4" size="150">
-                  <v-img src="https://picsum.photos/200"></v-img>
+                  <v-img
+                 :src="'http://localhost:4576' + utilizador.foto_perfil"
+              ></v-img>
                 </v-avatar>
               </div>
-              <v-card-subtitle> xanareigada </v-card-subtitle>
+              <v-card-subtitle> {{utilizador.username}} </v-card-subtitle>
               <v-divider class="mx-4"></v-divider>
-              <div class="mt-4 body-2">xana@gmail.com</div>
+              <div class="mt-4 body-2">{{utilizador.email}}</div>
             </v-card>
           </v-col>
 
           <v-col cols="12" md="5">
             <v-card>
               <v-card-title
-                >Peso atual: 80kg
+                >Peso atual: {{utilizador.peso}}
 
                 <v-spacer></v-spacer>
-                Meta: 70kg
+               <!-- Meta: 70kg--> 
               </v-card-title>
-              <div style="margin-left: 50px; margin-right: 50px">
+              <!--  <div style="margin-left: 50px; margin-right: 50px">
                 <br />
                 <v-progress-linear
                   color="#f95738"
@@ -282,20 +284,20 @@
                   value="20"
                   striped
                 ></v-progress-linear>
-              </div>
+              </div>--> 
               <v-card-text>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <p>Altura</p>
+                    <p>Altura: {{utilizador.altura}}cm</p> 
 
-                    <p>Percentagem de massa gorda</p>
+                    <p>Percentagem de massa gorda {{utilizador.m_gorda}}%</p>
 
-                    <p>Percentagem de massa muscular</p>
+                    <p>Percentagem de massa muscular {{utilizador.m_muscular}}%</p>
                   </v-col>
 
                   <v-col cols="12" md="6">
-                    <p>IMC</p>
-                    <p>IMC ideal</p>
+                    <p>IMC: {{imc}}</p>
+                    <p>IMC ideal: 18.5 - 24.9</p>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -349,7 +351,7 @@
               >Média de minutos de treino por dia</v-card-subtitle
             >
           </v-card>  -->
-
+          <!--
             <v-card class="mt-7">
               <v-card-title class="justify-center">
                 Categorias de treinos
@@ -364,9 +366,9 @@
                   :series="series_categorias"
                 ></apexchart>
               </div>
-            </v-card>
+            </v-card>-->
           </v-col>
-
+  <!--
           <v-col cols="12" md="5">
             <v-card class="mx-auto text-center">
               <v-card-title class="justify-center"
@@ -397,11 +399,11 @@
                 ></apexchart>
               </div>
             </v-card>
-          </v-col>
+          </v-col>-->
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#f95738" text @click="dialog.value = false">
+            <v-btn color="#f95738" text @click="removeContrato();dialog.value = false">
               Terminar contrato
             </v-btn>
           </v-card-actions>
@@ -412,16 +414,19 @@
 </template>
 
 <script>
-import VueApexCharts from "vue-apexcharts";
-import axios from "axios";
+//import VueApexCharts from "vue-apexcharts";
+import axios from "axios";  
 
 export default {
   name: "InfoAluno",
   components: {
-    apexchart: VueApexCharts,
+    //apexchart: VueApexCharts,
   },
   data: () => ({
     utilizador:null,
+    imc:0,
+
+
     time: null,
     menu2: false,
     modal2: false,
@@ -636,28 +641,49 @@ export default {
       "Party",
     ],
   }),
-
-
-
   props:["data"],
-
-
-
   mounted() {
-    this.$refs.calendar.checkChange();
-
+    
 
     axios
       .get("http://localhost:4576/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
         
         this.utilizador = response.data;
-console.log("hellooo"+JSON.stringify(this.data))
-       console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
+        console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(this.utilizador))
+        console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
+        this.imc =
+          (this.utilizador.peso /
+            (this.utilizador.altura * this.utilizador.altura)) *
+          10000;
       })
       .finally(() => (this.loading = false));
+
+    this.$refs.calendar.checkChange();
+  
   },
   methods: {
+
+    removeContrato(){
+      console.log("wiiiiiiiiiiiiiiiii")
+       axios
+          .post("http://localhost:4576/api/treinador/removerContrato",
+          {username:this.data.utilizador},
+          {headers: {'token': localStorage.getItem("token")}}
+          )   
+          .then((response) => {
+              console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(response.data))
+              console.log("removeuuuuu")
+           })
+          .finally(() => (this.loading = false));
+    },
+
+
+
+
+
+
+
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";

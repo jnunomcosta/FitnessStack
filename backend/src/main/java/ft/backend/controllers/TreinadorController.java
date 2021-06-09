@@ -148,21 +148,34 @@ public class TreinadorController {
     }
     
     @PostMapping(value = "/aceitarContrato")
-    public ResponseEntity<String> novoExercicio(@RequestHeader String token, @RequestBody String t){
+    public ResponseEntity<String> aceitarContrato(@RequestHeader String token, @RequestBody String t){
         
         String username = verify.verifyTreinador(token);
 
         if(username!=null){
 
-           
-
-            
-        
+          JSONObject obj = new JSONObject(t);
+          
+          if( gestao_contratos.acceptContrato(obj.getString("username"),username))          
             return ResponseEntity.ok().body("");
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @PostMapping(value = "/removerContrato")
+    public ResponseEntity<String> removerContrato(@RequestHeader String token, @RequestBody String t){
+        
+        String username = verify.verifyTreinador(token);
+
+        if(username!=null){
+
+          JSONObject obj = new JSONObject(t);
+          
+          if( gestao_contratos.removeContrato(obj.getString("username"),username))          
+            return ResponseEntity.ok().body("");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
 
 

@@ -213,6 +213,7 @@ export default {
       )
       .then((response) => {
         this.treino = response.data;
+        console.log("heijsfidjs"+JSON.stringify(this.treino))
       })
       .finally(() => (this.loading = false));
   },

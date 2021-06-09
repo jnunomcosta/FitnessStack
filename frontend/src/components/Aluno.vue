@@ -15,13 +15,13 @@
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-card hover class="white">
             <v-img
-              :src="'https://picsum.photos/200'"
+               :src="'http://localhost:4576' + title.foto_utilizador" 
               class="white--text align-end"
               height="150px"
             >
             </v-img>
             <!--<v-card-title v-text="title.body"></v-card-title>-->
-            <v-card-title>João Ratão</v-card-title>
+            <v-card-title>{{ title.utilizador }}</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
 

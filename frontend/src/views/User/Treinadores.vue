@@ -70,11 +70,13 @@
               </div>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn  color="#f95738" text @click="dialog.value = false">
+
+                <v-card-title>Estado: 
+                  <span  v-if="!estado">  Pendente</span>
+                  <span v-else>   Ativo </span>
+                  </v-card-title>
+                <v-btn  color="#f95738" text @click="cancelar();dialog.value = false">
                   Cancelar contrato
-                </v-btn>
-                <v-btn v-if="contrato.estado==false" color="#f95738" text @click="dialog.value = false">
-                  Reenviar Pedido
                 </v-btn>
 
               </v-card-actions>
@@ -172,6 +174,27 @@ export default {
         })
         .finally(() => console.log("hi"));//msg erro a mudar email));*/
 
+
+
+  }
+  ,methods: {
+
+    cancelar(){
+
+      axios
+      .post("http://localhost:4576/api/user/removerContrato",
+      {}
+      ,
+      {headers: {'token': localStorage.getItem("token")}})
+
+      .then((response) => {
+        
+      console.log("sucesso")
+
+       console.log("dkansdjnsadjnsa"+ JSON.stringify(response.data))
+      })
+      .finally(() => (console.log("dsadsa")));
+    }
   }
 };
 </script>

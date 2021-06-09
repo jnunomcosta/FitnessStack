@@ -16,14 +16,25 @@ public class Contrato implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="CONTRATO_ID_GENERATOR", strategy="native")	
 	private int ID;
 	
-
-	@ManyToOne(targetEntity=Treinador.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
-	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=false) })	
+	
+	/*@ManyToOne(targetEntity=Treinador.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
+	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=false) })		
 	private Treinador treinador_responsavel;
 
 	@ManyToOne(targetEntity=Utilizador.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns(value={ @JoinColumn(name="UtilizadorID", referencedColumnName="ID", nullable=false) })	
+	private Utilizador utilizador;*/
+
+	@ManyToOne(targetEntity=Treinador.class, fetch=FetchType.LAZY)
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns(value={ @JoinColumn(name="TreinadorID", referencedColumnName="ID", nullable=false) })		
+	private Treinador treinador_responsavel;
+
+	@ManyToOne(targetEntity=Utilizador.class, fetch=FetchType.LAZY)	
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
+	@JoinColumns(value={ @JoinColumn(name="UtilizadorID", referencedColumnName="ID", nullable=false) })	
 	private Utilizador utilizador;
+
 
 	@Column(name="Comentario", nullable=false, length=255)	
 	private String comentario;

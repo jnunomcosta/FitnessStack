@@ -13,7 +13,6 @@ import Treinos from '../views/User/Treinos.vue'
 import Treinadores from '../views/User/Treinadores.vue'
 
 import Treinador_Perfil from '../views/Treinador/Treinador_Perfil.vue'
-import Treinador_Agenda from '../views/Treinador/Treinador_Agenda.vue'
 import Treinador_Exercicio from '../views/Treinador/Treinador_Exercicios.vue'
 import Treinador_Treinos from '../views/Treinador/Treinador_Treinos.vue'
 import Treinador_Treino from '../views/Treinador/Treinador_Treino.vue'
@@ -96,11 +95,6 @@ const routes = [
     path: '/treinador/perfil',
     name: 'Treinador_Perfil',
     component: Treinador_Perfil
-  },
-  {
-    path: '/treinador/agenda',
-    name: 'Treinador_Agenda',
-    component: Treinador_Agenda
   },
   {
     path: '/treinador/exercicios',
