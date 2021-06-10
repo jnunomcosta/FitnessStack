@@ -1,5 +1,6 @@
 package ft.backend.beans;
 
+import java.util.Base64;
 import java.util.List;
 
 import ft.backend.entities.Utilizador;
@@ -126,6 +127,50 @@ public class gestao_treinadores {
         Treinador u = tDao.findTreinador_Username(codigo);
         tDao.delete(u);
         return true;
+    }
+
+    public boolean mudarEmail(String username,String email){
+        Treinador u = tDao.findTreinador_Username(username);
+        if(u != null){
+            u.setEmail(email);
+            tDao.save(u);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean mudarUsername(String username,String username_novo){
+        Treinador u = tDao.findTreinador_Username(username);
+        if(u != null){
+            if(tDao.findTreinador_Username(username_novo) == null){
+                u.setUsername(username_novo);
+                tDao.save(u);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean mudarPassword(String username,String oldP, String newP){
+        Treinador u = tDao.findTreinador_Username(username);
+        if(u != null){
+            if(oldP.equals(u.getPassword())){
+                u.setPassword(newP);
+                tDao.save(u);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean mudarImagem(String username,String imagem){
+        Treinador u = tDao.findTreinador_Username(username);
+        if(u!=null){
+            u.getFoto_perfil().setConteudo(Base64.getDecoder().decode(imagem));
+            tDao.save(u);
+            return true;
+        }
+        return false;
     }
 
 }

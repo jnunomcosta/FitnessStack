@@ -171,6 +171,15 @@ public class UtilizadorController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @GetMapping(value = "/getHistoricoFisico")
+    public ResponseEntity<String> getHistoricoFisico(@RequestHeader String token){
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
+            return ResponseEntity.ok().body(gestao_utilizadores.getUserFisicalHistory(username).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
     @GetMapping(value = "/listar")
     public ResponseEntity<String> getUsers(@RequestHeader String token){
         if(verify.verifyAdmin(token) != null){

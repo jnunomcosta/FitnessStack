@@ -55,7 +55,8 @@ public class Utilizador implements Serializable {
 	@OneToMany(targetEntity=InformacaoFisica.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="UtilizadorID3", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE) 	
-	private java.util.Set<InformacaoFisica> informacao_fisica = new java.util.HashSet<>();
+	private java.util.List<InformacaoFisica> informacao_fisica = new java.util.ArrayList<>();
+	//private java.util.Set<InformacaoFisica> informacao_fisica = new java.util.HashSet<>();
 
 	@OneToMany(targetEntity=Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="UtilizadorID4", nullable=true) })	
@@ -163,8 +164,6 @@ public class Utilizador implements Serializable {
 		return treinos_favoritos;
 	}
 
-
-
 	public ConteudoMedia getFoto_perfil() {
 		return foto_perfil;
 	}
@@ -189,11 +188,11 @@ public class Utilizador implements Serializable {
 		this.m_muscular = m_muscular;
 	}
 
-	public java.util.Set<InformacaoFisica> getInformacao_fisica() {
+	public java.util.List<InformacaoFisica> getInformacao_fisica() {
 		return informacao_fisica;
 	}
 
-	public void setInformacao_fisica(java.util.Set<InformacaoFisica> informacao_fisica) {
+	public void setInformacao_fisica(java.util.List<InformacaoFisica> informacao_fisica) {
 		this.informacao_fisica = informacao_fisica;
 	}
 

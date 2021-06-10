@@ -360,19 +360,7 @@
             >
             <v-divider class="mx-4"></v-divider>
             <div id="chart">
-              <!-- <apexchart
-                type="line"
-                height="250"
-                :options="chartOptions_peso_massa"
-                :series="series_peso_massa"
-              ></apexchart> -->
-              <!-- <apexchart 
-              :type="type"
-    :width="width"
-    :height="height"
-    :dataFormat="dataFormat"
-    :dataSource="dataSource">
-              </apexchart> -->
+               <line-chart/>
             </div>
           </v-card>
 
@@ -422,11 +410,9 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
-//import VueApexCharts from "vue-apexcharts";
-
+import LineChart from '@/components/InfoFisicaGrafico.vue'
 
 import axios from "axios";
 import sjcl from "sjcl";
@@ -436,7 +422,7 @@ export default {
   components: {
     NavBar,
     SideBar,
-    //apexchart: VueApexCharts,
+    LineChart
   },
   created() {
     document.title = "Fitness Stack";
@@ -449,31 +435,15 @@ export default {
     dialog5: false,
     dialog6: false,
     imagem_inputa: null,
-    /* width: "100%",
-      height: "400",
-      type: "timeseries",
-      dataFormat: "json",
-      dataSource: {
-        caption: { text: "Online Sales of a SuperStore in the US" },
-        data: fetch(
-  "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/area-chart-with-time-axis-data.json"
-).then(jsonify),
-        chart: {
-          showLegend: 0
-        },
-        caption: {
-          text: 'Daily Visitors Count of a Website'
-        },
-        yAxis: [
-          {
-            plot: {
-              value: 'Daily Visitors',
-              type: 'area'
-            },
-            title: 'Daily Visitors (in thousand)'
-          }
-        ]
-      }, */
+    username: "",
+    new_username: "",
+    input_email: "",
+    old_password: "",
+    new_password: "",
+    input_peso: "",
+    input_muscular: "",
+    input_gorda: "",
+
     minPeso: 30,
     maxPeso: 200,
     minPercentagem: 0,
@@ -499,7 +469,7 @@ export default {
       .then((response) => {
         
         this.utilizador = response.data;
-        console.log(this.utilizador.info_fisica);
+        
         this.imc =
           (this.utilizador.peso /
             (this.utilizador.altura * this.utilizador.altura)) *
@@ -523,7 +493,7 @@ export default {
         .post(
           "http://localhost:4576/api/user/novaInfoFisica",
             {
-              "data":anoF+"/"+mesF+"/"+diaF,
+              "data":anoF+"-"+mesF+"-"+diaF,
               "peso": new_peso,
               "m_muscular":new_muscular,
               "m_gorda":new_gorda

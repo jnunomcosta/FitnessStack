@@ -2,6 +2,7 @@ package ft.backend.controllers;
 
 import java.util.List;
 
+import ft.backend.utils.Authorization;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,6 +219,60 @@ public class TreinadorController {
                 gestao_treinadores.deleteTreinador(cod);
             }
             return ResponseEntity.ok().body(null);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @PostMapping(value = "/mudarEmail")
+    public ResponseEntity<String> mudarEmail(@RequestHeader String token, @RequestBody String t){
+        String username = null;
+        if((username = verify.verifyTreinador(token)) != null){
+            JSONObject obj = new JSONObject(t);
+            if (gestao_treinadores.mudarEmail(username, obj.getString("email"))){
+                return ResponseEntity.ok().body("");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @PostMapping(value = "/mudarUsername")
+    public ResponseEntity<String> mudarUsername(@RequestHeader String token, @RequestBody String t){
+        String username = null;
+        if((username = verify.verifyTreinador(token)) !=null){
+            JSONObject req = new JSONObject(t);
+            if (gestao_treinadores.mudarUsername(username, req.getString("username_novo"))){
+                JSONObject rep =  new JSONObject();
+                rep.put("token", Authorization.generateToken(req.getString("username_novo"), 0));
+                return ResponseEntity.ok().body(rep.toString());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @PostMapping(value = "/mudarPassword")
+    public ResponseEntity<String> mudarPassword(@RequestHeader String token, @RequestBody String t){
+        String username = null;
+        if((username = verify.verifyTreinador(token)) != null){
+            JSONObject obj = new JSONObject(t);
+            String oldP = obj.getString("old_password");
+            String newP = obj.getString("new_password");
+
+            if (gestao_treinadores.mudarPassword(username, oldP,newP)){
+                return ResponseEntity.ok().body("");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+
+    }
+
+    @PostMapping(value="/mudarImagem")
+    public ResponseEntity<String> mudarImagem(@RequestHeader String token, @RequestBody String t){
+        String username = null;
+        if((username = verify.verifyTreinador(token)) != null){
+            JSONObject obj = new JSONObject(t);
+            if(gestao_treinadores.mudarImagem(username,obj.getString("nova_foto"))){
+                return ResponseEntity.ok().body("");
+            }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }

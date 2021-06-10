@@ -74,18 +74,12 @@
               >
                 <v-card color="grey lighten-4" min-width="200px" flat>
                   <v-toolbar :color="selectedEvent.color" dark>
-                    <v-btn icon>
-                      <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
                     <v-toolbar-title
                       v-html="treino_info.nome"
                     ></v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-btn icon>
-                      <v-icon>mdi-heart</v-icon>
-                    </v-btn>
-                    <v-btn icon>
-                      <v-icon>mdi-dots-vertical</v-icon>
+                    <v-btn icon @click="verTreino(treino_info.codigo)">
+                      <v-icon>mdi-magnify</v-icon>
                     </v-btn>
                   </v-toolbar>
                   <v-card-text>
@@ -278,6 +272,9 @@ export default {
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
+    },
+    verTreino(cod){
+      this.$router.push("/treino/" + cod);
     },
     getEventColor(event) {
       return event.color;

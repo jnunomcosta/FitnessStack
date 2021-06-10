@@ -6,6 +6,8 @@ import ft.backend.entities.Treino;
 import ft.backend.repositories.TreinadorDAO;
 
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -50,6 +52,16 @@ public class gestao_utilizadores {
             ret.put("genero", u.getGenero() ? "Masculino" : "Feminino");
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
 
+            return ret;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public JSONArray getUserFisicalHistory(String username){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null) {
             JSONArray arr = new JSONArray();
             for(InformacaoFisica i : u.getInformacao_fisica()){
                 JSONObject o = new JSONObject();
@@ -59,12 +71,9 @@ public class gestao_utilizadores {
                 o.put("data",i.getData());
                 arr.put(o);
             }
-            ret.put("info_fisica",arr);
-            return ret;
+            return arr;
         }
-        else{
-            return null;
-        }
+        return null;
     }
 
     public JSONObject getSideBarUserInformation(String username){

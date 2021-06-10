@@ -48,6 +48,7 @@
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo nome de utilizador.
                           <v-text-field
+                            v-model="new_username"
                             color="#f95738"
                             prepend-icon="mdi-account-lock"
                             label="Nome de Utilizador"
@@ -62,7 +63,7 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog1 = false">
+                    <v-btn color="#f95738" text @click="setUsername(new_username);dialog1 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -92,6 +93,7 @@
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo email.
                           <v-text-field
+                            v-model="input_email"
                             color="#f95738"
                             prepend-icon="mdi-email"
                             label="Email"
@@ -106,7 +108,7 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog2 = false">
+                    <v-btn color="#f95738" text @click="setEmail(input_email);dialog2 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -136,6 +138,7 @@
                         <v-col cols="12" md="12">
                           Digite a palavra-passe antiga.
                           <v-text-field
+                            v-model="old_password"
                             color="#f95738"
                             prepend-icon="mdi-lock"
                             label="Palavra-Passe Antiga"
@@ -143,6 +146,7 @@
                           ></v-text-field>
                           Digite a palavra-passe nova.
                           <v-text-field
+                            v-model="new_password"
                             color="#f95738"
                             prepend-icon="mdi-lock-question"
                             label="Palavra-Passe Nova"
@@ -157,7 +161,7 @@
                     <v-btn color="#f95738" text @click="dialog3 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog3 = false">
+                    <v-btn color="#f95738" text @click="setPassword(old_password,new_password);dialog3 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -201,7 +205,7 @@
                     <v-btn color="#f95738" text @click="dialog4 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="dialog4 = false">
+                    <v-btn color="#f95738" text @click="setImagem(imagem_input);dialog4 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -222,6 +226,7 @@
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Treinador.vue";
 import axios from 'axios';
+import sjcl from "sjcl";
 
 export default {
   name: "Progresso",
@@ -240,6 +245,10 @@ export default {
     dialog5: false,
     dialog6: false,
     imagem_input: null,
+    new_username: "",
+    input_email: "",
+    old_password: "",
+    new_password: "",
     treinador : {
       username: "",
       foto_perfil: "",
@@ -256,8 +265,75 @@ export default {
       .finally(() => (this.loading = false));
   },
   methods: {
-    atualizarFoto(){
-      
+    setEmail(new_email) {
+      axios
+        .post(
+          "http://localhost:4576/api/treinador/mudarEmail",
+            {
+              "username": localStorage.getItem("username"),
+              "email": new_email
+              }
+            , {headers: {'token': localStorage.getItem("token")}}
+        )
+        .then((response) => {
+          console.log(response)
+          this.treinador.email = new_email
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar email));
+    },
+    setPassword(oldP,newP){
+        axios
+        .post(
+          "http://localhost:4576/api/treinador/mudarPassword",
+            {
+              "username":localStorage.getItem("username"),
+              "new_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
+              "old_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
+              }
+            , {headers: {'token': localStorage.getItem("token")}}
+        )
+        .then((response) => {
+          const status = JSON.parse(response.status);
+            if (status == "200") {
+              console.log("mudei a pass")
+            }   
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar username));
+    },
+    setUsername(new_username) {
+      axios
+        .post(
+          "http://localhost:4576/api/treinador/mudarUsername",
+            {
+              "username_novo": new_username,
+              }
+            , {headers: {'token': localStorage.getItem("token")}}
+        )
+        .then((response) => {
+          console.log(response)
+          this.treinador.username = new_username
+          localStorage.setItem("token",response.data.token)
+          localStorage.setItem("username",new_username)  
+        })
+        .finally(() => console.log("hi"));//msg erro a mudar username));
+    },
+    async setImagem(imagem_inputa){
+      function carrega_foto(x) {
+        return new Promise((resolve) => {
+          let blob = new Blob([x]),
+            fileReader = new FileReader();
+          fileReader.readAsArrayBuffer(blob);
+          fileReader.onload = function () {
+            resolve(Buffer.from(this.result).toString("base64"));
+          };
+        });
+      }
+
+      let foto = await carrega_foto(imagem_inputa);
+      axios.post("http://localhost:4576/api/treinador/mudarImagem",{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
+           .then(response => {
+             console.log(response);
+           })
     }
   }
   

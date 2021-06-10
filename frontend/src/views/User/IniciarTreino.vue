@@ -77,12 +77,12 @@
                                 rounded-pill
                               "
                             >
-                              Repetições: {{ item.duracao }} repetições
+                              Repetições: {{ item.repeticoes }} repetições
                             </p>
                             <v-btn
                               color="black"
                               dark
-                              v-on:click="aumentar_serie()"
+                              v-on:click="aumentar_serie(item)"
                             >
                               Próxima série
                               <v-icon dense> mdi-ArrowRightBoldOutline </v-icon>
@@ -103,30 +103,35 @@
                           </v-col>
                         </v-row>
                         <v-btn
-                          v-if="flag_duracao"
+                          v-if="tipoDuracao(item.tipo)"
                           color="black"
                           text
-                          v-on:click="countDownTimer_serie()"
+                          v-on:click="countDownTimer_serie(item)"
                           >Iniciar</v-btn
                         >
                       </v-list-item-content>
                     </div>
                   </v-card>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="3" v-if="i+1 < Object.keys(treino.exercicios).length">
                   <h3 class="text-center" style="color: black">
                     Próximo exercício
                   </h3>
                   <v-card elevation="17" color="white" class="black--text">
-                    <div v-if=" i+1 < Object.keys(treino.exercicios).length" class="text-center mx-4">
+                    <div class="text-center mx-4">
                       <h4>{{ item[i+1].nome }} </h4>
                       <h5>{{ item[i+1].series }} Séries</h5>
                       <h5 v-if="tipoRepeticoes(item[i+1].tipo)">{{ item[i+1].duracao }}  repetições</h5>
                       <h5 v-if="tipoDuracao(item[i+1].tipo)">{{ item[i+1].duracao }}  segundos</h5>
                       <h5>{{ item[i+1].descanso }} </h5>
                     </div>
-                  </v-card> </v-col
-                ><v-col cols="12" md="3"></v-col>
+                  </v-card> 
+                </v-col>
+                <v-col cols="12" md="3" v-else>
+
+                </v-col>
+              <v-col cols="12" md="3"></v-col>
+                
               </v-row>
             </v-sheet>
           </v-carousel-item>
@@ -153,14 +158,10 @@ export default {
     return {
       //True -> Repeticoes | False -> Duracao
       dialog1: false,
-      slides: ["First", "Second", "Third", "Fourth", "Fifth"],
-      duracao_serie: 2,
-      duracao_descanso: 2,
       series: 0,
-      series_total: 5,
-      flag_repeticoes: false,
-      flag_duracao: true,
       terminar_series: false,
+      duracao_descanso: 0,
+      duracao_serie: 0,
       treino: {
         nome: "",
         duracao: "",
@@ -194,18 +195,18 @@ export default {
     //   this.interval = 1000000;
     //}
     //},
-    countDownTimer_serie() {
+    countDownTimer_serie(item) {
+      this.duracao_serie = item.series;
       if (this.terminar_series==false){
         if (this.duracao_serie > -1) {
           setTimeout(() => {
             this.duracao_serie -= 1;
-            this.countDownTimer_serie();
+            this.countDownTimer_serie(item);
           }, 1000);
         } else {
           if (this.duracao_serie == -1) {
             this.playSound();
-            this.duracao_serie = 2; //voltar a dar o valor inicial
-            this.countDownTimer_descanso();
+            this.countDownTimer_descanso(item);
           }
         }
       }
@@ -215,36 +216,36 @@ export default {
       }
     },
 
-    countDownTimer_descanso() {
+    countDownTimer_descanso(item) {
+      this.duracao_descanso = item.descanso;
       if (this.duracao_descanso > -1) {
         setTimeout(() => {
           this.duracao_descanso -= 1;
-          this.countDownTimer_descanso();
+          this.countDownTimer_descanso(item);
         }, 1000);
       } else {
         if (this.duracao_descanso == -1) {
-          if (this.flag_duracao) {
-            this.aumentar_serie();
+          if (!item.tipo) {
+            this.aumentar_serie(item);
             this.countDownTimer_serie();
           }
           this.playSound();
-          this.duracao_descanso = 2;
         }
       }
     },
 
-    aumentar_serie() {
-      if (this.series < this.series_total) {
+    aumentar_serie(item) {
+      if (this.series < item.series) {
         this.series++;
-        if (this.flag_repeticoes) this.countDownTimer_descanso();
+        if (item.tipo) this.countDownTimer_descanso(item);
       }
       else this.terminar_series=true;
     },
 
     playSound() {
-      var audio = new Audio('http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3');
+      //var audio = new Audio('http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3');
       //var audio = new Audio("http://localhost:4576/api/assets/audio/37");
-      audio.play();
+      //audio.play();
     },
 
     submit(){
@@ -253,12 +254,10 @@ export default {
   },
   mounted() {
     axios
-      .get(
-        "http://localhost:4576/api/treinos/getTreino?codigo=" +
-          this.$route.params.codigo
-      )
+      .get("http://localhost:4576/api/treinos/getTreino?codigo="+this.$route.params.codigo,{headers: { token: localStorage.getItem("token")}})
       .then((response) => {
         this.treino = response.data;
+        console.log(response);
       })
       .finally(() => (this.loading = false));
   },

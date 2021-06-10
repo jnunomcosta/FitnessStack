@@ -138,8 +138,8 @@ export default {
     },
     onButtonClick(props) {
       if(props.favoritos){
-        console.log("entrei no true")
-        console.log(props);
+        //console.log("entrei no true")
+        //console.log(props);
         axios
           .post("http://localhost:4576/api/treinos/desfavoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
           .then(response => {
@@ -148,8 +148,8 @@ export default {
           props.favoritos = false;
       }
       else {
-        console.log("parente")
-        console.log(props)
+        //console.log("parente")
+        //console.log(props)
         axios
           .post("http://localhost:4576/api/treinos/favoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
           .then(response => {
