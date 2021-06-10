@@ -3,6 +3,7 @@ package ft.backend.controllers;
 import ft.backend.entities.Contrato;
 import ft.backend.entities.InformacaoFisica;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -226,6 +227,19 @@ public class UtilizadorController {
           
           if( gestao_contratos.removeContratoUser(username) )       
             return ResponseEntity.ok().body("");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @DeleteMapping(value="/deleteUtilizador")
+    public ResponseEntity<String> deleteUtilizador(@RequestHeader String token,@RequestBody String cods){
+        if(verify.verifyAdmin(token) != null){
+            JSONArray arr = new JSONArray(cods);
+            for(int i=0;i<arr.length();i++){
+                String cod = arr.getString(i);
+                gestao_utilizadores.deleteUtilizador(cod);
+            }
+            return ResponseEntity.ok().body(null);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }

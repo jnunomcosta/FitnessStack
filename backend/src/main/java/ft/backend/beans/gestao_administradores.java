@@ -114,7 +114,7 @@ public class gestao_administradores {
         for(Administrador e: l){
             JSONObject exe = new JSONObject();
             exe.put("nome", e.getNome());
-            exe.put("username", e.getEmail());
+            exe.put("username", e.getUsername());
             exe.put("email",e.getEmail());
             
             res.put(exe);

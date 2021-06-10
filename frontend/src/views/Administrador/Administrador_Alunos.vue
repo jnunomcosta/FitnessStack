@@ -34,7 +34,7 @@
               :items="rows"
               :single-select="singleSelect"
               show-select
-              item-key="codigo"
+              item-key="nome"
               :search="search"
               >
               
@@ -44,10 +44,7 @@
         </v-container>
         
       </v-col>
-      <v-dialog v-model="dialog" persistent max-width="600px">
-    
-    
-      <template v-slot:activator="{ on, attrs }">
+      
       <v-btn
         fab
         dark
@@ -57,12 +54,10 @@
         right
         bottom
         v-bind="attrs"
-        v-on="on"
+        v-on:click="apagarUtilizador()"
       >
         <v-icon>mdi-delete</v-icon>
       </v-btn>
-    </template>
-      </v-dialog>
      
     </v-row>
     
@@ -70,7 +65,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Administrador.vue";
 import axios from "axios";
@@ -112,7 +106,20 @@ export default {
     };
   },
   methods: {
-    
+    apagarUtilizador(){
+      let deletbody = [];
+      this.selected.forEach(element => {
+        deletbody.push(element.username);
+      });
+      axios 
+        .delete('http://localhost:4576/api/user/deleteUtilizador',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .then(response => {
+          //ERRO 500 -> nao conseguiu eliminar, pode ter feito um comentario ou ter marcacoes ou um treinador associado
+          if(response.status == 200){
+            this.$router.push("/administrador/alunos/");
+          }
+        })  
+    },
   },
 };
 </script>

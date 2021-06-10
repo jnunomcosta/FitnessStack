@@ -38,7 +38,7 @@ public class RecursoAvaliacao {
     public List<Avaliacao_Treino> getAll_aval_treinos(){
         return rep_eval_treino.findAll();
     }
-
+/*
     @PostMapping(value = "/treinadores/carregar")
     public String persiste(@RequestBody String t){
         JSONObject obj = new JSONObject(t);
@@ -50,7 +50,7 @@ public class RecursoAvaliacao {
         rep_trainers.save(tre);
 
         return "{\"great\":\"Success\"}";
-    }
+    }*/
 
     @PostMapping(value = "/treinos/carregar")
     public String persiste_treinos(@RequestBody String t){

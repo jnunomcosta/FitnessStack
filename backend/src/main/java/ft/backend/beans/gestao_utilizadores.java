@@ -2,6 +2,7 @@ package ft.backend.beans;
 
 import ft.backend.entities.InformacaoFisica;
 import ft.backend.entities.Treinador;
+import ft.backend.entities.Treino;
 import ft.backend.repositories.TreinadorDAO;
 
 import java.util.Base64;
@@ -171,13 +172,19 @@ public class gestao_utilizadores {
         for(Utilizador e: l){
             JSONObject exe = new JSONObject();
             exe.put("nome", e.getNome());
-            exe.put("username", e.getEmail());
+            exe.put("username", e.getUsername());
             exe.put("email",e.getEmail());
             
             res.put(exe);
         }
 
         return res;
+    }
+
+    public boolean deleteUtilizador(String codigo){
+        Utilizador u = uDao.findUtilizador_Username(codigo);
+        uDao.delete(u);
+        return true;
     }
 
 }

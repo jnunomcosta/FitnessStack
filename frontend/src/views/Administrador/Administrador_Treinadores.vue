@@ -35,7 +35,7 @@
               :items="rows"
               :single-select="singleSelect"
               show-select
-              item-key="codigo"
+              item-key="username"
               :search="search"
             >
             </v-data-table>
@@ -186,23 +186,19 @@
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="dialog" persistent max-width="600px">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            fab
-            dark
-            large
-            color="#f95738"
-            fixed
-            right
-            bottom
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </template>
-      </v-dialog>
+      <v-btn
+        fab
+        dark
+        large
+        color="#f95738"
+        fixed
+        right
+        bottom
+        v-bind="attrs"
+        v-on:click="apagarTreinador()"
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
     </v-row>
   </div>
 </template>
@@ -230,11 +226,11 @@ export default {
       })
       .then((response) => {
         this.rows = response.data;
-        console.log("adasdsadsadhhhhhhhhhhhh" + response.data);
+        //console.log("adasdsadsadhhhhhhhhhhhh" + response.data);
       })
       .catch((e) => console.log("erro" + e));
 
-    console.log("dasjdamsjdsnajdzzzzzzzzzzzz");
+    //console.log("dasjdamsjdsnajdzzzzzzzzzzzz");
   },
   data() {
     return {
@@ -264,6 +260,21 @@ export default {
     };
   },
   methods: {
+    apagarTreinador(){
+      let deletbody = [];
+      this.selected.forEach(element => {
+        deletbody.push(element.username);
+      });
+      console.log(deletbody);
+      axios 
+        .delete('http://localhost:4576/api/treinador/deleteTreinador',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .then(response => {
+          //ERRO 500 -> nao conseguiu eliminar, pode ter feito um comentario ou ter marcacoes ou um treinador associado
+          if(response.status == 200){
+            this.$router.push("/administrador/treinadores/");
+          }
+        }) 
+    },
     async registar() {
       function carrega_foto(x) {
         return new Promise((resolve) => {

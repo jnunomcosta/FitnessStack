@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -205,6 +206,19 @@ public class TreinadorController {
             }
         }
 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @DeleteMapping(value="/deleteTreinador")
+    public ResponseEntity<String> deleteUtilizador(@RequestHeader String token,@RequestBody String cods){
+        if(verify.verifyAdmin(token) != null){
+            JSONArray arr = new JSONArray(cods);
+            for(int i=0;i<arr.length();i++){
+                String cod = arr.getString(i);
+                gestao_treinadores.deleteTreinador(cod);
+            }
+            return ResponseEntity.ok().body(null);
+        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 

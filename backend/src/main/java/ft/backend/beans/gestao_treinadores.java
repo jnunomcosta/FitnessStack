@@ -122,4 +122,10 @@ public class gestao_treinadores {
         return b;
     }
 
+    public boolean deleteTreinador(String codigo){
+        Treinador u = tDao.findTreinador_Username(codigo);
+        tDao.delete(u);
+        return true;
+    }
+
 }
