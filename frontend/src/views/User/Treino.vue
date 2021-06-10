@@ -44,6 +44,7 @@
               <v-col cols="12" md="6">
                 <p>
                   <v-rating
+                    readonly
                     v-model="item.avaliacao"
                     background-color="black"
                     color="#f95738"
@@ -189,6 +190,7 @@ export default {
       console.log(this.rating);
       console.log(this.comentario);
       var post_body = {
+        username: localStorage.getItem("username"),
         cod_treino: this.$route.params.codigo,
         avaliacao: this.rating,
         comentario: this.comentario,

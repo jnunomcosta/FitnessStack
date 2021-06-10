@@ -34,10 +34,26 @@ public class gestao_treinos {
         boolean b = false;
         Treino t = tDao.findbyCodigo(codigo);
         if(t!=null){
+
+
             t.getORM_Avaliacoes_treino().add(at);
-            tDao.save(t);
+     
+            
+            float numero= t.getNumeroAvaliacoes();
+            float media= t.getMediaAvaliacao();
+
+            float nova_media = (float) (media*numero + at.getClassificacao()) / ( numero +1);
+
+            t.setNumeroAvaliacoes(numero+1);
+            t.setMediaAvaliacao(nova_media);
+            
+
             b = true;
+            tDao.save(t);
+            
+       
         }
+
         return b;
     }
 
@@ -55,6 +71,7 @@ public class gestao_treinos {
             }
             exe.put("categoria", a);
             exe.put("dificuldade", t.getDificuldade());
+            exe.put("classificacao",t.getMediaAvaliacao());
             exe.put("data", t.getData_criacao());
             exe.put("codigo", t.getCodigo());
             ret.put(exe);

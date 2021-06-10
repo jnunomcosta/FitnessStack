@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ft.backend.entities.Avaliacao_Treinador;
 import ft.backend.entities.Treinador;
 import ft.backend.repositories.TreinadorDAO;
 
@@ -55,6 +56,8 @@ public class gestao_treinadores {
             exe.put("username", tr.getUsername());
             exe.put("email", tr.getEmail());
             exe.put("descricao", tr.getDescricao());
+            exe.put("classsificacao",tr.getMediaAvaliacao());
+            exe.put("numero_classsificacao",tr.getNumeroAvaliacoes());
             exe.put("imagem", "/api/assets/photo/"+tr.getFoto_perfil().getID());
             ret.put(exe);
         }
@@ -69,6 +72,7 @@ public class gestao_treinadores {
             ret.put("email", u.getEmail());
             ret.put("nome",u.getNome());
             ret.put("username", username);
+            ret.put("classsificacao",u.getMediaAvaliacao());
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
             ret.put("descricao",u.getDescricao());
             return ret;
@@ -94,6 +98,28 @@ public class gestao_treinadores {
 
     public Treinador getTreinadorByUsername(String username){
         return tDao.findTreinador_Username(username);
+    }
+
+
+    public boolean avaliacao(String username, Avaliacao_Treinador at){
+        boolean b = false;
+        Treinador t = tDao.findTreinador_Username(username);
+        if(t!=null){
+            t.getORM_avaliacoes_t().add(at);
+           
+
+            float numero= t.getNumeroAvaliacoes();
+            float media= t.getMediaAvaliacao();
+
+            float nova_media = (float) (media*numero + at.getClassificacao()) / ( numero +1);
+
+            t.setNumeroAvaliacoes(numero+1);
+            t.setMediaAvaliacao(nova_media);
+
+            tDao.save(t);
+            b = true;
+        }
+        return b;
     }
 
 }

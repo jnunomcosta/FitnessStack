@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ft.backend.beans.gestao_treinadores;
+import ft.backend.beans.gestao_utilizadores;
 import ft.backend.beans.gestao_verificacoes;
 import ft.backend.beans.gestao_contratos;
+import ft.backend.entities.Avaliacao_Treinador;
 import ft.backend.entities.Contrato;
 
 
@@ -29,6 +31,8 @@ public class TreinadorController {
     @Autowired
     gestao_treinadores gestao_treinadores;
 
+    @Autowired
+    gestao_utilizadores gestao_utilizadores;
 
     @Autowired
     gestao_verificacoes verify;
@@ -177,6 +181,32 @@ public class TreinadorController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+
+    @PostMapping(value = "/avaliacao")
+    public ResponseEntity<String> comentar(@RequestHeader String token, @RequestBody String s){
+
+        if(verify.verifyUser(token) != null){
+
+            JSONObject obj = new JSONObject(s);
+
+            String username = obj.getString("username");
+            String treinador = obj.getString("treinador");
+            float aval = obj.getFloat("avaliacao");
+            String comentario = obj.getString("comentario");
+
+            Avaliacao_Treinador at = new Avaliacao_Treinador();
+            at.setUser(gestao_utilizadores.getUserByUsername(username));
+            at.setClassificacao(aval);
+            at.setComentario(comentario);
+
+
+            if(gestao_treinadores.avaliacao(treinador, at)){
+                return ResponseEntity.ok().body(null);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
 
 }

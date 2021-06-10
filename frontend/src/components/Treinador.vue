@@ -25,14 +25,14 @@
             <v-card-subtitle>
               <v-row align="center" class="mx-0">
                 <v-rating
-                  :value="4.5"
+                  :value=title.classsificacao
                   color="amber"
                   dense
                   half-increments
                   readonly
                   size="14"
                 ></v-rating>
-                <div class="grey--text ml-4">4.5 (413)</div>
+                <div class="grey--text ml-4">{{title.classsificacao}} ({{title.numero_classsificacao}})</div>
               </v-row>
             </v-card-subtitle>
             <v-card-actions>
@@ -85,7 +85,7 @@
 
               <v-row align="center" class="mx-0 mt-6 mb-4">
                 <v-rating
-                  :value="4.5"
+                  :value=title.classsificacao
                   color="amber"
                   dense
                   half-increments
@@ -93,7 +93,7 @@
                   size="14"
                 ></v-rating>
 
-                <div class="grey--text ml-4">4.5 (413)</div>
+                <div class="grey--text ml-4">{{title.classsificacao}} ({{title.numero_classsificacao}})</div>
               </v-row>
 
               <v-divider></v-divider>

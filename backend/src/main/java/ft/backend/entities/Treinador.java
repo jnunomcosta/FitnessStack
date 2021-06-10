@@ -46,6 +46,46 @@ public class Treinador implements Serializable {
 	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) })	
 	private ConteudoMedia foto_perfil;
 
+	@Column(name="MediaAvaliacao", nullable=true, length=2048)	
+	private float mediaAvaliacao=0 ;
+
+	@Column(name="NumeroAvaliacoes", nullable=true, length=2048)	
+	private float numeroAvaliacoes=0;
+
+	
+
+	public java.util.Date getData_nascimento() {
+		return data_nascimento;
+	}
+
+	public void setData_nascimento(java.util.Date data_nascimento) {
+		this.data_nascimento = data_nascimento;
+	}
+
+	public java.util.Set<Avaliacao_Treinador> getORM_avaliacoes_t() {
+		return ORM_avaliacoes_t;
+	}
+
+	public void setORM_avaliacoes_t(java.util.Set<Avaliacao_Treinador> oRM_avaliacoes_t) {
+		ORM_avaliacoes_t = oRM_avaliacoes_t;
+	}
+
+	public float getMediaAvaliacao() {
+		return mediaAvaliacao;
+	}
+
+	public void setMediaAvaliacao(float mediaAvaliacao) {
+		this.mediaAvaliacao = mediaAvaliacao;
+	}
+
+	public float getNumeroAvaliacoes() {
+		return numeroAvaliacoes;
+	}
+
+	public void setNumeroAvaliacoes(float numeroAvaliacoes) {
+		this.numeroAvaliacoes = numeroAvaliacoes;
+	}
+
 	private void setID(int value) {
 		this.ID = value;
 	}
@@ -118,9 +158,6 @@ public class Treinador implements Serializable {
 		this.ORM_avaliacoes_t = value;
 	}
 	
-	public java.util.Set<Avaliacao_Treinador> getORM_Avaliacoes_t() {
-		return ORM_avaliacoes_t;
-	}
 
 	public ConteudoMedia getFoto_perfil() {
 		return foto_perfil;

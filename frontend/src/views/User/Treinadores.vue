@@ -50,7 +50,8 @@
                     </v-row>
                     <div style="margin-top: 14px">
                       <v-rating
-                        v-model="rating"
+                       :value=treinador.classsificacao
+                          
                         color="yellow darken-3"
                         background-color="grey darken-1"
                         empty-icon="$ratingFull"
@@ -72,13 +73,59 @@
                 <v-spacer></v-spacer>
 
                 <v-card-title>Estado: 
-                  <span  v-if="!estado">  Pendente</span>
+                  <span  v-if="!contrato.estado">  Pendente</span>
                   <span v-else>   Ativo </span>
                   </v-card-title>
                 <v-btn  color="#f95738" text @click="cancelar();dialog.value = false">
                   Cancelar contrato
                 </v-btn>
 
+
+          <v-container class="text-center">
+            <v-dialog v-model="dialog1" persistent max-width="380px">
+              <template v-slot:activator="{ on, attrs }">
+
+                <v-btn  v-if="contrato.estado" v-bind="attrs" v-on="on" color="#f95738" text >
+                  Avaliar Treinador
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="headline text-center"
+                    >Dê-nos o seu feedback acerca deste treinador!</span
+                  >
+                </v-card-title>
+                <v-card-text>
+                  <div class="text-center mt-12">
+                    <v-rating
+                      v-model="rating"
+                      color="#f95738"
+                      background-color="grey darken-1"
+                      empty-icon="$ratingFull"
+                      half-increments
+                      hover
+                      large
+                    ></v-rating>
+                    <v-text-field
+                      color="#f95738"
+                      v-model="comentario"
+                      label="Deixe-nos o seu comentário."
+                      required
+                    >
+                    </v-text-field>
+                  </div>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#f95738" text @click="dialog1 = false">Sair</v-btn>
+                  <v-btn color="#f95738" text @click="dialog1 = false" v-on:click="submit()">
+                    Confirmar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-container>
+         
               </v-card-actions>
             </v-card>
           </template>
@@ -121,6 +168,8 @@ import axios from "axios";
 export default {
   name: "Treinadores",
   data: () => ({
+
+      dialog1:false,
       contrato:{
        
         "utilizador": "",
@@ -194,7 +243,35 @@ export default {
        console.log("dkansdjnsadjnsa"+ JSON.stringify(response.data))
       })
       .finally(() => (console.log("dsadsa")));
-    }
+    },
+     submit(){
+      //var cod_treino = this.$route.params.codigo;
+      console.log(this.rating);
+      console.log(this.comentario);
+      var post_body = {
+        username: localStorage.getItem("username"),
+        treinador: this.contrato.treinador,
+        avaliacao: this.rating,
+        comentario: this.comentario,
+      };
+
+
+  console.log("hdsaihdsaidddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
+      axios
+        .post("http://localhost:4576/api/treinador/avaliacao",post_body,{headers: {'token': localStorage.getItem("token")}})
+        .then(response => {
+          console.log("ORA BOM DIA"+JSON.stringify(response.data));
+        });
+      
+
+      this.treino.avaliacoes.push({
+        username: localStorage.getItem("username"),
+        avaliacao: this.rating,
+        comentario: this.comentario,
+      });
+
+      
+     }
   }
 };
 </script>
