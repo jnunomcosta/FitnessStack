@@ -229,14 +229,16 @@ export default {
         .post(
           "http://localhost:4576/api/admin/mudarEmail",
             {
-              "username": localStorage.getItem("username"),
               "email": new_email
-              }
+            }
             ,{headers: {'token': localStorage.getItem("token")}})
         
         .then((response) => {
-          console.log(response  )
-          this.admin.email=new_email
+          console.log(response)
+          if(response.status==200){
+            this.admin.email=new_email
+          }
+          
           
         })
         .finally(() => console.log("hi"));//msg erro a mudar email));
@@ -246,18 +248,17 @@ export default {
         .post(
           "http://localhost:4576/api/admin/mudarUsername",
             {
-              "username_antigo": localStorage.getItem("username"),
               "username_novo": new_username,
-              }
+            }
         , {headers: {'token': localStorage.getItem("token")}})
         
         .then((response) => {
           console.log(response  )
-          this.admin.username= new_username
-          localStorage.setItem("token",response.token)
-          localStorage.setItem("username",new_username)
-        
-          
+          if(response.status == 200){
+            this.admin.username = new_username
+            localStorage.setItem("token",response.data.token)
+            localStorage.setItem("username",new_username)
+          }      
         })
         .finally(() => console.log("hi"));//msg erro a mudar username));
     },

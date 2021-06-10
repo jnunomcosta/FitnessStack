@@ -141,20 +141,12 @@ public class gestao_utilizadores {
     public boolean mudarPassword(String username,String oldP, String newP){
         Utilizador u = uDao.findUtilizador_Username(username);
         if(u != null){
-           
-                if(oldP.equals(u.getPassword())){
-
-                    u.setPassword(newP);
-                    uDao.save(u);
-
-                    return true;
-                }
-                
-                
-            
+            if(oldP.equals(u.getPassword())){
+                u.setPassword(newP);
+                uDao.save(u);
+                return true;
+            }
         }
-
-
         return false;
     }
 

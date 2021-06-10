@@ -199,12 +199,11 @@
                       
                     <v-file-input
                       id="imagem"
-                      v-model="imagem_inputa"
+                      v-model="imagem_input"
                       label="Imagem de Perfil"
                       name="imagem_perfil"
                       prepend-icon="mdi-camera"
                     />
-
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
@@ -212,7 +211,7 @@
                     <v-btn color="#f95738" text @click="dialog4 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setImagem(imagem_inputa);dialog4 = false">
+                    <v-btn color="#f95738" text @click="setImagem(imagem_input);dialog4 = false">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -434,7 +433,7 @@ export default {
     dialog4: false,
     dialog5: false,
     dialog6: false,
-    imagem_inputa: null,
+    imagem_input: null,
     username: "",
     new_username: "",
     input_email: "",
@@ -469,7 +468,7 @@ export default {
       .then((response) => {
         
         this.utilizador = response.data;
-        
+        console.log(this.utilizador.foto_perfil);
         this.imc =
           (this.utilizador.peso /
             (this.utilizador.altura * this.utilizador.altura)) *
@@ -519,9 +518,8 @@ export default {
         .post(
           "http://localhost:4576/api/user/mudarEmail",
             {
-              "username": localStorage.getItem("username"),
               "email": new_email
-              }
+            }
             , {headers: {'token': localStorage.getItem("token")}}
         )
         .then((response) => {
@@ -537,16 +535,16 @@ export default {
           "http://localhost:4576/api/user/mudarUsername",
             {
               "username_novo": new_username,
-              }
+            }
             , {headers: {'token': localStorage.getItem("token")}}
         )
         .then((response) => {
-          console.log(response  )
-          this.utilizador.username= new_username
-          localStorage.setItem("token",response.token)
-          localStorage.setItem("username",new_username)
-        
-          
+          if(response.status == 200){
+            this.utilizador.username = new_username
+            localStorage.setItem("token",response.data.token)
+            localStorage.setItem("username",new_username)
+            //localStorage.setItem("usertype",0)
+          }  
         })
         .finally(() => console.log("hi"));//msg erro a mudar username));
     },
@@ -555,10 +553,9 @@ export default {
         .post(
           "http://localhost:4576/api/user/mudarPassword",
             {
-              "username":localStorage.getItem("username"),
               "new_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
               "old_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
-              }
+            }
             , {headers: {'token': localStorage.getItem("token")}}
         )
         .then((response) => {
@@ -571,23 +568,31 @@ export default {
         })
         .finally(() => console.log("hi"));//msg erro a mudar username));
     },
-    async setImagem(imagem_inputa){
+    async setImagem(nova_imagem){
       function carrega_foto(x) {
         return new Promise((resolve) => {
           let blob = new Blob([x]),
-            fileReader = new FileReader();
+          fileReader = new FileReader();
           fileReader.readAsArrayBuffer(blob);
           fileReader.onload = function () {
+            console.log("carreguei o ficheiro");
+            console.log(this.result);
             resolve(Buffer.from(this.result).toString("base64"));
           };
         });
       }
 
-      let foto = await carrega_foto(imagem_inputa);
-      axios.post("http://localhost:4576/api/user/mudarImagem",{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
-           .then(response => {
-             console.log(response);
-           })
+      let foto = await carrega_foto(nova_imagem);
+      console.log(foto);
+      axios
+          .post("http://localhost:4576/api/user/mudarImagem"
+            ,{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
+          .then(response => {
+            if(response.status == 200){
+              console.log("funfou");
+              console.log(this.utilizador.foto_perfil);
+            }
+          })
     }
     
   },

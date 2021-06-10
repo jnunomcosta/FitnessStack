@@ -77,72 +77,53 @@ public class UtilizadorController {
 
     @PostMapping(value = "/mudarEmail")
     public ResponseEntity<String> mudarEmail(@RequestHeader String token, @RequestBody String t){
-
-        String username= verify.verifyUser(token);
-
-        if( username !=null ){
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
             JSONObject obj = new JSONObject(t);
-            boolean b = gestao_utilizadores.mudarEmail(username, obj.getString("email"));
-            if (b){
-             return ResponseEntity.ok().body("");
-    
+            if (gestao_utilizadores.mudarEmail(username, obj.getString("email"))){
+                return ResponseEntity.ok().body("");
             }
         }
-        
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PostMapping(value = "/mudarUsername")
     public ResponseEntity<String> mudarUsername(@RequestHeader String token, @RequestBody String t){
-        
-        if( verify.verifyUser(token) !=null ){
-
-
-            JSONObject req=  new JSONObject(t);
-
-            boolean b = gestao_utilizadores.mudarUsername(req.getString("username"), req.getString("username_novo"));
-             if (b){
-
-                    JSONObject rep=  new JSONObject();
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
+            JSONObject req =  new JSONObject(t);
+             if (gestao_utilizadores.mudarUsername(username, req.getString("username_novo"))){
+                    JSONObject rep = new JSONObject();
                     rep.put("token", Authorization.generateToken(req.getString("username_novo"), 0));
                     return ResponseEntity.ok().body(rep.toString());
             }          
-        }   
-        
+        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
    
     @PostMapping(value = "/mudarPassword")
     public ResponseEntity<String> mudarPassword(@RequestHeader String token, @RequestBody String t){
-        
-        String username= verify.verifyUser(token);
-
-        if( username  != null ){    
-        
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
             JSONObject obj = new JSONObject(t);
             String oldP = obj.getString("old_password");
             String newP = obj.getString("new_password");
-
-            boolean b = gestao_utilizadores.mudarPassword(username, oldP,newP);
-            if (b){
-                return ResponseEntity.ok().body(null);
+            if (gestao_utilizadores.mudarPassword(username, oldP,newP)){
+                return ResponseEntity.ok().body("");
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-         
     }
 
     @PostMapping(value="/mudarImagem")
     public ResponseEntity<String> mudarImagem(@RequestHeader String token, @RequestBody String t){
-
-        String username = verify.verifyUser(token);
-        if(username != null){
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
             JSONObject obj = new JSONObject(t);
             if(gestao_utilizadores.mudarImagem(username,obj.getString("nova_foto"))){
                 return ResponseEntity.ok().body(null);
             }
         }
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 

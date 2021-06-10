@@ -1,5 +1,6 @@
 package ft.backend.controllers;
 
+import ft.backend.utils.Authorization;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,52 +63,42 @@ public class AdministradorController {
 
     @PostMapping(value = "/mudarEmail")
     public ResponseEntity<String> mudarEmail(@RequestBody String t,@RequestHeader String token){
-          
-        String usernamet = verify.verifyAdmin(token);
-
-        if( usernamet !=null ){
+        String username = null;
+        if((username = verify.verifyAdmin(token)) != null){
             JSONObject obj = new JSONObject(t);
-            boolean b = ga.mudarEmail(obj.getString("username"), obj.getString("email"));
-            if (b)
+            if (ga.mudarEmail(username, obj.getString("email"))) {
                 return ResponseEntity.ok().body("");
-        } 
-        
+            }
+        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         
     }
 
     @PostMapping(value = "/mudarUsername")
     public ResponseEntity<String> mudarUsername(@RequestBody String t,@RequestHeader String token){
-
-
-        String usernamet = verify.verifyAdmin(token);
-
-        if( usernamet !=null ){
+        String username = null;
+        if((username = verify.verifyAdmin(token)) !=null){
             JSONObject obj = new JSONObject(t);
-            boolean b = ga.mudarUsername(obj.getString("username_antigo"), obj.getString("username_novo"));
-            if (b)
-                return ResponseEntity.ok().body(null);
+            if (ga.mudarUsername(username, obj.getString("username_novo"))){
+                JSONObject rep = new JSONObject();
+                rep.put("token", Authorization.generateToken(obj.getString("username_novo"), 2));
+                return ResponseEntity.ok().body(rep.toString());
+            }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
     
     @PostMapping(value = "/mudarPassword")
     public ResponseEntity<String> mudarPassword( @RequestBody String t,@RequestHeader String token){
-
-
-        String usernamet = verify.verifyAdmin(token);
-
-        if( usernamet !=null ){
-            JSONObject obj= new JSONObject(t);
-            String username=obj.getString("username");
+        String username = null;
+        if((username = verify.verifyAdmin(token)) != null){
+            JSONObject obj = new JSONObject(t);
             String oldP = obj.getString("old_password");
             String newP = obj.getString("new_password");
-
-            boolean b = ga.mudarPassword(username, oldP,newP);
-            if (b)
-                return ResponseEntity.ok().body(null);
+            if (ga.mudarPassword(username, oldP,newP)) {
+                return ResponseEntity.ok().body("");
+            }
         }
-
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         
     }

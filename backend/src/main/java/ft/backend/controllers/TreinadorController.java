@@ -242,7 +242,7 @@ public class TreinadorController {
             JSONObject req = new JSONObject(t);
             if (gestao_treinadores.mudarUsername(username, req.getString("username_novo"))){
                 JSONObject rep =  new JSONObject();
-                rep.put("token", Authorization.generateToken(req.getString("username_novo"), 0));
+                rep.put("token", Authorization.generateToken(req.getString("username_novo"), 1));
                 return ResponseEntity.ok().body(rep.toString());
             }
         }

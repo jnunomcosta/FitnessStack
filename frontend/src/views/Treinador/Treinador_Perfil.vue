@@ -270,9 +270,8 @@ export default {
         .post(
           "http://localhost:4576/api/treinador/mudarEmail",
             {
-              "username": localStorage.getItem("username"),
               "email": new_email
-              }
+            }
             , {headers: {'token': localStorage.getItem("token")}}
         )
         .then((response) => {
@@ -286,7 +285,6 @@ export default {
         .post(
           "http://localhost:4576/api/treinador/mudarPassword",
             {
-              "username":localStorage.getItem("username"),
               "new_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
               "old_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
               }
@@ -310,14 +308,17 @@ export default {
             , {headers: {'token': localStorage.getItem("token")}}
         )
         .then((response) => {
-          console.log(response)
-          this.treinador.username = new_username
-          localStorage.setItem("token",response.data.token)
-          localStorage.setItem("username",new_username)  
+          if(response.status == 200){
+            this.treinador.username = new_username
+            localStorage.setItem("token",response.data.token)
+            localStorage.setItem("username",new_username) 
+            //localStorage.setItem("usertype",1)
+          }
+           
         })
         .finally(() => console.log("hi"));//msg erro a mudar username));
     },
-    async setImagem(imagem_inputa){
+    async setImagem(imagem){
       function carrega_foto(x) {
         return new Promise((resolve) => {
           let blob = new Blob([x]),
@@ -329,7 +330,7 @@ export default {
         });
       }
 
-      let foto = await carrega_foto(imagem_inputa);
+      let foto = await carrega_foto(imagem);
       axios.post("http://localhost:4576/api/treinador/mudarImagem",{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
            .then(response => {
              console.log(response);
