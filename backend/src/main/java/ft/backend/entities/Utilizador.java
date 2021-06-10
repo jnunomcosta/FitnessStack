@@ -62,15 +62,13 @@ public class Utilizador implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Treino> historico_treinos = new java.util.HashSet<>();
 
-		
-
 	@ManyToOne(targetEntity=ConteudoMedia.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) })	
 	private ConteudoMedia foto_perfil;
 
-	@OneToMany(targetEntity=Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
-	@JoinColumns({ @JoinColumn(name="UtilizadorID2", nullable=true) })	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	@ManyToMany(mappedBy="ORM_utilizadores", targetEntity=Treino.class)
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
 	private java.util.Set<Treino> treinos_favoritos = new java.util.HashSet<>();
 	
 	private void setID(int value) {

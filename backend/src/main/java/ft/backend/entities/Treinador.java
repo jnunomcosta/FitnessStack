@@ -52,8 +52,6 @@ public class Treinador implements Serializable {
 	@Column(name="NumeroAvaliacoes", nullable=true, length=2048)	
 	private float numeroAvaliacoes=0;
 
-	
-
 	public java.util.Date getData_nascimento() {
 		return data_nascimento;
 	}

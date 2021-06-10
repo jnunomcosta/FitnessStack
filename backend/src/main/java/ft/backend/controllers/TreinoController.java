@@ -96,6 +96,41 @@ public class TreinoController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @GetMapping(value = "/listarUtilizador")
+    public ResponseEntity<String> getTreinos(@RequestHeader String token,@RequestParam String username){
+
+        if(verify.verifyUser(token) != null){
+            return ResponseEntity.ok().body(gt.listarTreinosByUsername(username).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @PostMapping(value="/favoritar")
+    public ResponseEntity<String> favoritar(@RequestHeader String token,@RequestBody String body){
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
+            JSONObject obj = new JSONObject(body);
+            String cod_treino = obj.getString("treino");
+            if(gt.favoritar(cod_treino,username)){
+                return ResponseEntity.ok().body("");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @PostMapping(value="/desfavoritar")
+    public ResponseEntity<String> desfavoritar(@RequestHeader String token,@RequestBody String body){
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
+            JSONObject obj = new JSONObject(body);
+            String cod_treino = obj.getString("treino");
+            if(gt.desfavoritar(cod_treino,username)){
+                return ResponseEntity.ok().body("");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
     @PostMapping(value = "/novoTreino")
     public ResponseEntity<String> novoTreino(@RequestHeader String token,@RequestBody String s){
 

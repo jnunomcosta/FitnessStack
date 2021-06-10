@@ -360,16 +360,23 @@
             >
             <v-divider class="mx-4"></v-divider>
             <div id="chart">
-              <apexchart
+              <!-- <apexchart
                 type="line"
                 height="250"
                 :options="chartOptions_peso_massa"
                 :series="series_peso_massa"
-              ></apexchart>
+              ></apexchart> -->
+              <!-- <apexchart 
+              :type="type"
+    :width="width"
+    :height="height"
+    :dataFormat="dataFormat"
+    :dataSource="dataSource">
+              </apexchart> -->
             </div>
           </v-card>
 
-          <v-card class="mt-4">
+          <!-- <v-card class="mt-4">
             <v-card-title class="justify-center">
               Os meus treinos
             </v-card-title>
@@ -406,7 +413,7 @@
                 </v-list-item>
               </v-col>
             </v-row>
-          </v-card>
+          </v-card> -->
         </v-col>
       </v-row>
     </div>
@@ -418,7 +425,7 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
-import VueApexCharts from "vue-apexcharts";
+//import VueApexCharts from "vue-apexcharts";
 
 
 import axios from "axios";
@@ -429,7 +436,7 @@ export default {
   components: {
     NavBar,
     SideBar,
-    apexchart: VueApexCharts,
+    //apexchart: VueApexCharts,
   },
   created() {
     document.title = "Fitness Stack";
@@ -442,171 +449,31 @@ export default {
     dialog5: false,
     dialog6: false,
     imagem_inputa: null,
-    infos: {
-      nome: "10 Min Ab Workout",
-      username: "10 min",
-      email: "Abdominais",
-      password: "Iniciante",
-      genero: "Pamela Reif",
-      datanascimento: "07/05/2021",
-      peso: "4.6/5",
-      altura: "true",
-    },
-    series_categorias: [44, 55, 13, 43, 22, 10, 10, 10, 10],
-    chartOptions_categorias: {
-      chart: {
-        width: 380,
-        type: "pie",
-      },
-      labels: ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
-      colors: [
-        "#36393F",
-        "#40444B",
-        "#B9BBBE",
-        "#D3D3D2",
-        "#000314",
-        "#F95738",
-        "#FB7A60",
-        "#FB9B88",
-        "#7189FF",
-      ],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
+    /* width: "100%",
+      height: "400",
+      type: "timeseries",
+      dataFormat: "json",
+      dataSource: {
+        caption: { text: "Online Sales of a SuperStore in the US" },
+        data: fetch(
+  "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/area-chart-with-time-axis-data.json"
+).then(jsonify),
+        chart: {
+          showLegend: 0
+        },
+        caption: {
+          text: 'Daily Visitors Count of a Website'
+        },
+        yAxis: [
+          {
+            plot: {
+              value: 'Daily Visitors',
+              type: 'area'
             },
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
-      ],
-    },
-    series_peso_massa: [
-      {
-        name: "High - 2013",
-        data: [28, 29, 33, 36, 32, 32, 33],
-      },
-      {
-        name: "Low - 2013",
-        data: [12, 11, 14, 18, 17, 13, 13],
-      },
-    ],
-    chartOptions_peso_massa: {
-      chart: {
-        height: 350,
-        type: "line",
-        dropShadow: {
-          enabled: true,
-          color: "#f95738",
-          top: 18,
-          left: 7,
-          blur: 10,
-          opacity: 0.2,
-        },
-        toolbar: {
-          show: false,
-        },
-      },
-      colors: ["#40444B", "#F95738"],
-      dataLabels: {
-        enabled: true,
-      },
-      stroke: {
-        curve: "smooth",
-      },
-      grid: {
-        borderColor: "#e7e7e7",
-        row: {
-          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-          opacity: 0.5,
-        },
-      },
-      markers: {
-        size: 1,
-      },
-      xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-        title: {
-          text: "Data de pesagem",
-        },
-      },
-      yaxis: {
-        title: {
-          text: "kg / %",
-        },
-        min: 5,
-        max: 40,
-      },
-      legend: {
-        position: "top",
-        horizontalAlign: "right",
-        floating: true,
-        offsetY: -25,
-        offsetX: -5,
-      },
-    },
-
-    series_treinos: [
-      {
-        name: "Net Profit",
-        data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-      },
-    ],
-    chartOptions_treinos: {
-      chart: {
-        type: "bar",
-        height: 350,
-      },
-      colors: ["#FB9B88"],
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%",
-          endingShape: "rounded",
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        show: true,
-        width: 2,
-      },
-      xaxis: {
-        categories: [
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-        ],
-        title: {
-          text: "Data do treino",
-        },
-      },
-      yaxis: {
-        title: {
-          text: "Minutos de treino",
-        },
-      },
-      fill: {
-        opacity: 1,
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "$ " + val + " thousands";
-          },
-        },
-      },
-    },
+            title: 'Daily Visitors (in thousand)'
+          }
+        ]
+      }, */
     minPeso: 30,
     maxPeso: 200,
     minPercentagem: 0,
@@ -623,6 +490,7 @@ export default {
       altura: 0.0,
       genero: false,
       foto_perfil: "",
+      info_fisica:[],
     },
   }),
   mounted() {
@@ -631,6 +499,7 @@ export default {
       .then((response) => {
         
         this.utilizador = response.data;
+        console.log(this.utilizador.info_fisica);
         this.imc =
           (this.utilizador.peso /
             (this.utilizador.altura * this.utilizador.altura)) *

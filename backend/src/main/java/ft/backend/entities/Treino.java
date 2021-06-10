@@ -1,6 +1,9 @@
 package ft.backend.entities;
 
+import jdk.jshell.execution.Util;
+
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 
 @Entity
@@ -61,14 +64,17 @@ public class Treino implements Serializable {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
 	private java.util.Set<Categoria> ORM_categorias = new java.util.HashSet<>();
 
+	@ManyToMany(targetEntity=Utilizador.class)
+	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})
+	@JoinTable(name="Utilizador_Treino", joinColumns={ @JoinColumn(name="TreinoID_favoritos") }, inverseJoinColumns={ @JoinColumn(name="UtilizadorID_favoritos") })
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
+	private java.util.Set<Utilizador> ORM_utilizadores = new java.util.HashSet<>();
 
 	@Column(name="MediaAvaliacao", nullable=true, length=2048)	
 	private float mediaAvaliacao=0 ;
 
 	@Column(name="NumeroAvaliacoes", nullable=true, length=2048)	
 	private float numeroAvaliacoes=0;
-
-	
 
 	public float getMediaAvaliacao() {
 		return mediaAvaliacao;
@@ -184,6 +190,14 @@ public class Treino implements Serializable {
 	
 	public Treinador getCriador_t() {
 		return criador_t;
+	}
+
+	public Set<Utilizador> getORM_utilizadores() {
+		return ORM_utilizadores;
+	}
+
+	public void setORM_utilizadores(Set<Utilizador> ORM_utilizadores) {
+		this.ORM_utilizadores = ORM_utilizadores;
 	}
 	
 	public String toString() {

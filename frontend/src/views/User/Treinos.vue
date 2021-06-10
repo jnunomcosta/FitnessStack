@@ -53,7 +53,7 @@
                   dark
                   small
                   color="red"
-                  @click="onButtonClick(props.item.favoritos)"
+                  @click="onButtonClick(props.item)"
                 >
                   <v-icon dark>mdi-heart</v-icon>
                 </v-btn>
@@ -67,10 +67,10 @@
                   <v-icon dark>mdi-heart</v-icon>
                 </v-btn>
               </template>
-              <template v-slot:item.avaliacao="props">
+              <template v-slot:item.classificacao="props">
                 <div>
-                  {{ props.item.avaliacao
-                  }}<v-icon color="#f95738">mdi-star</v-icon>
+                  {{ parseFloat(props.item.classificacao).toFixed(1)
+                  }}/5<v-icon color="#f95738">mdi-star</v-icon>
                 </div>
               </template></v-data-table
             ></v-card
@@ -78,6 +78,9 @@
         ></v-col
       ></v-row
     >
+    <v-btn fab dark large color="#f95738" fixed right bottom to="/criartreino">
+      <v-icon>mdi-plus</v-icon>
+     </v-btn>
   </div>
 </template>
 
@@ -107,11 +110,11 @@ export default {
         { text: "Duração", value: "duracao" },
         { text: "Categoria", value: "categoria" },
         { text: "Dificuldade", value: "dificuldade" },
-        { text: "Treinador", value: "treinador" },
+        { text: "Criador", value: "criador" },
         { text: "Publicado em", value: "data" },
-        { text: "Avaliação", value: "avaliacao", sortable: false },
+        { text: "Classificação", value: "classificacao"},
         { text: "Código", value: "codigo" },
-        { text: "Favoritos", value: "favoritos", sortable: false },
+        { text: "Favoritos", value: "favoritos" },
       ],
       treinos: [
         {
@@ -119,9 +122,9 @@ export default {
           duracao: 0,
           categoria: "",
           dificuldade: "",
-          treinador: "",
+          criador: "",
           data: "",
-          avaliacao: 0,
+          classificacao: 0,
           favoritos: "",
           codigo: "",
         },
@@ -134,15 +137,32 @@ export default {
       this.$router.push("/treino/" + value.codigo);
     },
     onButtonClick(props) {
-      //if(props) //tirar dos favoritos
-      //else //colocar nos favoritos
+      if(props.favoritos){
+        console.log("entrei no true")
+        console.log(props);
+        axios
+          .post("http://localhost:4576/api/treinos/desfavoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
+          .then(response => {
+            console.log(response);
+          })
+          props.favoritos = false;
+      }
+      else {
+        console.log("parente")
+        console.log(props)
+        axios
+          .post("http://localhost:4576/api/treinos/favoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
+          .then(response => {
+            console.log(response);
+          })
+          props.favoritos = true;
+      }
       
-      console.log(props);
     },
   },
   mounted() {
     axios
-      .get("http://localhost:4576/api/treinos/listar", {
+      .get("http://localhost:4576/api/treinos/listarUtilizador?username="+localStorage.getItem("username"), {
         headers: { token: localStorage.getItem("token") },
       })
       .then((response) => {

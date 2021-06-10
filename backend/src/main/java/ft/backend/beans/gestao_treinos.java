@@ -19,6 +19,8 @@ public class gestao_treinos {
     ExercicioDAO eDao;
     @Autowired
     TreinadorDAO treinadorDao;
+    @Autowired
+    UtilizadorDAO utilizadorDAO;
 
     public Treino getTreino(String codigo) {return tDao.findbyCodigo(codigo);}
 
@@ -65,6 +67,14 @@ public class gestao_treinos {
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
             exe.put("duracao",t.getDuracao()/60);
+            if(t.getCriador_u() != null){
+                exe.put("criador",t.getCriador_u().getUsername());
+            }
+            else{
+                if(t.getCriador_t() != null){
+                    exe.put("criador",t.getCriador_t().getUsername());
+                }
+            }
             JSONArray a = new JSONArray();
             for(Categoria c : t.getCategorias()){
                 a.put(c.getCategoria());
@@ -74,6 +84,48 @@ public class gestao_treinos {
             exe.put("classificacao",t.getMediaAvaliacao());
             exe.put("data", t.getData_criacao());
             exe.put("codigo", t.getCodigo());
+            ret.put(exe);
+        }
+
+        return ret;
+    }
+
+    public JSONArray listarTreinosByUsername(String username){
+        JSONArray ret = new JSONArray();
+
+        List<Treino> treinos = tDao.findAll();
+        for(Treino t : treinos){
+            JSONObject exe = new JSONObject();
+            exe.put("nome", t.getNome());
+            exe.put("duracao",t.getDuracao()/60);
+            if(t.getCriador_u() != null){
+                exe.put("criador",t.getCriador_u().getUsername());
+            }
+            else{
+                if(t.getCriador_t() != null){
+                    exe.put("criador",t.getCriador_t().getUsername());
+                }
+            }
+            JSONArray a = new JSONArray();
+            for(Categoria c : t.getCategorias()){
+                a.put(c.getCategoria());
+            }
+            exe.put("categoria", a);
+            exe.put("dificuldade", t.getDificuldade());
+            exe.put("classificacao",t.getMediaAvaliacao());
+            exe.put("data", t.getData_criacao());
+            exe.put("codigo", t.getCodigo());
+
+            Utilizador user = utilizadorDAO.findUtilizador_Username(username);
+            if(user!=null){
+                if(t.getORM_utilizadores().contains(user)){
+                    exe.put("favoritos",true);
+                }
+                else{
+                    exe.put("favoritos",false);
+                }
+            }
+
             ret.put(exe);
         }
 
@@ -117,6 +169,32 @@ public class gestao_treinos {
         Treino t = tDao.findbyCodigo(codigo);
         tDao.delete(t);
         return true;
+    }
+
+    public boolean favoritar(String codigo,String username){
+        Treino t = tDao.findbyCodigo(codigo);
+        Utilizador u = utilizadorDAO.findUtilizador_Username(username);
+        if(t!=null && u!=null){
+            t.getORM_utilizadores().add(u);
+            u.getORM_Treinos_favoritos().add(t);
+            tDao.save(t);
+            utilizadorDAO.save(u);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean desfavoritar(String codigo,String username){
+        Treino t = tDao.findbyCodigo(codigo);
+        Utilizador u = utilizadorDAO.findUtilizador_Username(username);
+        if(t!=null && u!=null){
+            t.getORM_utilizadores().remove(u);
+            u.getORM_Treinos_favoritos().remove(t);
+            tDao.save(t);
+            utilizadorDAO.save(u);
+            return true;
+        }
+        return false;
     }
 
 }
