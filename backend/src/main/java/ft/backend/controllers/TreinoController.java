@@ -216,6 +216,15 @@ public class TreinoController {
         ret.put("data", t.getData_criacao());
         ret.put("dificuldade", t.getDificuldade());
         ret.put("duracao", t.getDuracao());
+        if(t.getCriador_u()!=null){
+            ret.put("criador", t.getCriador_u().getUsername());
+            ret.put("criador_foto", "/api/assets/photo/" + t.getCriador_u().getFoto_perfil().getID());
+        }else{
+            if(t.getCriador_t()!=null){
+                ret.put("criador", t.getCriador_t().getUsername());
+                ret.put("criador_foto", "/api/assets/photo/" + t.getCriador_t().getFoto_perfil().getID());
+            }
+        }
         //falta a foto do gajo e o nome
         JSONArray exercicios = new JSONArray();
         for(Bloco c : t.getORM_Blocos_exercicios()){
@@ -228,13 +237,14 @@ public class TreinoController {
             
             JSONArray fotos = new JSONArray();
             for(ConteudoMedia cm : c.getExercicio().getORM_ConteudoMedia()){
-
-                if(cm.getExtensao())
+                if(!cm.getExtensao()){
                     fotos.put("/api/assets/photo/"+cm.getID());
-                else fotos.put("/api/assets/video/"+cm.getID());
+                }
+                else {
+                    fotos.put("/api/assets/video/"+cm.getID());
+                }
             }
             ex_aux.put("fotos",fotos);
-            
 
             exercicios.put(ex_aux);
         }

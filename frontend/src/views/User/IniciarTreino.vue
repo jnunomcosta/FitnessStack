@@ -40,13 +40,22 @@
                     style="text-align: center"
                   >
                     <div class="text-center mx-4">
-                      i
                       <div class="mx-auto text-center">
-                        <v-avatar tile class="mt-4" size="200">
-                          <v-img
-                            src="https://randomuser.me/api/portraits/men/93.jpg"
-                          ></v-img>
-                        </v-avatar>
+                        <v-carousel :show-arrows="true" height=300 width=300>
+                            <v-carousel-item
+                              v-for="(otim,o) in item.fotos"
+                              :key="o"
+                            >
+                            <template v-if="otim.includes('photo')">
+                              <img :src="linkapi() + otim">
+                            </template>
+                            <template v-else>
+                              <video controls>
+                                <source :src="linkapi()+ otim" type="video/mp4">
+                              </video>
+                            </template>
+                            </v-carousel-item>
+                          </v-carousel> 
                       </div>
 
                       <v-list-item-content class="black--text">
@@ -169,7 +178,7 @@ export default {
         dificuldade: "",
         //treinador: "",
         data: "",
-        exercicios: [{ nome: "", series: 0, tipo: "", repeticoes: 0, descanso: 0, foto: ""}],
+        exercicios: [{ nome: "", series: 0, tipo: "", repeticoes: 0, descanso: 0, fotos:[] }],
         avaliacoes: [],
       },
 
@@ -246,6 +255,10 @@ export default {
       }
     },
 
+    linkapi(){
+      return process.env.VUE_APP_BASELINK
+    },
+
     aumentar_serie(item) {
       if (this.series < item.series) {
         this.series++;
@@ -269,7 +282,7 @@ export default {
       .get(process.env.VUE_APP_BASELINK + "/api/treinos/getTreino?codigo="+this.$route.params.codigo,{headers: { token: localStorage.getItem("token")}})
       .then((response) => {
         this.treino = response.data;
-        console.log(response);
+        console.log(JSON.stringify(this.treino));
       })
       .finally(() => (this.loading = false));
   },

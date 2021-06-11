@@ -100,18 +100,6 @@ export default {
       }
     },
     login() {
-<<<<<<< HEAD
-      var loginInfoAdmin = {
-        username: this.input.username,
-        password: this.input.password,
-        //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
-      };
-      console.log(loginInfoAdmin);
-      axios
-        .post("http://localhost:4576/api/login/administrador", loginInfoAdmin)
-        .then((response) => {
-          const status = JSON.parse(response.status);
-=======
         var loginInfoAdmin = {
           username: this.input.username,
           password: this.input.password,
@@ -121,7 +109,6 @@ export default {
         axios
           .post(process.env.VUE_APP_BASELINK+'/api/login/administrador', loginInfoAdmin)
           .then((response) => {
->>>>>>> abb8da8fc8863523d922930310ddaae509471419
 
           if (status == "200") {
             localStorage.setItem("token", response.data.token);

@@ -15,13 +15,14 @@
           <div class="mx-auto text-center">
             <v-avatar class="mt-4" size="70">
               <v-img
-                src="https://randomuser.me/api/portraits/men/93.jpg"
+                :src='linkapi() + treino.criador_foto'
               ></v-img>
             </v-avatar>
           </div>
           <v-divider class="mx-8 mt-6"></v-divider>
           <v-list-item-content class="mx-auto text-center px-4 pt-4 pb-3">
-            <h3>{{ treino.descricao }}</h3>
+            <h3>Criador: {{ treino.criador }}</h3>
+            <h3>Descrição: {{ treino.descricao }}</h3>
             <h3>Treino de {{ categorias }}</h3>
             <h3>Criado em {{ treino.data }}</h3>
             <h3>Dificuldade: {{ treino.dificuldade }}</h3>
@@ -170,14 +171,19 @@ export default {
         duracao: "",
         categorias: [{ categoria: "" }],
         dificuldade: "",
+        criador: "",
+        criador_foto: "",
         //treinador: "",
         data: "",
-        exercicios: [{ nome: "", tipo:"", series: 0, repeticoes: 0, descanso: 0 }],
+        exercicios: [{ nome: "", tipo:"", series: 0, repeticoes: 0, descanso: 0, fotos:[] }],
         avaliacoes: [],
       },
     };
   },
   methods: {
+    linkapi(){
+      return process.env.VUE_APP_BASELINK
+    },
     iniciarTreino: function () {
       //this.$router.push("/iniciarTreino/" + this.$route.params.codigo);
       this.$router.push({ name: 'IniciarTreino', path: "iniciarTreino/" + this.$route.params.codigo})
