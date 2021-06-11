@@ -169,7 +169,7 @@ export default {
         dificuldade: "",
         //treinador: "",
         data: "",
-        exercicios: [{ nome: "", series: 0, tipo: "", repeticoes: 0, descanso: 0 }],
+        exercicios: [{ nome: "", series: 0, tipo: "", repeticoes: 0, descanso: 0, foto: ""}],
         avaliacoes: [],
       },
 
@@ -198,11 +198,17 @@ export default {
     countDownTimer_serie(item) {
       this.duracao_serie = item.series;
       if (this.terminar_series==false){
+
+
         if (this.duracao_serie > -1) {
           setTimeout(() => {
             this.duracao_serie -= 1;
-            this.countDownTimer_serie(item);
+            //this.countDownTimer_serie(item);
           }, 1000);
+
+
+
+
         } else {
           if (this.duracao_serie == -1) {
             this.playSound();
@@ -218,11 +224,17 @@ export default {
 
     countDownTimer_descanso(item) {
       this.duracao_descanso = item.descanso;
+
+
+
       if (this.duracao_descanso > -1) {
         setTimeout(() => {
           this.duracao_descanso -= 1;
-          this.countDownTimer_descanso(item);
+          //this.countDownTimer_descanso(item);
         }, 1000);
+
+
+
       } else {
         if (this.duracao_descanso == -1) {
           if (!item.tipo) {
@@ -254,7 +266,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:4576/api/treinos/getTreino?codigo="+this.$route.params.codigo,{headers: { token: localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK + "/api/treinos/getTreino?codigo="+this.$route.params.codigo,{headers: { token: localStorage.getItem("token")}})
       .then((response) => {
         this.treino = response.data;
         console.log(response);

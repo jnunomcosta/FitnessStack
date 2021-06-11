@@ -15,7 +15,7 @@
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-card hover class="white">
             <v-img
-              :src="'http://localhost:4576' + title.conteudo_media[0]"
+              :src="linkfoto() + title.conteudo_media[0]"
               class="white--text align-end"
               height="150px"
             >
@@ -93,11 +93,11 @@
                               :key="i"
                             >
                             <template v-if="item.includes('photo')">
-                              <img :src="'http://localhost:4576' + item">
+                              <img :src="linkfoto() + item">
                             </template>
                             <template v-else>
                               <video controls>
-                                <source :src="'http://localhost:4576' + item" type="video/mp4">
+                                <source :src="linkfoto()+ item" type="video/mp4">
                               </video>
                             </template>
                             </v-carousel-item>
@@ -137,12 +137,15 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:4576/api/exercicio/listar",{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/exercicio/listar",{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.titles = response.data;
       })
   },
   methods: {
+    linkfoto(){
+      return  process.env.VUE_APP_BASELINK
+    },
   },
 };
 </script>

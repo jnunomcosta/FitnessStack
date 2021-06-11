@@ -221,7 +221,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:4576/api/treinador/listar", {
+      .get(process.env.VUE_APP_BASELINK+"/api/treinador/listar", {
         headers: { token: localStorage.getItem("token") },
       })
       .then((response) => {
@@ -267,7 +267,7 @@ export default {
       });
       console.log(deletbody);
       axios 
-        .delete('http://localhost:4576/api/treinador/deleteTreinador',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .delete(process.env.VUE_APP_BASELINK+'/api/treinador/deleteTreinador',{headers:{token: localStorage.getItem("token")},data:deletbody})
         .then(response => {
           //ERRO 500 -> nao conseguiu eliminar, pode ter feito um comentario ou ter marcacoes ou um treinador associado
           if(response.status == 200){
@@ -307,7 +307,7 @@ export default {
       registoInfo.foto_perfil = await carrega_foto(this.input_register.imagem);
       console.log(registoInfo);
       axios
-        .post("http://localhost:4576/api/register/treinador", registoInfo,{headers: {'token': localStorage.getItem("token")}})
+        .post(process.env.VUE_APP_BASELINK+"/api/register/treinador", registoInfo,{headers: {'token': localStorage.getItem("token")}})
         .then((response) => {
           //const status = JSON.parse(response.status);
           console.log(response);

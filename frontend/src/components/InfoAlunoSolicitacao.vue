@@ -26,7 +26,7 @@
           <div>
             <v-avatar class="ma-3" width="250" height="300" tile>
               <v-img
-                 :src="'http://localhost:4576' + utilizador.foto_perfil"
+                 :src="linkfoto() + utilizador.foto_perfil"
               ></v-img>
             </v-avatar>
           </div>
@@ -83,7 +83,7 @@ export default {
   mounted(){
    
     axios
-      .get("http://localhost:4576/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
         
         this.utilizador = response.data;
@@ -95,11 +95,14 @@ console.log("hellooo"+JSON.stringify(this.data))
        
   },
   methods:{
+    linkfoto(){
+      return  process.env.VUE_APP_BASELINK
+    },
     accept(){
 
       console.log("bum diaaaa")
       axios
-      .post("http://localhost:4576/api/treinador/aceitarContrato",{username:this.data.utilizador},{headers: {'token': localStorage.getItem("token")}})
+      .post(process.env.VUE_APP_BASELINK+"/api/treinador/aceitarContrato",{username:this.data.utilizador},{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
         
       console.log("sucesso")

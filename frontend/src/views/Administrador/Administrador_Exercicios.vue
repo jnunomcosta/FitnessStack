@@ -94,7 +94,7 @@ export default {
   },
   mounted() {
     axios
-      .get('http://localhost:4576/api/exercicio/listar',{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+'/api/exercicio/listar',{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.rows = response.data 
       })
@@ -106,7 +106,7 @@ export default {
         deletbody.push(element.id);
       });
       axios 
-        .delete('http://localhost:4576/api/exercicio/deleteExercicios',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .delete(process.env.VUE_APP_BASELINK+'/api/exercicio/deleteExercicios',{headers:{token: localStorage.getItem("token")},data:deletbody})
         .then(response => {
           //ERRO 500 e porque o exercicio esta num treino!
           if(response.status == 200){

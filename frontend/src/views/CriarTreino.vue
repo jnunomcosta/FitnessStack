@@ -249,7 +249,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:4576/api/exercicio/getNomesExercicios", {
+      .get(process.env.VUE_APP_BASELINK+"/api/exercicio/getNomesExercicios", {
         headers: { token: localStorage.getItem("token") },
       })
       .then((response) => {
@@ -279,7 +279,7 @@ export default {
         exercicios: exs,
       };
       axios
-        .post("http://localhost:4576/api/treinos/novoTreino", post_body, {
+        .post(process.env.VUE_APP_BASELINK+"/api/treinos/novoTreino", post_body, {
           headers: { token: localStorage.getItem("token") },
         })
         .then((response) => {

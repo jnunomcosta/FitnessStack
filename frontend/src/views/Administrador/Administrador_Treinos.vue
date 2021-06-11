@@ -102,7 +102,7 @@ export default {
   },
   mounted() {
     axios
-      .get('http://localhost:4576/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+'/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.rows = response.data 
       })
@@ -114,7 +114,7 @@ export default {
         deletbody.push(element.codigo);
       });
       axios 
-        .delete('http://localhost:4576/api/treinos/deleteTreino',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .delete(process.env.VUE_APP_BASELINK+'/api/treinos/deleteTreino',{headers:{token: localStorage.getItem("token")},data:deletbody})
         .then(response => {
           if(response.status == 200){
             this.$router.push("/administrador/treinos/");

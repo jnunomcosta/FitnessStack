@@ -114,5 +114,14 @@
 <script>
 export default {
   name: "InfoExercicio",
+  data() {
+    return {
+      dialog: false,
+      dialog0: false,
+      dialog1: false,
+      dialog2: false,
+      
+    };
+  },
 };
 </script>

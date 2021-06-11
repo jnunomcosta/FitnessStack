@@ -197,7 +197,7 @@ export default {
       };
       
       axios
-        .post('http://localhost:4576/api/exercicio/novo',exercicio_post,{headers:{'token':localStorage.getItem("token")}})
+        .post(process.env.VUE_APP_BASELINK+'/api/exercicio/novo',exercicio_post,{headers:{'token':localStorage.getItem("token")}})
         .then(response => {
           console.log(response);
         })

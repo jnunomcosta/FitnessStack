@@ -17,7 +17,7 @@
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
-                <v-img :src="'http://localhost:4576' + treinador.foto_perfil"></v-img>
+                <v-img :src="linkapi() + treinador.foto_perfil"></v-img>
               </v-avatar>
             </div>
             <v-card-title class="justify-center">{{treinador.nome}}</v-card-title>
@@ -258,17 +258,20 @@ export default {
   }),
   mounted() {
     axios
-      .get("http://localhost:4576/api/treinador/getTreinadorInfo?username="+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/treinador/getTreinadorInfo?username="+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
         this.treinador = response.data;
       })
       .finally(() => (this.loading = false));
   },
   methods: {
+    linkapi(){
+      return process.env.VUE_APP_BASELINK
+    },
     setEmail(new_email) {
       axios
         .post(
-          "http://localhost:4576/api/treinador/mudarEmail",
+          process.env.VUE_APP_BASELINK+"/api/treinador/mudarEmail",
             {
               "email": new_email
             }
@@ -283,7 +286,7 @@ export default {
     setPassword(oldP,newP){
         axios
         .post(
-          "http://localhost:4576/api/treinador/mudarPassword",
+          process.env.VUE_APP_BASELINK+"/api/treinador/mudarPassword",
             {
               "new_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
               "old_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
@@ -301,7 +304,7 @@ export default {
     setUsername(new_username) {
       axios
         .post(
-          "http://localhost:4576/api/treinador/mudarUsername",
+          process.env.VUE_APP_BASELINK+"/api/treinador/mudarUsername",
             {
               "username_novo": new_username,
               }
@@ -331,7 +334,7 @@ export default {
       }
 
       let foto = await carrega_foto(imagem);
-      axios.post("http://localhost:4576/api/treinador/mudarImagem",{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
+      axios.post(process.env.VUE_APP_BASELINK+"/api/treinador/mudarImagem",{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
            .then(response => {
              console.log(response);
            })

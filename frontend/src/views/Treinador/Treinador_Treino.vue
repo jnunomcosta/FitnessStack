@@ -139,7 +139,7 @@ export default {
   mounted() {
     axios
       .get(
-        "http://localhost:4576/api/treinos/getTreino?codigo=" +
+        process.env.VUE_APP_BASELINK+"/api/treinos/getTreino?codigo=" +
           this.$route.params.codigo,{headers: {'token': localStorage.getItem("token")}}
       )
       .then((response) => {

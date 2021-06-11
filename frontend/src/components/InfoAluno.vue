@@ -271,7 +271,7 @@
               <div class="mx-auto text-center">
                 <v-avatar class="mt-4" size="150">
                   <v-img
-                 :src="'http://localhost:4576' + utilizador.foto_perfil"
+                 :src="linkfoto() + utilizador.foto_perfil"
               ></v-img>
                 </v-avatar>
               </div>
@@ -671,12 +671,12 @@ export default {
   props:["data"],
   mounted() {
     axios
-      .get("http://localhost:4576/api/treinos/getCodigos",{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/treinos/getCodigos",{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.items = response.data
       })
     axios
-      .get("http://localhost:4576/api/agenda/getAgenda?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/agenda/getAgenda?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         console.log(response.data)
         response.data.forEach(x => {
@@ -693,7 +693,7 @@ export default {
       }) 
 
     axios
-      .get("http://localhost:4576/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
       .then((response) => { 
         this.utilizador = response.data;
         console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(this.utilizador))
@@ -708,6 +708,9 @@ export default {
     this.$refs.calendar.checkChange();
   },
   methods: {
+    linkfoto(){
+      return  process.env.VUE_APP_BASELINK
+    },
     confirmar(){
       var d = new Date(this.date_1 + ' ' + this.time);
       console.log(d);
@@ -727,12 +730,12 @@ export default {
         cor: cor,
       }
       axios
-        .post("http://localhost:4576/api/agenda/novaMarcacao",body,{headers: {'token': localStorage.getItem("token")}})
+        .post(process.env.VUE_APP_BASELINK+"/api/agenda/novaMarcacao",body,{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           console.log(response)
         })  
       axios
-        .get("http://localhost:4576/api/treinos/getNomeTreino?codigo="+this.select,{headers: {'token': localStorage.getItem("token")}})
+        .get(process.env.VUE_APP_BASELINK+"/api/treinos/getNomeTreino?codigo="+this.select,{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           evento.name = this.select + " - " + response.data.nome;
           this.events.push(evento); 
@@ -741,7 +744,7 @@ export default {
     removeContrato(){
       console.log("wiiiiiiiiiiiiiiiii")
        axios
-          .post("http://localhost:4576/api/treinador/removerContrato",
+          .post(process.env.VUE_APP_BASELINK+"/api/treinador/removerContrato",
           {username:this.data.utilizador},
           {headers: {'token': localStorage.getItem("token")}}
           )   
@@ -770,7 +773,7 @@ export default {
     showEvent({ nativeEvent, event }) {
       var splited = event.name.split("-",1);
       axios
-        .get("http://localhost:4576/api/treinos/getTreinoInfo?codigo="+splited[0],{headers: {'token': localStorage.getItem("token")}})
+        .get(process.env.VUE_APP_BASELINK+"/api/treinos/getTreinoInfo?codigo="+splited[0],{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           this.treino_info = response.data
         })

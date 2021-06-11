@@ -10,7 +10,7 @@
     >
       <v-list-item class="px-2 py-2">
         <v-list-item-avatar>
-          <v-img :src="'http://localhost:4576' + foto_perfil"></v-img>
+          <v-img :src="linkfoto() + foto_perfil"></v-img>
         </v-list-item-avatar>
         <v-list-item-content class="ma-0 pa-0" >
           <v-list-item-title class="title">{{ nome }}<v-icon dense color="#f95738" class="ml-2">mdi-weight-lifter</v-icon></v-list-item-title>
@@ -91,13 +91,18 @@ export default {
   },
   mounted () {
     axios
-      .get("http://localhost:4576/api/treinador/getSideBarTreinadorInfo",{headers: {'token': localStorage.getItem("token")}})      
+      .get(process.env.VUE_APP_BASELINK+"/api/treinador/getSideBarTreinadorInfo",{headers: {'token': localStorage.getItem("token")}})      
       .then(response => {
         this.foto_perfil = response.data.foto_perfil;
         this.nome = response.data.nome;
         this.username = response.data.username;
       })
       .finally(() => this.loading = false)
+  }
+  ,methods:{
+    linkfoto(){
+      return  process.env.VUE_APP_BASELINK
+    },
   }
 };
 </script>
