@@ -94,7 +94,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:4576/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+'/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.treinos = response.data 
       })

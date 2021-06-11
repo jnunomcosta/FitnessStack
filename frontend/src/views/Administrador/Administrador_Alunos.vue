@@ -80,7 +80,7 @@ export default {
   },
   mounted(){
     axios
-      .get("http://localhost:4576/api/user/listar",{headers: {'token': localStorage.getItem("token")}})      
+      .get(process.env.VUE_APP_BASELINK+"/api/user/listar",{headers: {'token': localStorage.getItem("token")}})      
       .then(response => {
         this.rows= response.data;
         console.log("adasdsadsadhhhhhhhhhhhh"+response.data)
@@ -112,7 +112,7 @@ export default {
         deletbody.push(element.username);
       });
       axios 
-        .delete('http://localhost:4576/api/user/deleteUtilizador',{headers:{token: localStorage.getItem("token")},data:deletbody})
+        .delete(process.env.VUE_APP_BASELINK + '/api/user/deleteUtilizador',{headers:{token: localStorage.getItem("token")},data:deletbody})
         .then(response => {
           //ERRO 500 -> nao conseguiu eliminar, pode ter feito um comentario ou ter marcacoes ou um treinador associado
           if(response.status == 200){

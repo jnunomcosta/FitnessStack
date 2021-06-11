@@ -50,7 +50,7 @@ export default {
     },
     playSound () {
       //var audio = new Audio('http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3');
-      var audio = new Audio('http://localhost:4576/api/assets/audio/37');
+      var audio = new Audio(process.env.VUE_APP_BASELINK+'/api/assets/audio/37');
       audio.play();
     }
   },

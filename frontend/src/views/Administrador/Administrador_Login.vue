@@ -76,7 +76,7 @@ export default {
         };
         console.log(loginInfoAdmin);
         axios
-          .post("http://localhost:4576/api/login/administrador", loginInfoAdmin)
+          .post(process.env.VUE_APP_BASELINK+'/api/login/administrador', loginInfoAdmin)
           .then((response) => {
 
             const status = JSON.parse(response.status);

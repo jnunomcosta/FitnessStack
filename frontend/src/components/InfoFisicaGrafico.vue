@@ -53,7 +53,7 @@ export default {
   }),
   async mounted () {
     if(localStorage.getItem("usertype")==1){
-        let resposta = await axios.get("http://localhost:4576/api/user/getHistoricoFisicoTreinador?username="+this.data.username,{headers: {'token': localStorage.getItem("token")}});
+        let resposta = await axios.get(process.env.VUE_APP_BASELINK+"/api/user/getHistoricoFisicoTreinador?username="+this.data.username,{headers: {'token': localStorage.getItem("token")}});
         resposta.data.forEach(x => {
           this.chartdata.labels.push(x.data);
           this.chartdata.datasets[0].data.push(x.peso);
@@ -62,7 +62,7 @@ export default {
         })
     }
     else{
-        let resposta = await axios.get("http://localhost:4576/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}});
+        let resposta = await axios.get(process.env.VUE_APP_BASELINK+"/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}});
         resposta.data.forEach(x => {
           this.chartdata.labels.push(x.data);
           this.chartdata.datasets[0].data.push(x.peso);
@@ -72,7 +72,7 @@ export default {
     }
     
    /*axios
-      .get("http://localhost:4576/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}})
       .then(resp => {
         resp.data.forEach(x => {
           this.chartdata.labels.push(x.data);

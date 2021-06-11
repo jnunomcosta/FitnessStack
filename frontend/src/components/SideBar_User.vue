@@ -10,7 +10,7 @@
     >
       <v-list-item class="px-2 py-2">
         <v-list-item-avatar>
-          <v-img :src="'http://localhost:4576' + foto_perfil"></v-img>
+          <v-img :src="linkfoto() + foto_perfil"></v-img>
           <!-- <v-img :src="'data:image/jpeg;base64,'+variavelRecebidaDaAPI"></v-img> -->
         </v-list-item-avatar>
         <div id='imagem-sidebar'>
@@ -97,13 +97,18 @@ export default {
   },
   mounted () {
     axios
-      .get("http://localhost:4576/api/user/getSideBarUserInfo",{headers: {'token': localStorage.getItem("token")}})      
+      .get(process.env.VUE_APP_BASELINK+"/api/user/getSideBarUserInfo",{headers: {'token': localStorage.getItem("token")}})      
       .then(response => {
         this.foto_perfil = response.data.foto_perfil;
         this.nome = response.data.nome;
         this.username = response.data.username;
       })
       .finally(() => this.loading = false)
+  },
+  methods:{
+    linkfoto(){
+      return  process.env.VUE_APP_BASELINK
+    },
   }
 };
 </script>

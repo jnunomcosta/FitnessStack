@@ -327,6 +327,7 @@ import axios from "axios";
 import sjcl from "sjcl";
 
 export default {
+
   name: "Login",
   components: {
     NavBar,
@@ -404,6 +405,8 @@ export default {
       }
     },
     login() {
+
+      console.log(process.env.VUE_APP_BASELINK+"/api/login/user")
       if (this.modo_login == false) {
         //utilizador
         if (this.input.username != "" && this.input.password != "") {
@@ -414,7 +417,7 @@ export default {
             ),
           };
           axios
-            .post("http://localhost:4576/api/login/user", loginInfo)
+            .post(process.env.VUE_APP_BASELINK+"/api/login/user", loginInfo)
             .then((response) => {
               const status = JSON.parse(response.status);
 
@@ -455,7 +458,7 @@ export default {
           };
           axios
             .post(
-              "http://localhost:4576/api/login/treinador",
+              process.env.VUE_APP_BASELINK+"/api/login/treinador",
               loginInfoTreinador
             )
             .then((response) => {
@@ -522,7 +525,7 @@ export default {
       registoInfo.foto_perfil = await carrega_foto(this.input_register.imagem);
 
       axios
-        .post("http://localhost:4576/api/register/user", registoInfo)
+        .post(process.env.VUE_APP_BASELINK+"/api/register/user", registoInfo)
         .then((response) => {
           const status = JSON.parse(response.status);
           if (status == "200") {
@@ -531,7 +534,7 @@ export default {
               password: registoInfo.password,
             };
             axios
-              .post("http://localhost:4576/api/login/user", login_info)
+              .post(process.env.VUE_APP_BASELINK+"/api/login/user", login_info)
               .then((response2) => {
                 const status2 = JSON.parse(response2.status);
                 if (status2 == "200") {

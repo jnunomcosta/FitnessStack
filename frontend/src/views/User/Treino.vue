@@ -201,7 +201,7 @@ export default {
         comentario: this.comentario,
       });
       axios
-        .post("http://localhost:4576/api/treinos/avaliacao",post_body,{headers: {'token': localStorage.getItem("token")}})
+        .post(process.env.VUE_APP_BASELINK+"/api/treinos/avaliacao",post_body,{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           console.log(response);
         });
@@ -210,7 +210,7 @@ export default {
   mounted() {
     axios
       .get(
-        "http://localhost:4576/api/treinos/getTreino?codigo=" +
+        process.env.VUE_APP_BASELINK+"/api/treinos/getTreino?codigo=" +
           this.$route.params.codigo,{headers: {'token': localStorage.getItem("token")}}
       )
       .then((response) => {
