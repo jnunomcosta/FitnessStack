@@ -537,6 +537,7 @@ export default {
                 if (status2 == "200") {
                   localStorage.setItem("token", response2.data.token);
                   localStorage.setItem("username", registoInfo.username);
+                  localStorage.setItem("usertype", 0);
                   this.$router.push("/perfil");
                 }
               });

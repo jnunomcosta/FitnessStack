@@ -101,7 +101,7 @@
 </template>
 <script>
 import NavBar from "@/components/NavBar_Logged.vue";
-import SideBar from "@/components/SideBar_User.vue";
+import SideBar from "@/components/SideBar_Treinador.vue";
 import axios from "axios";
 
 export default {

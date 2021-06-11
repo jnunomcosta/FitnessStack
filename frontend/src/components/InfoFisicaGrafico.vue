@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export default {
   extends: Line,
-  props: {},
+  props:["data"],
   data: () => ({
             chartdata: {
                 labels: [/* 'January', 'February', 'March', 'April', 'May', 'June', 'July' */],
@@ -52,13 +52,25 @@ export default {
             }
   }),
   async mounted () {
-    let resposta = await axios.get("http://localhost:4576/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}});
-    resposta.data.forEach(x => {
+    if(localStorage.getItem("usertype")==1){
+        let resposta = await axios.get("http://localhost:4576/api/user/getHistoricoFisicoTreinador?username="+this.data.username,{headers: {'token': localStorage.getItem("token")}});
+        resposta.data.forEach(x => {
           this.chartdata.labels.push(x.data);
           this.chartdata.datasets[0].data.push(x.peso);
           this.chartdata.datasets[1].data.push(x.m_muscular);
           this.chartdata.datasets[2].data.push(x.m_gorda);
         })
+    }
+    else{
+        let resposta = await axios.get("http://localhost:4576/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}});
+        resposta.data.forEach(x => {
+          this.chartdata.labels.push(x.data);
+          this.chartdata.datasets[0].data.push(x.peso);
+          this.chartdata.datasets[1].data.push(x.m_muscular);
+          this.chartdata.datasets[2].data.push(x.m_gorda);
+        })
+    }
+    
    /*axios
       .get("http://localhost:4576/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}})
       .then(resp => {
