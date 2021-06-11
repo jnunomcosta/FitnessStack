@@ -13,21 +13,21 @@ export default {
                         label: "Peso (kg)",
                         data: [/* 40, 39, 10, 40, 39, 80, 40 */],
                         backgroundColor: "transparent",
-                        borderColor: "rgba(255,0,0,0.25)",
+                        borderColor: "#f95738",
                         pointBackgroundColor: "white"
                     },
                     {
-                        label: "Massa Muscular (kg)",
+                        label: "Massa Muscular (%)",
                         data: [/* 98, 74, 14, 82, 57, 32, 68 */],
                         backgroundColor: "transparent",
-                        borderColor: "rgba(0.25,0,0,255)",
+                        borderColor: "#000314",
                         pointBackgroundColor: "white"
                     },
                     {
                         label: "Massa Gorda (%)",
                         data: [/* 15, 87, 53, 67, 17, 24, 30 */],
                         backgroundColor: "transparent",
-                        borderColor: "rgba(0,255,0)",
+                        borderColor: "#7189ff",
                         pointBackgroundColor: "white"
                     }
                 ]

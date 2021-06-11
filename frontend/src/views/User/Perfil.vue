@@ -214,6 +214,7 @@
                   <v-card-title>
                     <span class="headline">Alterar foto de perfil</span>
                   </v-card-title>
+                  
                   <v-card-text>
                     <v-container>
                       <v-file-input
@@ -249,23 +250,28 @@
 
         <v-col cols="12" md="5">
           <v-card>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12" md="5">
-                  <h2 class="font-weight-black">
-                    Peso atual: {{ utilizador.peso }}kg
-                  </h2>
+            <v-card-title class="justify-center">
+                      <span>Informação Física</span>
+                    </v-card-title>
+                    <v-divider class="mx-4"></v-divider>
+              <v-row class="mt-0">
+                <v-col cols="12" md="6">
+                   <v-card-text>
+                  <h1 class="headline">
+                    <b>Peso atual:</b> {{ utilizador.peso }}kg
+                  </h1>
                   <v-spacer class="mt-4"></v-spacer>
+                  <p><b>Massa Gorda:</b> {{ utilizador.m_gorda }}%</p>
 
-                  <p>Massa Gorda: {{ utilizador.m_gorda }}%</p>
-
-                  <p>Massa Muscular: {{ utilizador.m_muscular }}%</p>
+                  <p><b>Massa Muscular:</b> {{ utilizador.m_muscular }}%</p>
+                  </v-card-text>
                 </v-col>
 
-                <v-col cols="12" md="7">
-                  <p>Altura: {{ utilizador.altura }}cm</p>
+                <v-col cols="12" md="6">
+                  <v-card-text>
+                  <p><b>Altura:</b> {{ utilizador.altura }}cm</p>
                   <p>
-                    IMC:
+                    <b>IMC:</b>
                     <v-chip
                       v-if="verifyIMC"
                       class="ma-2"
@@ -283,7 +289,8 @@
                       {{ imc }}
                     </v-chip>
                   </p>
-                  <p>IMC ideal: 18.5 - 24.9</p>
+                  <p><b>IMC ideal:</b> 18.5 - 24.9</p>
+                  </v-card-text>
                 </v-col>
               </v-row>
               <div>
@@ -291,7 +298,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       dark
-                      class="mx-4"
+                      class="ma-4"
                       color="#f95738"
                       small
                       v-bind="attrs"
@@ -360,7 +367,6 @@
                   </v-card>
                 </v-dialog>
               </div>
-            </v-card-text>
           </v-card>
 
           <!-- <v-card class="mt-4">
