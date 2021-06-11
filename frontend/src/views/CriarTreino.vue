@@ -80,13 +80,16 @@
         >
           <v-card v-for="bloco in blocos" :key="bloco.nome" class="mr-6 mb-2">
             <div class="flex justify-between cursor-move border border-white">
-              <v-icon>mdi-drag</v-icon>
-              <v-list class="transparent">
-                <v-list-item
-                  ><v-list-item-title class="title">{{
+              <v-toolbar flat dense rounded color="#000314" dark
+        ><v-icon>mdi-drag</v-icon><div class="ml-2 title">{{
                     bloco.nome
-                  }}</v-list-item-title></v-list-item
-                >
+                  }}</div>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="dialog = false"><v-icon>mdi-close</v-icon></v-btn>
+      </v-toolbar>
+              
+              <v-list class="transparent">
+                
                 <v-list-item class="mt-0">
                   <v-list-item-subtitle>
                     Séries: {{ bloco.series }}
