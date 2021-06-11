@@ -27,7 +27,9 @@
               {{ utilizador.username }}
             </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            <div class="mt-4 body-2" ><v-span >{{ utilizador.email }}</v-span></div>
+            <div class="mt-4 body-2">
+              <v-span>{{ utilizador.email }}</v-span>
+            </div>
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -67,7 +69,14 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setUsername(new_username);dialog1 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setUsername(new_username);
+                        dialog1 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -112,7 +121,14 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setEmail(input_email);dialog2 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setEmail(input_email);
+                        dialog2 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -142,7 +158,7 @@
                         <v-col cols="12" md="12">
                           Digite a palavra-passe antiga.
                           <v-text-field
-                           type="password"
+                            type="password"
                             v-model="old_password"
                             color="#f95738"
                             prepend-icon="mdi-lock"
@@ -151,7 +167,7 @@
                           ></v-text-field>
                           Digite a palavra-passe nova.
                           <v-text-field
-                           type="password"
+                            type="password"
                             v-model="new_password"
                             color="#f95738"
                             prepend-icon="mdi-lock-question"
@@ -167,15 +183,19 @@
                     <v-btn color="#f95738" text @click="dialog3 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setPassword(old_password,new_password);dialog3 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setPassword(old_password, new_password);
+                        dialog3 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-
-
-              
 
               <v-dialog v-model="dialog4" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -196,14 +216,13 @@
                   </v-card-title>
                   <v-card-text>
                     <v-container>
-                      
-                    <v-file-input
-                      id="imagem"
-                      v-model="imagem_input"
-                      label="Imagem de Perfil"
-                      name="imagem_perfil"
-                      prepend-icon="mdi-camera"
-                    />
+                      <v-file-input
+                        id="imagem"
+                        v-model="imagem_input"
+                        label="Imagem de Perfil"
+                        name="imagem_perfil"
+                        prepend-icon="mdi-camera"
+                      />
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
@@ -211,7 +230,14 @@
                     <v-btn color="#f95738" text @click="dialog4 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setImagem(imagem_input);dialog4 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setImagem(imagem_input);
+                        dialog4 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -223,104 +249,116 @@
 
         <v-col cols="12" md="5">
           <v-card>
-            
             <v-card-text>
               <v-row>
                 <v-col cols="12" md="5">
-                  <h2 class="font-weight-black"
-              >Peso atual: {{ utilizador.peso }}kg
-              
-              
-              
-            </h2>
-            <v-spacer class="mt-4"></v-spacer>
+                  <h2 class="font-weight-black">
+                    Peso atual: {{ utilizador.peso }}kg
+                  </h2>
+                  <v-spacer class="mt-4"></v-spacer>
 
-                  <p>
-                    Massa Gorda {{ utilizador.m_gorda }}%
-                    
-                  </p>
+                  <p>Massa Gorda: {{ utilizador.m_gorda }}%</p>
 
-                  <p>
-                    Massa Muscular {{ utilizador.m_muscular }}%
-                    
-                  </p>
+                  <p>Massa Muscular: {{ utilizador.m_muscular }}%</p>
                 </v-col>
 
                 <v-col cols="12" md="7">
-                  <p>Altura {{ utilizador.altura }}cm</p>
-                  <p>IMC {{ imc }}</p>
+                  <p>Altura: {{ utilizador.altura }}cm</p>
+                  <p>
+                    IMC:
+                    <v-chip
+                      v-if="verifyIMC"
+                      class="ma-2"
+                      color="green"
+                      text-color="white"
+                    >
+                      {{ imc }}
+                    </v-chip>
+                    <v-chip
+                      v-else
+                      class="ma-2"
+                      color="red"
+                      text-color="white"
+                    >
+                      {{ imc }}
+                    </v-chip>
+                  </p>
                   <p>IMC ideal: 18.5 - 24.9</p>
                 </v-col>
               </v-row>
               <div>
-                  <v-dialog v-model="dialog6" persistent max-width="500px">
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn  
-                                            
-                          dark  
-                          class="mx-4 "
-                          color="#f95738"
-                          small
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          Atualizar dados
-                        </v-btn>
-                      </template>
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline"
-                            >Atualizar dados</span
-                          >
-                        </v-card-title>
-                        <v-card-text>
-                    <v-text-field
-                      v-model="input_peso"
+                <v-dialog v-model="dialog6" persistent max-width="500px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      dark
+                      class="mx-4"
                       color="#f95738"
-                      type="number"
-                      :max="maxPeso"
-                      :min="minPeso"
-                      label="Peso (kg)"
-                      required
+                      small
+                      v-bind="attrs"
+                      v-on="on"
                     >
+                      Atualizar dados
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">Atualizar dados</span>
+                    </v-card-title>
+                    <v-form ref="form">
+                    <v-card-text>
+                      <v-text-field
+                        v-model="input_peso"
+                        color="#f95738"
+                        type="number"
+                        :rules="formRules"
+                        :max="maxPeso"
+                        :min="minPeso"
+                        label="Peso (kg)"
+                        required
+                      >
+                        ></v-text-field
+                      >
+                    </v-card-text>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="input_muscular"
+                        color="#f95738"
+                        type="number"
+                        :rules="formRules"
+                        :max="maxPercentagem"
+                        :min="minPercentagem"
+                        label="Massa muscular (%)"
+                        required
                       ></v-text-field>
-                    
-                  </v-card-text>
-                        <v-card-text>
-
-                          <v-text-field
-                            v-model="input_muscular"
-                            color="#f95738"
-                            type="number"
-                            :max="maxPercentagem"
-                            :min="minPercentagem"
-                            label="Massa muscular (%)"
-                            required
-                          ></v-text-field>
-                        </v-card-text>
-                        <v-card-text>
-                          <v-text-field
-                            v-model="input_gorda"
-                            color="#f95738"
-                            type="number"
-                            :max="maxPercentagem"
-                            :min="minPercentagem"
-                            label="Massa gorda (%)"
-                            required
-                          ></v-text-field>
-
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="#f95738" text @click="dialog6 = false">
-                            Sair
-                          </v-btn>
-                          <v-btn color="#f95738" text @click="pesagem(input_peso,input_muscular,input_gorda);dialog6 = false">
-                            Atualizar
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
+                    </v-card-text>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="input_gorda"
+                        color="#f95738"
+                        type="number"
+                        :rules="formRules"
+                        :max="maxPercentagem"
+                        :min="minPercentagem"
+                        label="Massa gorda (%)"
+                        required
+                      ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="#f95738" text @click="dialog6 = false">
+                        Sair
+                      </v-btn>
+                      <v-btn
+                        color="#f95738"
+                        text
+                        @click="validateForm(input_peso, input_muscular, input_gorda)"
+                      >
+                        Atualizar
+                      </v-btn>
+                    </v-card-actions>
+                    </v-form>
+                  </v-card>
+                </v-dialog>
               </div>
             </v-card-text>
           </v-card>
@@ -359,7 +397,7 @@
             >
             <v-divider class="mx-4"></v-divider>
             <div id="chart">
-               <line-chart/>
+              <line-chart />
             </div>
           </v-card>
 
@@ -411,7 +449,7 @@
 <script>
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
-import LineChart from '@/components/InfoFisicaGrafico.vue'
+import LineChart from "@/components/InfoFisicaGrafico.vue";
 
 import axios from "axios";
 import sjcl from "sjcl";
@@ -421,12 +459,15 @@ export default {
   components: {
     NavBar,
     SideBar,
-    LineChart
+    LineChart,
   },
   created() {
     document.title = "Fitness Stack";
   },
   data: () => ({
+    formRules: [
+      (v) => !!v || "Campo obrigatório",
+    ],
     dialog1: false,
     dialog2: false,
     dialog3: false,
@@ -459,120 +500,122 @@ export default {
       altura: 0.0,
       genero: false,
       foto_perfil: "",
-      info_fisica:[],
+      info_fisica: [],
     },
   }),
   mounted() {
     axios
-      .get("http://localhost:4576/api/user/getUserInfo",{headers: {'token': localStorage.getItem("token")}})
+      .get("http://localhost:4576/api/user/getUserInfo", {
+        headers: { token: localStorage.getItem("token") },
+      })
       .then((response) => {
-        
         this.utilizador = response.data;
         console.log(this.utilizador.foto_perfil);
-        this.imc =
+        var valor =
           (this.utilizador.peso /
             (this.utilizador.altura * this.utilizador.altura)) *
           10000;
+        this.imc = parseFloat(valor).toFixed(1);
       })
       .finally(() => (this.loading = false));
   },
   methods: {
-
-    pesagem(new_peso,new_muscular,new_gorda) {
-
-
-        var data = new Date(),
-        dia  = data.getDate().toString(),
-        diaF = (dia.length == 1) ? '0'+dia : dia,
-        mes  = (data.getMonth()+1).toString(), //+1 pois no getMonth Janeiro começa com zero.
-        mesF = (mes.length == 1) ? '0'+mes : mes,
+    validateForm(input_peso, input_muscular, input_gorda){
+      if(this.$refs.form.validate()){
+        this.pesagem(input_peso, input_muscular, input_gorda)
+        this.dialog6 = false
+      }
+    },
+    pesagem(new_peso, new_muscular, new_gorda) {
+      var data = new Date(),
+        dia = data.getDate().toString(),
+        diaF = dia.length == 1 ? "0" + dia : dia,
+        mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = mes.length == 1 ? "0" + mes : mes,
         anoF = data.getFullYear();
-                
+
       axios
         .post(
           "http://localhost:4576/api/user/novaInfoFisica",
-            {
-              "data":anoF+"-"+mesF+"-"+diaF,
-              "peso": new_peso,
-              "m_muscular":new_muscular,
-              "m_gorda":new_gorda
-              }
-            , {headers: {'token': localStorage.getItem("token")}}
+          {
+            data: anoF + "-" + mesF + "-" + diaF,
+            peso: new_peso,
+            m_muscular: new_muscular,
+            m_gorda: new_gorda,
+          },
+          { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-              console.log(response);
-              this.utilizador.m_gorda=new_gorda;
-              this.utilizador.m_muscular=new_muscular
-              this.utilizador.peso=new_peso
-              this.imc =
+          console.log(response);
+          this.utilizador.m_gorda = new_gorda;
+          this.utilizador.m_muscular = new_muscular;
+          this.utilizador.peso = new_peso;
+          var valor =
           (this.utilizador.peso /
             (this.utilizador.altura * this.utilizador.altura)) *
           10000;
-
+        this.imc = parseFloat(valor).toFixed(1);
         })
-        .finally(() => console.log("hi"));//msg erro a mudar email));*/
-
+        .finally(() => console.log("hi")); //msg erro a mudar email));*/
     },
-      setEmail(new_email) {
+    setEmail(new_email) {
       axios
         .post(
           "http://localhost:4576/api/user/mudarEmail",
-            {
-              "email": new_email
-            }
-            , {headers: {'token': localStorage.getItem("token")}}
+          {
+            email: new_email,
+          },
+          { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          console.log(response  )
-          this.utilizador.email=new_email
-          
+          console.log(response);
+          this.utilizador.email = new_email;
         })
-        .finally(() => console.log("hi"));//msg erro a mudar email));
+        .finally(() => console.log("hi")); //msg erro a mudar email));
     },
     setUsername(new_username) {
       axios
         .post(
           "http://localhost:4576/api/user/mudarUsername",
-            {
-              "username_novo": new_username,
-            }
-            , {headers: {'token': localStorage.getItem("token")}}
+          {
+            username_novo: new_username,
+          },
+          { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          if(response.status == 200){
-            this.utilizador.username = new_username
-            localStorage.setItem("token",response.data.token)
-            localStorage.setItem("username",new_username)
+          if (response.status == 200) {
+            this.utilizador.username = new_username;
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("username", new_username);
             //localStorage.setItem("usertype",0)
-          }  
+          }
         })
-        .finally(() => console.log("hi"));//msg erro a mudar username));
+        .finally(() => console.log("hi")); //msg erro a mudar username));
     },
-    setPassword(oldP,newP){
-        axios
+    setPassword(oldP, newP) {
+      axios
         .post(
           "http://localhost:4576/api/user/mudarPassword",
-            {
-              "new_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
-              "old_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
-            }
-            , {headers: {'token': localStorage.getItem("token")}}
+          {
+            new_password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
+            old_password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP)),
+          },
+          { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-
           const status = JSON.parse(response.status);
-            
-            if (status == "200") {
-              console.log("mudei a pass")
-            }   
+
+          if (status == "200") {
+            console.log("mudei a pass");
+          }
         })
-        .finally(() => console.log("hi"));//msg erro a mudar username));
+        .finally(() => console.log("hi")); //msg erro a mudar username));
     },
-    async setImagem(nova_imagem){
+    async setImagem(nova_imagem) {
       function carrega_foto(x) {
         return new Promise((resolve) => {
           let blob = new Blob([x]),
-          fileReader = new FileReader();
+            fileReader = new FileReader();
           fileReader.readAsArrayBuffer(blob);
           fileReader.onload = function () {
             console.log("carreguei o ficheiro");
@@ -585,17 +628,24 @@ export default {
       let foto = await carrega_foto(nova_imagem);
       console.log(foto);
       axios
-          .post("http://localhost:4576/api/user/mudarImagem"
-            ,{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
-          .then(response => {
-            if(response.status == 200){
-              console.log("funfou");
-              console.log(this.utilizador.foto_perfil);
-            }
-          })
-    }
-    
+        .post(
+          "http://localhost:4576/api/user/mudarImagem",
+          { nova_foto: foto },
+          { headers: { token: localStorage.getItem("token") } }
+        )
+        .then((response) => {
+          if (response.status == 200) {
+            console.log("funfou");
+            console.log(this.utilizador.foto_perfil);
+          }
+        });
+    },
   },
+  computed: {
+    verifyIMC() {
+      return (this.imc >= 18.5 && this.imc <= 24.9);
+    },
+  }
 };
 </script>
 

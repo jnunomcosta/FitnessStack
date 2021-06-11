@@ -84,6 +84,7 @@ export default {
             if (status == "200") {
               localStorage.setItem("token", response.data.token);
               localStorage.setItem("username", this.input.username);
+              localStorage.setItem("usertype", 2);
               this.$router.push("/administrador/perfil");
             }
 

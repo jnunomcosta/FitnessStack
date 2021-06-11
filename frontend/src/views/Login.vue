@@ -11,7 +11,7 @@
                   <h1 class="text-center display-2" style="color: #f95738">
                     Entre no Fitness Stack
                   </h1>
-                  <v-form class="px-16 mx-8 mt-6">
+                  <v-form ref="login_form" class="px-16 mx-8 mt-6">
                     <v-text-field
                       label="Nome de Utilizador"
                       name="Username"
@@ -19,6 +19,8 @@
                       prepend-icon="mdi-account"
                       type="text"
                       color="#f95738"
+                      :rules="usernameLoginRules"
+                      required
                     />
                     <v-text-field
                       id="password"
@@ -28,15 +30,41 @@
                       prepend-icon="mdi-lock"
                       type="password"
                       color="#f95738"
+                      :rules="passwordLoginRules"
+                      required
                     />
-                    <v-checkbox v-model="modo_login" label="É Treinador?" />
-                  </v-form>
-                  
-                  <div class="text-center my-6">
-                    <v-btn v-on:click="login()" color="#f95738" dark
-                      >Login</v-btn
+                    <v-checkbox
+                      v-model="modo_login"
+                      label="É Treinador?"
+                      color="#7189ff"
+                    />
+
+                    <div class="text-center my-6">
+                      <v-btn v-on:click="validate_login()" color="#f95738" dark
+                        >Login</v-btn
+                      >
+                    </div>
+                    <v-alert
+                      border="left"
+                      v-if="loginAuthError"
+                      text
+                      dismissible
+                      elevation="2"
+                      type="warning"
                     >
-                  </div>
+                      Credenciais inválidas
+                    </v-alert>
+                    <v-alert
+                      border="left"
+                      v-if="loginServerError"
+                      text
+                      dismissible
+                      elevation="2"
+                      type="error"
+                    >
+                      Erro do servidor
+                    </v-alert>
+                  </v-form>
                 </v-card-text>
               </v-col>
               <v-col cols="12" md="4" style="background-color: #f95738">
@@ -61,7 +89,7 @@
                     Realize o login para se manter conectado!
                   </h5>
                 </v-card-text>
-                <div class="text-center mb-10">
+                <div class="text-center mb-10" style="padding-bottom: 600px">
                   <v-btn outlined dark @click="step--">Login</v-btn>
                 </div>
               </v-col>
@@ -71,12 +99,13 @@
                   <h1 class="text-center display-2" style="color: #f95738">
                     Criar Conta
                   </h1>
-                  <v-form class="px-16 mx-8 mt-6">
+                  <v-form ref="register_form" class="px-16 mx-8 mt-6">
                     <v-text-field
-                      label="Nome Completo*"
+                      label="Nome Completo"
                       name="Name"
                       v-model="input_register.nome"
                       prepend-icon="mdi-account"
+                      :rules="nameRules"
                       type="text"
                       color="#f95738"
                       required
@@ -92,9 +121,11 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                           v-model="input_register.date"
-                          label="Data de Nascimento*"
+                          label="Data de Nascimento"
                           prepend-icon="mdi-calendar"
                           readonly
+                          hint="Deve ter no mínimo 12 anos"
+                          persistent-hint
                           v-bind="attrs"
                           v-on="on"
                           color="#f95738"
@@ -104,16 +135,18 @@
                       <v-date-picker
                         v-model="input_register.date"
                         no-title
+                        :rules="birthdateRules"
+                        :max="getMaxDate"
                         scrollable
                         color="#7189ff"
                       >
                         <v-spacer></v-spacer>
-                        <v-btn text color="#f95738" @click="menu = false">
+                        <v-btn text color="#7189ff" @click="menu = false">
                           Cancelar
                         </v-btn>
                         <v-btn
                           text
-                          color="#f95738"
+                          color="#7189ff"
                           @click="$refs.menu.save(input_register.date)"
                         >
                           OK
@@ -121,29 +154,33 @@
                       </v-date-picker>
                     </v-menu>
                     <v-text-field
-                      label="Email*"
+                      label="Email"
                       name="Email"
                       v-model="input_register.email"
                       prepend-icon="mdi-email"
+                      :rules="emailRules"
                       type="text"
                       color="#f95738"
                       required
                     />
                     <v-text-field
-                      label="Nome de Utilizador*"
+                      label="Nome de Utilizador"
                       name="Username"
                       v-model="input_register.username"
                       prepend-icon="mdi-account-lock"
+                      :rules="usernameRules"
                       type="text"
                       color="#f95738"
                       required
                     />
                     <v-text-field
                       id="password"
-                      label="Palavra-Passe*"
+                      label="Palavra-Passe"
                       name="password"
                       v-model="input_register.password"
                       prepend-icon="mdi-lock"
+                      :rules="passwordRules"
+                      counter
                       type="password"
                       color="#f95738"
                       required
@@ -152,92 +189,128 @@
                       id="imagem"
                       v-model="input_register.imagem"
                       label="Imagem de Perfil"
+                      :rules="avatarRules"
+                      color="#f95738"
                       name="imagem_perfil"
                       prepend-icon="mdi-camera"
                     />
-                    <small>* campo obrigatório</small>
-                  </v-form>
-                  <v-dialog v-model="dialog" persistent max-width="600px">
-                    <template v-slot:activator="{ on, attrs }">
-                      <div class="text-center my-8">
-                        <v-btn color="#f95738" dark v-bind="attrs" v-on="on"
-                          >Registar</v-btn
-                        >
-                      </div>
-                    </template>
-                    <v-card>
-                      <v-card-title>
-                        <span class="headline">Complete o seu perfil...</span>
-                      </v-card-title>
-                      <v-card-text>
-                        <v-container>
-                          <v-row>
-                            <v-col cols="12">
-                              <v-subheader>Peso (kg)</v-subheader>
-                              <v-slider
-                                v-model="input_register.peso"
-                                class="align-center"
-                                :max="maxPeso"
-                                :min="minPeso"
-                                hide-details
-                                color="#7189ff"
-                              >
-                                <template v-slot:append>
-                                  <v-text-field
+                    <div class="text-center my-8">
+                      <v-dialog v-model="dialog" persistent max-width="600px">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            color="#7189ff"
+                            class="ma-2 white--text"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            Completar Perfil
+                            <v-icon right dark> mdi-clipboard-plus </v-icon>
+                          </v-btn>
+                        </template>
+                        <v-card>
+                          <v-card-title>
+                            <span class="headline"
+                              >Complete o seu perfil...</span
+                            >
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <v-row>
+                                <v-col cols="12">
+                                  <v-subheader>Peso (kg)</v-subheader>
+                                  <v-slider
                                     v-model="input_register.peso"
-                                    class="mt-0 pt-0"
+                                    class="align-center"
+                                    :max="maxPeso"
+                                    :min="minPeso"
                                     hide-details
-                                    single-line
-                                    type="number"
-                                    style="width: 60px"
-                                  ></v-text-field>
-                                </template>
-                              </v-slider>
-                            </v-col>
+                                    color="#7189ff"
+                                  >
+                                    <template v-slot:append>
+                                      <v-text-field
+                                        v-model="input_register.peso"
+                                        class="mt-0 pt-0"
+                                        hide-details
+                                        single-line
+                                        color="#7189ff"
+                                        type="number"
+                                        style="width: 60px"
+                                      ></v-text-field>
+                                    </template>
+                                  </v-slider>
+                                </v-col>
 
-                            <v-col cols="12">
-                              <v-subheader>Altura (cm)</v-subheader>
-                              <v-slider
-                                v-model="input_register.altura"
-                                class="align-center"
-                                :max="maxAltura"
-                                :min="minAltura"
-                                hide-details
-                                color="#7189ff"
-                              >
-                                <template v-slot:append>
-                                  <v-text-field
+                                <v-col cols="12">
+                                  <v-subheader>Altura (cm)</v-subheader>
+                                  <v-slider
                                     v-model="input_register.altura"
-                                    class="mt-0 pt-0"
+                                    class="align-center"
+                                    :max="maxAltura"
+                                    :min="minAltura"
                                     hide-details
-                                    single-line
-                                    type="number"
-                                    style="width: 60px"
-                                  ></v-text-field>
-                                </template>
-                              </v-slider>
-                            </v-col>
+                                    color="#7189ff"
+                                  >
+                                    <template v-slot:append>
+                                      <v-text-field
+                                        v-model="input_register.altura"
+                                        class="mt-0 pt-0"
+                                        hide-details
+                                        single-line
+                                        type="number"
+                                        style="width: 60px"
+                                        color="#7189ff"
+                                      ></v-text-field>
+                                    </template>
+                                  </v-slider>
+                                </v-col>
 
-                            <v-col cols="12" center>
-                              <v-select
-                                :items="['Masculino', 'Feminino']"
-                                v-model="input_register.genero"
-                                label="Género"
-                                color="#7189ff"
-                                required
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="#7189ff" text v-on:click="registar()">
-                          Registar
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
+                                <v-col cols="12" center>
+                                  <v-select
+                                    :items="['Masculino', 'Feminino']"
+                                    v-model="input_register.genero"
+                                    label="Género"
+                                    color="#7189ff"
+                                    required
+                                  ></v-select>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="#7189ff" text @click="dialog = false">
+                              OK
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                      <v-btn
+                        color="#f95738"
+                        dark
+                        v-on:click="validate_register()"
+                        >Registar</v-btn
+                      ></div>
+                      <v-alert
+                        border="left"
+                        v-if="registerAuthError"
+                        text
+                        dismissible
+                        elevation="2"
+                        type="warning"
+                      >
+                        Email e/ou Nome de Utilizador já existem
+                      </v-alert>
+                      <v-alert
+                        border="left"
+                        v-if="registerServerError"
+                        text
+                        dismissible
+                        elevation="2"
+                        type="error"
+                      >
+                        Erro do servidor
+                      </v-alert>
+                  </v-form>
                 </v-card-text>
               </v-col>
             </v-row>
@@ -272,7 +345,7 @@ export default {
       password: "",
       email: "",
       nome: "",
-      idade: 2,
+      date: "",
       peso: 70,
       altura: 170,
       genero: "",
@@ -285,8 +358,51 @@ export default {
     maxPeso: 200,
     minAltura: 100,
     maxAltura: 250,
+    date: new Date(),
+    usernameLoginRules: [(v) => !!v || "Deve introduzir um nome de utilizador"],
+    passwordLoginRules: [(v) => !!v || "Deve introduzir uma palavra-passe"],
+    loginAuthError: false,
+    loginServerError: false,
+    nameRules: [(v) => !!v || "Campo obrigatório"],
+    birthdateRules: [
+      (v) =>
+        Math.abs(new Date().getFullYear() - new Date(v).getFullYear()) > 12 ||
+        "Data de nascimento inválida",
+    ],
+    emailRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) => /.+@.+/.test(v) || "Email inválido",
+    ],
+    usernameRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) => /^[a-zA-Z0-9.-]{2,}$/.test(v) || "Nome de utilizador inválido",
+    ],
+    passwordRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) =>
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) ||
+        "A palavra-passe deve ter no mínimo 8 letras e pelo menos 1 minúscula e 1 maiúscula",
+    ],
+    avatarRules: [
+      (value) =>
+        !value ||
+        value.size < 5000000 ||
+        "O tamanho da imagem deve ser inferior a 5 MB",
+    ],
+    registerAuthError: false,
+    registerServerError: false,
   }),
   methods: {
+    validate_login() {
+      if (this.$refs.login_form.validate()) {
+        this.login();
+      }
+    },
+    validate_register() {
+      if (this.$refs.register_form.validate()) {
+        this.registar();
+      }
+    },
     login() {
       if (this.modo_login == false) {
         //utilizador
@@ -305,12 +421,24 @@ export default {
               if (status == "200") {
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("username", this.input.username);
+                localStorage.setItem("usertype", 0);
                 this.$router.push("/perfil");
               }
-
-              //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
-
-              //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+            })
+            .catch((error) => {
+              if (error.response != null) {
+                if (error.response.status == "401") {
+                  this.loginAuthError = true;
+                  setTimeout(() => {
+                    this.loginAuthError = false;
+                  }, 5000);
+                }
+              } else {
+                this.loginServerError = true;
+                setTimeout(() => {
+                  this.loginServerError = false;
+                }, 5000);
+              }
             })
             .finally(() => (this.loading = false));
         } else {
@@ -321,7 +449,9 @@ export default {
         if (this.input.username != "" && this.input.password != "") {
           var loginInfoTreinador = {
             username: this.input.username,
-            password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
+            password: sjcl.codec.hex.fromBits(
+              sjcl.hash.sha256.hash(this.input.password)
+            ),
           };
           axios
             .post(
@@ -334,12 +464,24 @@ export default {
               if (status == "200") {
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("username", this.input.username);
+                localStorage.setItem("usertype", 1);
                 this.$router.push("/treinador/perfil");
               }
-
-              //TALVEZ TER UM MAXIMO DE TENTATIVAS DE LOGIN IDK
-
-              //MOSTRAR UM AVISO DE QUE A PALAVRA PASSE ESTA ERRADA
+            })
+            .catch((error) => {
+              if (error.response != null) {
+                if (error.response.status == "401") {
+                  this.loginAuthError = true;
+                  setTimeout(() => {
+                    this.loginAuthError = false;
+                  }, 5000);
+                }
+              } else {
+                this.loginServerError = true;
+                setTimeout(() => {
+                  this.loginServerError = false;
+                }, 5000);
+              }
             })
             .finally(() => (this.loading = false));
         } else {
@@ -399,7 +541,32 @@ export default {
                 }
               });
           }
-        });
+        })
+        .catch((error) => {
+              if (error.response != null) {
+                if (error.response.status == "401") {
+                  this.registerAuthError = true;
+                  setTimeout(() => {
+                    this.registerAuthError = false;
+                  }, 5000);
+                }
+              } else {
+                this.registerServerError = true;
+                setTimeout(() => {
+                  this.registerServerError = false;
+                }, 5000);
+              }
+            })
+    },
+  },
+  computed: {
+    getMaxDate() {
+      var maxDate = new Date(
+        this.date.getFullYear() - 12,
+        this.date.getMonth(),
+        this.date.getDay()
+      );
+      return maxDate.toISOString().substr(0, 10);
     },
   },
 };

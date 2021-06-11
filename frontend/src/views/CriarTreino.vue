@@ -256,7 +256,6 @@ export default {
         console.log(response);
         if (response.status == "200") {
           this.items = response.data;
-          console.log("GR8 SUCC");
         }
       });
   },
@@ -286,10 +285,12 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.status == "200") {
-            console.log("GR8 SUCC");
-            this.$router.push("/treinos");
-            //VER SE ELE E TREINADOR OU UTILIZADOR ANTES DO PUSH
-            //SENDO QUE O TREINADOR TEM DE IR PARA /treinador/treinos
+            if (localStorage.getItem("usertype") == 0) {
+              this.$router.push("/treinos");
+            }
+            else if (localStorage.getItem("usertype") == 1) {
+              this.$router.push("/treinador/treinos");
+            }
           }
         });
     },
