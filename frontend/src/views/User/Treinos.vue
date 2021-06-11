@@ -141,7 +141,7 @@ export default {
         //console.log("entrei no true")
         //console.log(props);
         axios
-          .post("http://localhost:4576/api/treinos/desfavoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
+          .post(process.env.VUE_APP_BASELINK+"/api/treinos/desfavoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
           .then(response => {
             console.log(response);
           })
@@ -151,7 +151,7 @@ export default {
         //console.log("parente")
         //console.log(props)
         axios
-          .post("http://localhost:4576/api/treinos/favoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
+          .post(process.env.VUE_APP_BASELINK+"/api/treinos/favoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
           .then(response => {
             console.log(response);
           })
@@ -162,7 +162,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:4576/api/treinos/listarUtilizador?username="+localStorage.getItem("username"), {
+      .get(process.env.VUE_APP_BASELINK+"/api/treinos/listarUtilizador?username="+localStorage.getItem("username"), {
         headers: { token: localStorage.getItem("token") },
       })
       .then((response) => {

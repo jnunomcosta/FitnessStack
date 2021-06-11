@@ -15,7 +15,7 @@
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-card hover class="white">
             <v-img
-               :src="'http://localhost:4576' + title.foto_utilizador"
+               :src="linkfoto() + title.foto_utilizador"
               class="white--text align-end"
               height="150px"
             >
@@ -117,7 +117,7 @@ export default {
   },
   computed: {
     url() {
-      return "http://localhost:4576/api/treinador/getAlunosPendentes"
+      return process.env.VUE_APP_BASELINK+"/api/treinador/getAlunosPendentes"
     },
   },
   created() {
@@ -128,6 +128,9 @@ export default {
       const response = await axios.get(this.url, {headers: {'token': localStorage.getItem("token")}});
       this.titles = response.data;
       
+    },
+    linkfoto(){
+      return  process.env.VUE_APP_BASELINK
     },
   
     /*infiniteScrolling(entries, observer, isIntersecting) {

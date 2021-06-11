@@ -225,6 +225,17 @@ public class TreinoController {
             ex_aux.put("series", c.getSeries());
             ex_aux.put("repeticoes", c.getDuracao());
             ex_aux.put("descanso", c.getDescanso());
+            
+            JSONArray fotos = new JSONArray();
+            for(ConteudoMedia cm : c.getExercicio().getORM_ConteudoMedia()){
+
+                if(cm.getExtensao())
+                    fotos.put("/api/assets/photo/"+cm.getID());
+                else fotos.put("/api/assets/video/"+cm.getID());
+            }
+            ex_aux.put("fotos",fotos);
+            
+
             exercicios.put(ex_aux);
         }
         ret.put("exercicios", exercicios);

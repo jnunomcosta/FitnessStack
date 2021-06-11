@@ -33,7 +33,7 @@
                 <div>
                   <v-avatar class="ma-3" width="250" height="300" tile>
                     <v-img
-                  :src="'http://localhost:4576' + treinador.foto_perfil"
+                  :src="linkapi() + treinador.foto_perfil"
                 ></v-img>
                   </v-avatar>
                 </div>
@@ -201,7 +201,7 @@ export default {
     
       axios
         .get(
-          "http://localhost:4576/api/user/getTreinadorResp", {headers: {'token': localStorage.getItem("token")}}
+          process.env.VUE_APP_BASELINK+"/api/user/getTreinadorResp", {headers: {'token': localStorage.getItem("token")}}
         )
         .then((response) => {
               this.contrato=response.data
@@ -209,7 +209,7 @@ export default {
 
             axios
               .get(
-              "http://localhost:4576/api/treinador/getTreinadorInfo?username="+this.contrato.treinador, {headers: {'token': localStorage.getItem("token")}}
+              process.env.VUE_APP_BASELINK+"/api/treinador/getTreinadorInfo?username="+this.contrato.treinador, {headers: {'token': localStorage.getItem("token")}}
               )
               .then( (responsetreinador) =>{
 
@@ -227,11 +227,13 @@ export default {
 
   }
   ,methods: {
-
+    linkapi(){
+      return process.env.VUE_APP_BASELINK
+    },
     cancelar(){
 
       axios
-      .post("http://localhost:4576/api/user/removerContrato",
+      .post(process.env.VUE_APP_BASELINK+"/api/user/removerContrato",
       {}
       ,
       {headers: {'token': localStorage.getItem("token")}})
@@ -258,7 +260,7 @@ export default {
 
   console.log("hdsaihdsaidddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
       axios
-        .post("http://localhost:4576/api/treinador/avaliacao",post_body,{headers: {'token': localStorage.getItem("token")}})
+        .post(process.env.VUE_APP_BASELINK + "/api/treinador/avaliacao",post_body,{headers: {'token': localStorage.getItem("token")}})
         .then(response => {
           console.log("ORA BOM DIA"+JSON.stringify(response.data));
         });

@@ -211,8 +211,8 @@ export default {
 
 
     axios
-      //.get("http://localhost:4576/api/admin/getAdminInfo",{headers: {'token': localStorage.getItem("token")}})
-      .get("http://localhost:4576/api/admin/getAdminInfo/"+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
+      //.get(process.env.VUE_APP_BASELINK+"/api/admin/getAdminInfo",{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+"/api/admin/getAdminInfo/"+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
        
             this.admin.username=response.data.username;
@@ -227,7 +227,7 @@ export default {
     setEmail(new_email) {
       axios
         .post(
-          "http://localhost:4576/api/admin/mudarEmail",
+          process.env.VUE_APP_BASELINK+"/api/admin/mudarEmail",
             {
               "email": new_email
             }
@@ -246,7 +246,7 @@ export default {
     setUsername(new_username) {
       axios
         .post(
-          "http://localhost:4576/api/admin/mudarUsername",
+          process.env.VUE_APP_BASELINK+"/api/admin/mudarUsername",
             {
               "username_novo": new_username,
             }
@@ -265,7 +265,7 @@ export default {
     setPassword(oldP,newP){
         axios
         .post(
-          "http://localhost:4576/api/admin/mudarPassword",
+          process.env.VUE_APP_BASELINK+"/api/admin/mudarPassword",
             {
               "username":localStorage.getItem("username"),
               "new_password": newP,//sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),

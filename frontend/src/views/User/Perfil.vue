@@ -16,7 +16,7 @@
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
                 <v-img
-                  :src="'http://localhost:4576' + utilizador.foto_perfil"
+                  :src="linkfoto()+ utilizador.foto_perfil"
                 ></v-img>
               </v-avatar>
             </div>
@@ -505,7 +505,7 @@ export default {
   }),
   mounted() {
     axios
-      .get("http://localhost:4576/api/user/getUserInfo", {
+      .get(process.env.VUE_APP_BASELINK+"/api/user/getUserInfo", {
         headers: { token: localStorage.getItem("token") },
       })
       .then((response) => {
@@ -536,7 +536,7 @@ export default {
 
       axios
         .post(
-          "http://localhost:4576/api/user/novaInfoFisica",
+          process.env.VUE_APP_BASELINK+"/api/user/novaInfoFisica",
           {
             data: anoF + "-" + mesF + "-" + diaF,
             peso: new_peso,
@@ -561,7 +561,7 @@ export default {
     setEmail(new_email) {
       axios
         .post(
-          "http://localhost:4576/api/user/mudarEmail",
+          process.env.VUE_APP_BASELINK+"/api/user/mudarEmail",
           {
             email: new_email,
           },
@@ -576,7 +576,7 @@ export default {
     setUsername(new_username) {
       axios
         .post(
-          "http://localhost:4576/api/user/mudarUsername",
+          process.env.VUE_APP_BASELINK+"/api/user/mudarUsername",
           {
             username_novo: new_username,
           },
@@ -595,7 +595,7 @@ export default {
     setPassword(oldP, newP) {
       axios
         .post(
-          "http://localhost:4576/api/user/mudarPassword",
+          process.env.VUE_APP_BASELINK+"/api/user/mudarPassword",
           {
             new_password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
             old_password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP)),
@@ -611,6 +611,10 @@ export default {
         })
         .finally(() => console.log("hi")); //msg erro a mudar username));
     },
+    linkfoto(){
+      return  process.env.VUE_APP_BASELINK
+    },
+
     async setImagem(nova_imagem) {
       function carrega_foto(x) {
         return new Promise((resolve) => {
@@ -618,6 +622,9 @@ export default {
             fileReader = new FileReader();
           fileReader.readAsArrayBuffer(blob);
           fileReader.onload = function () {
+
+
+          
             console.log("carreguei o ficheiro");
             console.log(this.result);
             resolve(Buffer.from(this.result).toString("base64"));
@@ -629,7 +636,7 @@ export default {
       console.log(foto);
       axios
         .post(
-          "http://localhost:4576/api/user/mudarImagem",
+          process.env.VUE_APP_BASELINK+"/api/user/mudarImagem",
           { nova_foto: foto },
           { headers: { token: localStorage.getItem("token") } }
         )

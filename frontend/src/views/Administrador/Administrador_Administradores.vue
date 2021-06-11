@@ -86,7 +86,7 @@ export default {
 
   mounted(){
     axios
-      .get("http://localhost:4576/api/admin/listar",{headers: {'token': localStorage.getItem("token")}})      
+      .get(process.env.VUE_APP_BASELINK+"/api/admin/listar",{headers: {'token': localStorage.getItem("token")}})      
       .then(response => {
         this.rows= response.data;
         console.log("adasdsadsadhhhhhhhhhhhh"+response.data)

@@ -15,7 +15,7 @@
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-card hover class="white">
             <v-img
-              :src="'http://localhost:4576' + title.imagem"
+              :src="linkapi() + title.imagem"
               class="white--text align-end"
               height="150px"
             >
@@ -66,7 +66,7 @@
           <div>
             <v-avatar class="ma-3" width="250" height="300" tile>
               <v-img
-                :src="'http://localhost:4576' + title.imagem"
+                :src="linkapi() + title.imagem"
               ></v-img>
             </v-avatar>
           </div>
@@ -179,13 +179,16 @@ export default {
   computed: {
     url() {
       /* return "https://jsonplaceholder.typicode.com/posts?_page=" + this.page; */
-      return "http://localhost:4576/api/treinador/listar";
+      return process.env.VUE_APP_BASELINK+"/api/treinador/listar";
     },
   },
   created() {
     this.fetchData();
   },
   methods: {
+    linkapi(){
+      return process.env.VUE_APP_BASELINK
+    },
     async fetchData() {
       const response = await axios.get(this.url,{headers: {'token': localStorage.getItem("token")}});
       console.log("dsadsadsa"+response.data);
@@ -196,7 +199,7 @@ export default {
       console.log("ndfjds"+ JSON.stringify(treinador))
       console.log("zzzzzzzzzz"+ JSON.stringify(comment))
       axios
-      .post("http://localhost:4576/api/user/criarContrato",
+      .post(process.env.VUE_APP_BASELINK+"/api/user/criarContrato",
       {
         treinador:treinador,
         comentario:comment
