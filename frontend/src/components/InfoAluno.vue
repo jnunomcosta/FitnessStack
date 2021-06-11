@@ -101,7 +101,7 @@
                     :activator="selectedElement"
                     offset-x
                   >
-                    <v-card color="grey lighten-4" min-width="200px" flat>
+                    <!-- <v-card color="grey lighten-4" min-width="200px" flat>
                       <v-toolbar :color="selectedEvent.color" dark>
                         <v-btn icon>
                           <v-icon>mdi-pencil</v-icon>
@@ -131,7 +131,28 @@
                           Cancelar
                         </v-btn>
                       </v-card-actions>
-                    </v-card>
+                    </v-card> -->
+                    <v-card color="grey lighten-4" min-width="200px" flat>
+                  <v-toolbar :color="selectedEvent.color" dark>
+                    <v-toolbar-title
+                      v-html="treino_info.nome"
+                    ></v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="verTreino(treino_info.codigo)">
+                      <v-icon>mdi-magnify</v-icon>
+                    </v-btn>
+                  </v-toolbar>
+                  <v-card-text>
+                    <h3 class="text-center">{{treino_info.nome}}</h3>
+                    <h3 class="text-center">{{treino_info.dificuldade}}</h3>
+                    <h3 class="text-center">{{treino_info.duracao}}</h3>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn text color="#f95738" @click="selectedOpen = false">
+                      Cancelar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
                   </v-menu>
                 </v-sheet>
               </template>
@@ -295,7 +316,7 @@
               </v-card-text>
             </v-card>
 
-            <v-card class="mt-4">
+            <!-- <v-card class="mt-4">
               <v-card-title class="justify-center">
                 Os meus treinos
               </v-card-title>
@@ -332,7 +353,7 @@
                   </v-list-item>
                 </v-col>
               </v-row>
-            </v-card>
+            </v-card> -->
 
             <!-- <v-card class="mt-4">
             <v-card-title class="justify-center"> Os meus treinos </v-card-title>
@@ -359,6 +380,17 @@
                 ></apexchart>
               </div>
             </v-card>-->
+          </v-col>
+          <v-col cols="12" md="5">
+          <v-card class="mx-auto text-center">
+            <v-card-title class="justify-center"
+              >Peso e Massa Muscular</v-card-title
+            >
+            <v-divider class="mx-4"></v-divider>
+            <div id="chart">
+              <line-chart :data="utilizador"/>
+            </div>
+          </v-card>
           </v-col>
   <!--
           <v-col cols="12" md="5">
@@ -407,11 +439,13 @@
 
 <script>
 //import VueApexCharts from "vue-apexcharts";
+import LineChart from "@/components/InfoFisicaGrafico.vue";
 import axios from "axios";  
 
 export default {
   name: "InfoAluno",
   components: {
+    LineChart,
     //apexchart: VueApexCharts,
   },
   data: () => ({
@@ -756,6 +790,9 @@ export default {
       }
 
       nativeEvent.stopPropagation();
+    },
+    verTreino(treino_cod){
+      this.$router.push("/treinador/treino/" + treino_cod);
     },
     updateRange({ start, end }) {
       /* const events = [];

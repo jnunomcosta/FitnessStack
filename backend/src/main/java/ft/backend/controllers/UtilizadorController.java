@@ -161,6 +161,14 @@ public class UtilizadorController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @GetMapping(value = "/getHistoricoFisicoTreinador")
+    public ResponseEntity<String> getHistoricoFisicoTreinador(@RequestHeader String token,@RequestParam String username){
+        if(verify.verifyTreinador(token) != null){
+            return ResponseEntity.ok().body(gestao_utilizadores.getUserFisicalHistory(username).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
     @GetMapping(value = "/listar")
     public ResponseEntity<String> getUsers(@RequestHeader String token){
         if(verify.verifyAdmin(token) != null){
