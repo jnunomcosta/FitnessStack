@@ -350,6 +350,18 @@
                         required
                       ></v-text-field>
                     </v-card-text>
+                    <v-card-text>
+                      <v-text-field
+                        v-model="input_altura"
+                        color="#f95738"
+                        type="number"
+                        :rules="formRules"
+                        :max="maxAltura"
+                        :min="minAltura"
+                        label="Altura (cm)"
+                        required
+                      ></v-text-field>
+                    </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="#f95738" text @click="dialog6 = false">
@@ -358,7 +370,7 @@
                       <v-btn
                         color="#f95738"
                         text
-                        @click="validateForm(input_peso, input_muscular, input_gorda)"
+                        @click="validateForm(input_peso, input_muscular, input_gorda, input_altura)"
                       >
                         Atualizar
                       </v-btn>
@@ -489,11 +501,14 @@ export default {
     input_peso: "",
     input_muscular: "",
     input_gorda: "",
+    input_altura: "",
 
     minPeso: 30,
     maxPeso: 200,
     minPercentagem: 0,
     maxPercentagem: 100,
+    minAltura: 100,
+    maxAltura: 250,
     imc: 0,
     utilizador: {
       email: "",
@@ -526,11 +541,46 @@ export default {
       .finally(() => (this.loading = false));
   },
   methods: {
-    validateForm(input_peso, input_muscular, input_gorda){
+    validateForm(input_peso, input_muscular, input_gorda, input_altura){
       if(this.$refs.form.validate()){
-        this.pesagem(input_peso, input_muscular, input_gorda)
+        if(input_altura!=this.utilizador.username.altura) this.pesagem_altura(input_peso, input_muscular, input_gorda, input_altura);
+        else this.pesagem(input_peso, input_muscular, input_gorda);
         this.dialog6 = false
       }
+    },
+    pesagem_altura(new_peso, new_muscular, new_gorda, new_altura) {
+      var data = new Date(),
+        dia = data.getDate().toString(),
+        diaF = dia.length == 1 ? "0" + dia : dia,
+        mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+        mesF = mes.length == 1 ? "0" + mes : mes,
+        anoF = data.getFullYear();
+
+      axios
+        .post(
+          process.env.VUE_APP_BASELINK+"/api/user/novaInfoFisica",
+          {
+            data: anoF + "-" + mesF + "-" + diaF,
+            peso: new_peso,
+            m_muscular: new_muscular,
+            m_gorda: new_gorda,
+            altura: new_altura
+          },
+          { headers: { token: localStorage.getItem("token") } }
+        )
+        .then((response) => {
+          console.log(response);
+          this.utilizador.m_gorda = new_gorda;
+          this.utilizador.m_muscular = new_muscular;
+          this.utilizador.peso = new_peso;
+          this.utilizador.altura = new_altura;
+          var valor =
+          (this.utilizador.peso /
+            (this.utilizador.altura * this.utilizador.altura)) *
+          10000;
+        this.imc = parseFloat(valor).toFixed(1);
+        })
+        .finally(() => console.log("hi")); //msg erro a mudar email));*/
     },
     pesagem(new_peso, new_muscular, new_gorda) {
       var data = new Date(),

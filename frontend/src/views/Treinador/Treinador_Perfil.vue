@@ -258,6 +258,58 @@
         </v-col>
         <v-col cols="12" md="3"> </v-col>
       </v-row>
+      <v-card
+          v-scroll.self="onScroll"
+          style="text-align: center margin-right: 90px max-width:700px"
+          class="mt-4 pt-2 overflow-y-auto"
+          max-height="400"
+        >
+          <h2 class="text-center" style="color: #f95738">Avaliações</h2>
+          <v-divider class="mt-3"></v-divider>
+          <div
+            class="text-center"
+            v-for="(item, i) in treinador.comentarios"
+            :key="i"
+          >
+            <v-list three-line>
+              <v-list-item class="ml-8">
+                <!-- <v-list-item-icon class="mx-0">
+                  <v-icon x-large>mdi-account-circle</v-icon>
+                </v-list-item-icon> -->
+                <v-list-item-avatar size="50">
+                <v-img :src="linkapi() + item.foto_user"></v-img>
+              </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-card-title class="subtitle-2 my-0 py-0 pb-2">{{
+                    item.username
+                  }}</v-card-title>
+                  <v-card-text>
+                    <v-row align="center" class="mx-0">
+                      <v-rating
+                        readonly
+                        dense
+                        v-model="item.nota"
+                        background-color="black"
+                        color="#f95738"
+                        size="14"
+                      ></v-rating>
+                    </v-row>
+                  </v-card-text>
+                  <v-card-text>
+                    <v-row align="center" class="mx-0">{{
+                      item.comentario
+                    }}</v-row></v-card-text
+                  >
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider
+                v-if="i + 1 < Object.keys(treinador.comentarios).length"
+                class="mx-8"
+              ></v-divider>
+            </v-list>
+          </div>
+        </v-card>
     </div>
     <Footer />
   </div>
@@ -296,6 +348,14 @@ export default {
       nome: "",
       email: "",
       classificacao: 0,
+      comentarios:[
+        {
+          nota: 0,
+          comentario: "",
+          username: "",
+          foto_user: ""
+        }
+      ]
     },
   }),
   mounted() {

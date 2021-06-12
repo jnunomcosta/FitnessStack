@@ -144,6 +144,10 @@ public class UtilizadorController {
             i.setM_muscular(obj.getFloat("m_muscular"));
             i.setM_gorda(obj.getFloat("m_gorda"));
 
+            if(obj.has("altura")){
+                gestao_utilizadores.mudarAltura(username, obj.getFloat("altura"));
+            }
+
         gestao_utilizadores.novaInfoFisica(username,i);
        
         return ResponseEntity.ok().body("");

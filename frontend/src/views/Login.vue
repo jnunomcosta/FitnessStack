@@ -185,6 +185,15 @@
                       color="#f95738"
                       required
                     />
+
+                    <v-select
+                      :items="['Masculino', 'Feminino']"
+                      v-model="input_register.genero"
+                      label="Género"
+                      color="#7189ff"
+                      required
+                    />
+
                     <v-file-input
                       id="imagem"
                       v-model="input_register.imagem"
@@ -263,16 +272,6 @@
                                     </template>
                                   </v-slider>
                                 </v-col>
-
-                                <v-col cols="12" center>
-                                  <v-select
-                                    :items="['Masculino', 'Feminino']"
-                                    v-model="input_register.genero"
-                                    label="Género"
-                                    color="#7189ff"
-                                    required
-                                  ></v-select>
-                                </v-col>
                               </v-row>
                             </v-container>
                           </v-card-text>
@@ -289,27 +288,28 @@
                         dark
                         v-on:click="validate_register()"
                         >Registar</v-btn
-                      ></div>
-                      <v-alert
-                        border="left"
-                        v-if="registerAuthError"
-                        text
-                        dismissible
-                        elevation="2"
-                        type="warning"
                       >
-                        Email e/ou Nome de Utilizador já existem
-                      </v-alert>
-                      <v-alert
-                        border="left"
-                        v-if="registerServerError"
-                        text
-                        dismissible
-                        elevation="2"
-                        type="error"
-                      >
-                        Erro do servidor
-                      </v-alert>
+                    </div>
+                    <v-alert
+                      border="left"
+                      v-if="registerAuthError"
+                      text
+                      dismissible
+                      elevation="2"
+                      type="warning"
+                    >
+                      Email e/ou Nome de Utilizador já existem
+                    </v-alert>
+                    <v-alert
+                      border="left"
+                      v-if="registerServerError"
+                      text
+                      dismissible
+                      elevation="2"
+                      type="error"
+                    >
+                      Erro do servidor
+                    </v-alert>
                   </v-form>
                 </v-card-text>
               </v-col>
@@ -327,7 +327,6 @@ import axios from "axios";
 import sjcl from "sjcl";
 
 export default {
-
   name: "Login",
   components: {
     NavBar,
@@ -405,8 +404,7 @@ export default {
       }
     },
     login() {
-
-      console.log(process.env.VUE_APP_BASELINK+"/api/login/user")
+      console.log(process.env.VUE_APP_BASELINK + "/api/login/user");
       if (this.modo_login == false) {
         //utilizador
         if (this.input.username != "" && this.input.password != "") {
@@ -417,7 +415,7 @@ export default {
             ),
           };
           axios
-            .post(process.env.VUE_APP_BASELINK+"/api/login/user", loginInfo)
+            .post(process.env.VUE_APP_BASELINK + "/api/login/user", loginInfo)
             .then((response) => {
               const status = JSON.parse(response.status);
 
@@ -458,7 +456,7 @@ export default {
           };
           axios
             .post(
-              process.env.VUE_APP_BASELINK+"/api/login/treinador",
+              process.env.VUE_APP_BASELINK + "/api/login/treinador",
               loginInfoTreinador
             )
             .then((response) => {
@@ -525,7 +523,7 @@ export default {
       registoInfo.foto_perfil = await carrega_foto(this.input_register.imagem);
 
       axios
-        .post(process.env.VUE_APP_BASELINK+"/api/register/user", registoInfo)
+        .post(process.env.VUE_APP_BASELINK + "/api/register/user", registoInfo)
         .then((response) => {
           const status = JSON.parse(response.status);
           if (status == "200") {
@@ -534,7 +532,10 @@ export default {
               password: registoInfo.password,
             };
             axios
-              .post(process.env.VUE_APP_BASELINK+"/api/login/user", login_info)
+              .post(
+                process.env.VUE_APP_BASELINK + "/api/login/user",
+                login_info
+              )
               .then((response2) => {
                 const status2 = JSON.parse(response2.status);
                 if (status2 == "200") {
@@ -547,20 +548,20 @@ export default {
           }
         })
         .catch((error) => {
-              if (error.response != null) {
-                if (error.response.status == "401") {
-                  this.registerAuthError = true;
-                  setTimeout(() => {
-                    this.registerAuthError = false;
-                  }, 5000);
-                }
-              } else {
-                this.registerServerError = true;
-                setTimeout(() => {
-                  this.registerServerError = false;
-                }, 5000);
-              }
-            })
+          if (error.response != null) {
+            if (error.response.status == "401") {
+              this.registerAuthError = true;
+              setTimeout(() => {
+                this.registerAuthError = false;
+              }, 5000);
+            }
+          } else {
+            this.registerServerError = true;
+            setTimeout(() => {
+              this.registerServerError = false;
+            }, 5000);
+          }
+        });
     },
   },
   computed: {

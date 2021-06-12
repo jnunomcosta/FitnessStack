@@ -77,6 +77,16 @@ public class gestao_treinadores {
             exe.put("numero_classsificacao",u.getNumeroAvaliacoes());
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
             ret.put("descricao",u.getDescricao());
+            JSONArray a = new JSONArray();
+            for(Avaliacao_Treinador t : u.getORM_avaliacoes_t()){
+                JSONObject o = new JSONObject();
+                o.put("nota", t.getClassificacao());
+                o.put("comentario", t.getComentario());
+                o.put("username", t.getUser().getUsername());
+                o.put("foto_user","/api/assets/photo/"+t.getUser().getFoto_perfil().getID());
+                a.put(o);
+            }
+            ret.put("comentarios", a);
             return ret;
         }
         else{

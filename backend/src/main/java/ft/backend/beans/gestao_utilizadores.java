@@ -160,6 +160,16 @@ public class gestao_utilizadores {
         return false;
     }
 
+    public boolean mudarAltura(String username, float altura){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u!=null){
+            u.setAltura(altura);
+            uDao.save(u);
+            return true;
+        }
+        return false;
+    }
+
     public Utilizador getUserByUsername(String username){
         return uDao.findUtilizador_Username(username); 
     }
