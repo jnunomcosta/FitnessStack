@@ -73,7 +73,7 @@
                                 rounded-pill
                               "
                             >
-                              Duração: {{ item.duracao }} segundos
+                              <b>Duração: {{ duracao_serie }}s</b>
                             </p>
                           </v-col>
                           <v-col v-if="tipoRepeticoes(item.tipo)" cols="12" md="6">
@@ -86,16 +86,8 @@
                                 rounded-pill
                               "
                             >
-                              Repetições: {{ item.repeticoes }} repetições
+                              <b>Repetições: {{ item.repeticoes }} reps</b>
                             </p>
-                            <v-btn
-                              color="black"
-                              dark
-                              v-on:click="aumentar_serie(item)"
-                            >
-                              Próxima série
-                              <v-icon dense> mdi-ArrowRightBoldOutline </v-icon>
-                            </v-btn>
                           </v-col>
                           <v-col cols="12" md="6">
                             <p
@@ -107,15 +99,25 @@
                                 rounded-pill
                               "
                             >
-                              Descanso: {{ item.descanso  }} segundos
+                              <b>Descanso: {{ duracao_descanso }}s</b>
                             </p>
                           </v-col>
+                          
                         </v-row>
+                        <v-btn
+                              color="black"
+                              block
+                              dark
+                             v-if="tipoRepeticoes(item.tipo)"
+                              v-on:click="aumentar_serie(item)"
+                            >
+                              Próxima série
+                            </v-btn>
                         <v-btn
                           v-if="tipoDuracao(item.tipo)"
                           color="black"
                           text
-                          v-on:click="countDownTimer_serie(item)"
+                          v-on:click="countDownTimer_serie1(item)"
                           >Iniciar</v-btn
                         >
                       </v-list-item-content>
@@ -128,11 +130,11 @@
                   </h3>
                   <v-card elevation="17" color="white" class="black--text">
                     <div class="text-center mx-4">
-                      <h4>{{ item[i+1].nome }} </h4>
-                      <h5>{{ item[i+1].series }} Séries</h5>
-                      <h5 v-if="tipoRepeticoes(item[i+1].tipo)">{{ item[i+1].duracao }}  repetições</h5>
-                      <h5 v-if="tipoDuracao(item[i+1].tipo)">{{ item[i+1].duracao }}  segundos</h5>
-                      <h5>{{ item[i+1].descanso }} </h5>
+                      <h4>{{ treino.exercicios[i+1].nome }} </h4>
+                      <h5>{{ treino.exercicios[i+1].series }} séries</h5>
+                      <h5 v-if="tipoRepeticoes(treino.exercicios[i+1].tipo)">Repetições: {{ treino.exercicios[i+1].repeticoes }} reps</h5>
+                      <h5 v-if="tipoDuracao(treino.exercicios[i+1].tipo)">Duração: {{ treino.exercicios[i+1].repeticoes }}s</h5>
+                      <h5>Descanso: {{ treino.exercicios[i+1].descanso }}s</h5>
                     </div>
                   </v-card> 
                 </v-col>
@@ -166,6 +168,7 @@ export default {
   data() {
     return {
       //True -> Repeticoes | False -> Duracao
+      slide: false,
       dialog1: false,
       series: 0,
       terminar_series: false,
@@ -205,14 +208,14 @@ export default {
     //}
     //},
     countDownTimer_serie(item) {
-      this.duracao_serie = item.series;
+      
       if (this.terminar_series==false){
 
 
         if (this.duracao_serie > -1) {
           setTimeout(() => {
             this.duracao_serie -= 1;
-            //this.countDownTimer_serie(item);
+            this.countDownTimer_serie(item);
           }, 1000);
 
 
@@ -221,7 +224,7 @@ export default {
         } else {
           if (this.duracao_serie == -1) {
             this.playSound();
-            this.countDownTimer_descanso(item);
+            this.countDownTimer_descanso1(item);
           }
         }
       }
@@ -230,16 +233,22 @@ export default {
         this.terminar_series=false;
       }
     },
+    countDownTimer_serie1(item) {
+      this.duracao_serie = item.series;
+      this.countDownTimer_serie(item);
+    },
+
+    countDownTimer_descanso1(item) {
+      this.duracao_descanso = item.descanso;
+      this.countDownTimer_descanso(item);
+    },
 
     countDownTimer_descanso(item) {
-      this.duracao_descanso = item.descanso;
-
-
 
       if (this.duracao_descanso > -1) {
         setTimeout(() => {
           this.duracao_descanso -= 1;
-          //this.countDownTimer_descanso(item);
+          this.countDownTimer_descanso(item);
         }, 1000);
 
 
@@ -278,14 +287,18 @@ export default {
     }
   },
   mounted() {
-    axios
-      .get(process.env.VUE_APP_BASELINK + "/api/treinos/getTreino?codigo="+this.$route.params.codigo,{headers: { token: localStorage.getItem("token")}})
+   axios
+      .get(
+        process.env.VUE_APP_BASELINK +
+          "/api/treinos/getTreino?codigo=" +
+          this.$route.params.codigo,
+        { headers: { token: localStorage.getItem("token") } }
+      )
       .then((response) => {
         this.treino = response.data;
-        console.log(JSON.stringify(this.treino));
+        console.log("heijsfidjs" + JSON.stringify(this.treino));
       })
       .finally(() => (this.loading = false));
   },
-  
 };
 </script>

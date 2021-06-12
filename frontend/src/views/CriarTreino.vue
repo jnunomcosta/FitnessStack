@@ -235,11 +235,11 @@ export default {
       exercicio: "",
       modo: "",
       valor: "",
-      series: "",
-      valor_modo: "",
-      n_repeticoes: "",
-      valor_descanso:"",
-      duracao_treino: "",
+      series: 0,
+      valor_modo: 0,
+      n_repeticoes: 0,
+      valor_descanso:0,
+      duracao_treino: 0,
       input: {
         nome_treino: "",
         descricao: "",
@@ -268,10 +268,13 @@ export default {
   },
   methods: {
     getDuracao() {
-      var duracao = 0;
+      var duracao = 0.0;
       for (var i = 0; i < this.blocos.length; i++) {
-          duracao += this.blocos[i].valor_modo;
+          duracao += parseFloat(this.blocos[i].duracao_repeticao) + parseFloat(this.blocos[i].descanso);
+          console.log(this.blocos[i].duracao_repeticao)
+          console.log(this.blocos[i].descanso)
       }
+      console.log(duracao)
       return duracao;
     },
     getUsertype() {

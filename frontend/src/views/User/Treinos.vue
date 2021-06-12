@@ -72,7 +72,8 @@
                   {{ parseFloat(props.item.classificacao).toFixed(1)
                   }}/5<v-icon color="#f95738">mdi-star</v-icon>
                 </div>
-              </template></v-data-table
+              </template>
+              </v-data-table
             ></v-card
           ></v-container
         ></v-col

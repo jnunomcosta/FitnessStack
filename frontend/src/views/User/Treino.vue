@@ -50,7 +50,7 @@
                   {{ treino.dificuldade }}</v-list-item-title
                 >
                 <v-list-item-title class="mb-4"
-                  ><b>Duração:</b> {{ treino.duracao }}</v-list-item-title
+                  ><b>Duração:</b> {{ treino.duracao }}s</v-list-item-title
                 >
                 <v-list-item-title class="mb-4"
                   ><b>Código:</b> {{ $route.params.codigo }}</v-list-item-title

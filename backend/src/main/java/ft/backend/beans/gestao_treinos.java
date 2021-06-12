@@ -66,7 +66,7 @@ public class gestao_treinos {
         for(Treino t : treinos){
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
-            exe.put("duracao",t.getDuracao()/60);
+            exe.put("duracao",t.getDuracao());
             if(t.getCriador_u() != null){
                 exe.put("criador",t.getCriador_u().getUsername());
             }
@@ -97,7 +97,7 @@ public class gestao_treinos {
         for(Treino t : treinos){
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
-            exe.put("duracao",t.getDuracao()/60);
+            exe.put("duracao",t.getDuracao());
             if(t.getCriador_u() != null){
                 exe.put("criador",t.getCriador_u().getUsername());
             }
