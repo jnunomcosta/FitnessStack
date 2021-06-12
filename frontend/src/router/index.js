@@ -23,7 +23,7 @@ import Administrador_Alunos from '../views/Administrador/Administrador_Alunos.vu
 import Administrador_Treinadores from '../views/Administrador/Administrador_Treinadores.vue'
 import Administrador_Administradores from '../views/Administrador/Administrador_Administradores.vue'
 
-// import { AuthService } from './token'
+import { AuthService } from './token'
 
 Vue.use(VueRouter)
 
@@ -148,52 +148,91 @@ const router = new VueRouter({
   routes
 })
 
-// // Auth behavior
-// router.beforeEach((to, from, next) => {
+// Auth behavior
+router.beforeEach((to, from, next) => {
 
-//   const isAuthenticated = AuthService.getToken();
-//   console.log(isAuthenticated)
+  const isAuthenticated = AuthService.getToken();
+  console.log(isAuthenticated)
 
-//   if (isAuthenticated == null) {
-//     if (to.name == 'Perfil') next('/login') // Go to index
-//     if (to.name == 'Agenda') next('/login') // Go to index
-//     if (to.name == 'Exercicios') next('/login') // Go to index
-//     if (to.name == 'Treino') next('/login') // Go to index
-//     if (to.name == 'Treinos') next('/login') // Go to index
-//     if (to.name == 'IniciarTreino') next('/login') // Go to index
-//     if (to.name == 'CriarTreino') next('/login') // Go to index
-//     if (to.name == 'Treinadores') next('/login') // Go to index
-//     if (to.name == 'Treinador_Perfil') next('/login') // Go to index
-//     if (to.name == 'Treinador_Alunos') next('/login') // Go to index
-//     if (to.name == 'Administrador_Alunos') next('/login') // Go to index
-//     if (to.name == 'Administrador_Treinadores') next('/login') // Go to index
-//     if (to.name == 'Administrador_Treinos') next('/login') // Go to index
-//     if (to.name == 'Administrador_Exercicios') next('/login') // Go to index
-//     if (to.name == 'Administrador_Administradores') next('/login') // Go to index
-//     if (to.name == 'Administrador_Perfil') next('/login') // Go to index
-//     else next() // Not logged, it's free
-//   }
-//   else {
+  if (isAuthenticated == null) {
+    if (to.name == 'Perfil') next('/login') // Go to index
+    if (to.name == 'Agenda') next('/login') // Go to index
+    if (to.name == 'Exercicios') next('/login') // Go to index
+    if (to.name == 'Treino') next('/login') // Go to index
+    if (to.name == 'Treinos') next('/login') // Go to index
+    if (to.name == 'IniciarTreino') next('/login') // Go to index
+    if (to.name == 'CriarTreino') next('/login') // Go to index
+    if (to.name == 'Treinadores') next('/login') // Go to index
+    if (to.name == 'Treinador_Perfil') next('/login') // Go to index
+    if (to.name == 'Treinador_Alunos') next('/login') // Go to index
+    if (to.name == 'Administrador_Alunos') next('/login') // Go to index
+    if (to.name == 'Administrador_Treinadores') next('/login') // Go to index
+    if (to.name == 'Administrador_Treinos') next('/login') // Go to index
+    if (to.name == 'Administrador_Exercicios') next('/login') // Go to index
+    if (to.name == 'Administrador_Administradores') next('/login') // Go to index
+    if (to.name == 'Administrador_Perfil') next('/login') // Go to index
+    else next() // Not logged, it's free
+  }
+  else {
 
-//     const hasAuth = AuthService.validateToken();
+    const hasAuth = AuthService.validateToken();
 
-//     if (hasAuth && AuthService.getUsertype() == 1) {
-//       if (to.name == 'Login') next('/agenda') // Go to index
-//       if (to.name == 'Login') next('/agenda')
-//     }
-    
+    // User
+    if (hasAuth && AuthService.getUsertype() == 0) {
+      if (to.name == 'Login') next('/perfil') // Go to index
+      if (to.name == 'Home') next('/perfil') // Go to index
+      if (to.name == 'About') next('/perfil') // Go to index
+      if (to.name == 'Treinadores') next('/perfil') // Go to index
+      if (to.name == 'Treinador_Perfil') next('/perfil') // Go to index
+      if (to.name == 'Treinador_Alunos') next('/perfil') // Go to index
+      if (to.name == 'Administrador_Alunos') next('/perfil') // Go to index
+      if (to.name == 'Administrador_Treinadores') next('/perfil') // Go to index
+      if (to.name == 'Administrador_Treinos') next('/perfil') // Go to index
+      if (to.name == 'Administrador_Exercicios') next('/perfil') // Go to index
+      if (to.name == 'Administrador_Administradores') next('/perfil') // Go to index
+      if (to.name == 'Administrador_Perfil') next('/perfil') // Go to index
+      if (to.name == 'Administrador_Login') next('/perfil') // Go to index
+      else next()
+    }
 
-// /*
-//   const hasAuth = AuthService.authorization(isAuthenticated);
+    // Treinador
+    if (hasAuth && AuthService.getUsertype() == 1) {
+      if (to.name == 'Login') next('/treinador/perfil') // Go to index
+      if (to.name == 'Home') next('/treinador/perfil') // Go to index
+      if (to.name == 'About') next('/treinador/perfil') // Go to index
+      if (to.name == 'Perfil') next('/treinador/perfil') // Go to index
+      if (to.name == 'Agenda') next('/treinador/perfil') // Go to index
+      if (to.name == 'IniciarTreino') next('/treinador/perfil') // Go to index
+      if (to.name == 'Administrador_Alunos') next('/treinador/perfil') // Go to index
+      if (to.name == 'Administrador_Treinadores') next('/treinador/perfil') // Go to index
+      if (to.name == 'Administrador_Treinos') next('/treinador/perfil') // Go to index
+      if (to.name == 'Administrador_Exercicios') next('/treinador/perfil') // Go to index
+      if (to.name == 'Administrador_Administradores') next('/treinador/perfil') // Go to index
+      if (to.name == 'Administrador_Perfil') next('/treinador/perfil') // Go to index
+      if (to.name == 'Administrador_Login') next('/treinador/perfil') // Go to index
+      else next()
+    }
 
-//   // Login & Register flow
-//   if (to.name == 'Login' && hasAuth) next('/agenda') // Go to index
-//   if (to.name == 'Home' && hasAuth) next('/agenda') // Go to index
-//   if (to.name == 'About' && hasAuth) next('/agenda') // Go to index
-//   //else if (to.name !== 'Login' && !hasAuth) next({ name: 'Login' }) // Go to login
-//   else next()*/
-//   }
-// })
+    // Admin
+    if (hasAuth && AuthService.getUsertype() == 2) {
+      if (to.name == 'Login') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Home') next('/administrador/Perfil') // Go to index
+      if (to.name == 'About') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Perfil') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Agenda') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Exercicios') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Treino') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Treinos') next('/administrador/Perfil') // Go to index
+      if (to.name == 'IniciarTreino') next('/administrador/Perfil') // Go to index
+      if (to.name == 'CriarTreino') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Treinadores') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Treinador_Perfil') next('/administrador/Perfil') // Go to index
+      if (to.name == 'Treinador_Alunos') next('/administrador/Perfil') // Go to index
+      else next()
+    }
+
+  }
+})
 
 
 export default router
