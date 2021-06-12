@@ -51,7 +51,6 @@
                     <div style="margin-top: 14px">
                       <v-rating
                        :value=treinador.classsificacao
-                          
                         color="yellow darken-3"
                         background-color="grey darken-1"
                         empty-icon="$ratingFull"

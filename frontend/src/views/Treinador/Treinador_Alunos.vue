@@ -33,20 +33,6 @@
           >
         </v-toolbar>
       
-          <v-row align="center" justify="space-around">
-            <v-col cols="12" md="12">
-                <v-text-field
-                  hide-details
-                  prepend-icon="mdi-magnify"
-                  label="Procurar solicitação"
-                  single-line
-                  color="#f95738"
-                ></v-text-field>
-                <v-btn icon>
-                  <v-icon>mdi-filter</v-icon>
-                </v-btn>
-            </v-col>
-          </v-row>
           <AlunoSolicitacao
         /></v-card>
 

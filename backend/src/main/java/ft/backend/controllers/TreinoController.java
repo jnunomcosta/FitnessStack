@@ -254,6 +254,7 @@ public class TreinoController {
             ex_aux.put("avaliacao",c.getClassificacao());
             ex_aux.put("comentario", c.getComentario());
             ex_aux.put("username", c.getUser().getUsername());
+            ex_aux.put("foto_avaliador", "/api/assets/photo/" + c.getUser().getFoto_perfil().getID());
             cm.put(ex_aux);
         }
         ret.put("avaliacoes", cm);

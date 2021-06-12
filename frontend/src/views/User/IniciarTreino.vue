@@ -26,7 +26,7 @@
           hide-delimiter-background
           show-arrows-on-hover
         >
-          <v-carousel-item v-for="(item,i) in treino.exercicios" :key="i">
+          <v-carousel-item v-for="(item, i) in treino.exercicios" :key="i">
             <v-sheet color="grey" height="100%">
               <v-row class="fill-height" align="center" justify="center">
                 <v-col cols="12" md="1"> </v-col>
