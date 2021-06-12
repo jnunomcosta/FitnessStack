@@ -2,7 +2,7 @@
   <div class="criar_treino_page">
     <NavBar />
     <v-row>
-      <v-col v-if="getUsertype == 1" cols="12" md="1">
+      <v-col v-if="getUsertype() == 1" cols="12" md="1">
         <SideBarTreinador />
       </v-col>
       <v-col v-else cols="12" md="1">

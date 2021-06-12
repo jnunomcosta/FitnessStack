@@ -2,7 +2,10 @@
   <div class="procurarTreino">
     <NavBar />
     <v-row>
-      <v-col cols="12" md="1">
+      <v-col v-if="getUsertype() == 1" cols="12" md="1">
+        <SideBarTreinador />
+      </v-col>
+      <v-col v-else cols="12" md="1">
         <SideBar />
       </v-col>
       <v-col cols="12" md="10">
@@ -26,13 +29,21 @@
           </v-row>
         </v-container>
         <v-container align="center" justify="space-around">
-          <v-card>
+          <v-card>            
             <v-data-table
-              :headers="headers"
+              :headers="headersTreinador"
               :items="treinos"
               :search="search"
+              v-if="getUsertype() == 1"
               
             >
+            <template v-slot:item.categoria="props">
+                <v-chip
+                    class="mr-1"
+                    v-for="categoria in props.item.categoria"
+                    :key="categoria"
+                    >{{ categoria }}</v-chip>
+              </template>
              <template v-slot:item.ver="props">
                 <v-btn
                   
@@ -45,6 +56,41 @@
                 ><v-icon color="#f95738">mdi-text-box-search</v-icon>
                 </v-btn>
               </template>
+              <template v-slot:item.classificacao="props">
+                <div>
+                  {{ parseFloat(props.item.classificacao).toFixed(1)
+                  }}/5<v-icon color="#f95738">mdi-star</v-icon>
+                </div>
+              </template>
+              </v-data-table
+            >
+            
+            <v-data-table
+              :headers="headers"
+              :items="treinos"
+              :search="search"
+              v-else>
+             <template v-slot:item.ver="props">
+                <v-btn
+                  
+                  class="mx-2"
+                  icon
+                  dark
+                  small
+                  color="pink"
+                  @click="verTreino(props.item)"
+                ><v-icon color="#f95738">mdi-text-box-search</v-icon>
+                </v-btn>
+              </template>
+
+              <template v-slot:item.categoria="props">
+                <v-chip
+                    class="mr-1"
+                    v-for="categoria in props.item.categoria"
+                    :key="categoria"
+                    >{{ categoria }}</v-chip>
+              </template>
+
               <template v-slot:item.favoritos="props">
                 <v-btn
                   v-if="props.item.favoritos"
@@ -74,7 +120,9 @@
                 </div>
               </template>
               </v-data-table
-            ></v-card
+            >
+            
+            </v-card
           ></v-container
         ></v-col
       ></v-row
@@ -91,6 +139,7 @@
 // @ is an alias to /src
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
+import SideBarTreinador from "@/components/SideBar_Treinador.vue";
 import axios from "axios";
 
 export default {
@@ -98,6 +147,7 @@ export default {
   components: {
     NavBar,
     SideBar,
+    SideBarTreinador
   },
   created() {
     document.title = "Treinos";
@@ -117,11 +167,22 @@ export default {
         { text: "Código", value: "codigo" },
         { text: "Favoritos", value: "favoritos" },
       ],
+      headersTreinador: [
+         { text: "", value: "ver", sortable: false },
+        { text: "Nome do Treino", value: "nome" },
+        { text: "Duração", value: "duracao" },
+        { text: "Categoria", value: "categoria" },
+        { text: "Dificuldade", value: "dificuldade" },
+        { text: "Criador", value: "criador" },
+        { text: "Publicado em", value: "data" },
+        { text: "Avaliação", value: "classificacao" },
+        { text: "Código", value: "codigo" },
+      ],
       treinos: [
         {
           nome: "",
           duracao: 0,
-          categoria: "",
+          categoria: [],
           dificuldade: "",
           criador: "",
           data: "",
@@ -133,6 +194,9 @@ export default {
     };
   },
   methods: {
+    getUsertype() {
+      return localStorage.getItem("usertype");
+    },
     verTreino: function (value) {
       console.log("ROW VALUES:", value);
       this.$router.push("/treino/" + value.codigo);
@@ -170,16 +234,12 @@ export default {
         this.treinos = response.data;
       })
       .finally(() => (this.loading = false));
-  },
-  computed: {
-    categorias: function (item) {
-      var s = "";
-      for (var i = 0; i < item.length - 1; i++) {
-        s += item[i] + ", ";
-      }
-      s += item[i];
-      return s;
-    },
+      axios
+      .get(process.env.VUE_APP_BASELINK+'/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
+      .then(response => {
+        this.treinos = response.data 
+      })
+      .finally(() => this.loading = false)
   },
 };
 </script>

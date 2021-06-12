@@ -1,11 +1,13 @@
 <template>
   <div class="profile">
     <NavBar />
-    <SideBar />
+    <v-col v-if="getUsertype() == 1" cols="12" md="1">
+        <SideBarTreinador />
+      </v-col>
+      <v-col v-else cols="12" md="1">
+        <SideBar />
+      </v-col>
 
-    <!-- <h1 class="text-center display-1 mb-5" style="color: #f95738; padding-top: 90px">
-      {{ treino.nome }}
-    </h1> -->
     <v-row style="padding-top: 90px">
       <v-col cols="12" md="1"> </v-col>
       <v-col cols="12" md="5">
@@ -112,7 +114,6 @@
           </div>
         </v-card>
       </v-col>
-      <!-- <v-col cols="12" md="1"> </v-col> -->
       <v-col cols="12" md="5">
         <v-card
           v-scroll.self="onScroll"
@@ -150,7 +151,7 @@
           </v-simple-table>
         </v-card>
 
-        <div class="text-center my-16">
+        <div v-if="getUsertype() == 0" class="text-center my-16">
           <v-btn width="180" v-on:click="iniciarTreino()" color="#f95738" dark
             >Iniciar treino</v-btn
           >
@@ -212,6 +213,7 @@
 <script>
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_User.vue";
+import SideBarTreinador from "@/components/SideBar_Treinador.vue";
 import axios from "axios";
 
 export default {
@@ -219,6 +221,7 @@ export default {
   components: {
     NavBar,
     SideBar,
+    SideBarTreinador
   },
   data() {
     return {
@@ -250,6 +253,9 @@ export default {
     };
   },
   methods: {
+    getUsertype() {
+      return localStorage.getItem("usertype");
+    },
     linkapi() {
       return process.env.VUE_APP_BASELINK;
     },

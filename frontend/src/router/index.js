@@ -6,16 +6,13 @@ import CriarTreino from '../views/CriarTreino.vue'
 import NotFound from '../views/NotFound.vue'
 import Perfil from '../views/User/Perfil.vue'
 import Agenda from '../views/User/Agenda.vue'
-import Exercicios from '../views/User/Exercicios.vue'
-import Treino from '../views/User/Treino.vue'
+import Exercicios from '../views/Exercicios.vue'
+import Treino from '../views/Treino.vue'
 import IniciarTreino from '../views/User/IniciarTreino.vue'
-import Treinos from '../views/User/Treinos.vue'
+import Treinos from '../views/Treinos.vue'
 import Treinadores from '../views/User/Treinadores.vue'
 
 import Treinador_Perfil from '../views/Treinador/Treinador_Perfil.vue'
-import Treinador_Exercicio from '../views/Treinador/Treinador_Exercicios.vue'
-import Treinador_Treinos from '../views/Treinador/Treinador_Treinos.vue'
-import Treinador_Treino from '../views/Treinador/Treinador_Treino.vue'
 import Treinador_Alunos from '../views/Treinador/Treinador_Alunos.vue'
 
 import Administrador_Login from '../views/Administrador/Administrador_Login.vue'
@@ -98,21 +95,6 @@ const routes = [
     component: Treinador_Perfil
   },
   {
-    path: '/treinador/exercicios',
-    name: 'Treinador_Exercicios',
-    component: Treinador_Exercicio
-  },
-  {
-    path: '/treinador/treinos',
-    name: 'Treinos_Treinador',
-    component: Treinador_Treinos
-  },
-  {
-    path: '/treinador/treino/:codigo',
-    name: 'Treinador_Treino',
-    component: Treinador_Treino
-  },
-  {
     path: '/treinador/alunos',
     name: 'Treinador_Alunos',
     component: Treinador_Alunos
@@ -182,9 +164,6 @@ const router = new VueRouter({
 //     if (to.name == 'CriarTreino') next('/login') // Go to index
 //     if (to.name == 'Treinadores') next('/login') // Go to index
 //     if (to.name == 'Treinador_Perfil') next('/login') // Go to index
-//     if (to.name == 'Treinador_Exercicios') next('/login') // Go to index
-//     if (to.name == 'Treinos_Treinador') next('/login') // Go to index
-//     if (to.name == 'Treinador_Treino') next('/login') // Go to index
 //     if (to.name == 'Treinador_Alunos') next('/login') // Go to index
 //     if (to.name == 'Administrador_Alunos') next('/login') // Go to index
 //     if (to.name == 'Administrador_Treinadores') next('/login') // Go to index
@@ -194,19 +173,17 @@ const router = new VueRouter({
 //     if (to.name == 'Administrador_Perfil') next('/login') // Go to index
 //     else next() // Not logged, it's free
 //   }
-  
-//   //const hasAuth = AuthService.getUsertype();
+//   else {
 
-//   /*const isAuthenticated = AuthService.getToken();
+//     const hasAuth = AuthService.validateToken();
 
-//   if (isAuthenticated == '{}') {
-//     if (to.name == 'Account') next('/login') // Go to index
-//     if (to.name == 'Agenda') next('/login') // Go to index
-//     if (to.name == 'Medicines') next('/login') // Go to index
-//     if (to.name == 'Family') next('/login') // Go to index
-//     else next() // Not logged, it's free
-//   }
+//     if (hasAuth && AuthService.getUsertype() == 1) {
+//       if (to.name == 'Login') next('/agenda') // Go to index
+//       if (to.name == 'Login') next('/agenda')
+//     }
+    
 
+// /*
 //   const hasAuth = AuthService.authorization(isAuthenticated);
 
 //   // Login & Register flow
@@ -215,6 +192,7 @@ const router = new VueRouter({
 //   if (to.name == 'About' && hasAuth) next('/agenda') // Go to index
 //   //else if (to.name !== 'Login' && !hasAuth) next({ name: 'Login' }) // Go to login
 //   else next()*/
+//   }
 // })
 
 

@@ -33,6 +33,9 @@ public class LoginController {
 
     @Autowired
     gestao_administradores ga;
+
+    @Autowired
+    gestao_verificacoes gv;
     
     @PostMapping(value = "/user")
     public ResponseEntity<String> login_utilizador(@RequestBody PedidoLogin pl){
@@ -72,4 +75,13 @@ public class LoginController {
         return ResponseEntity.ok().body(obj.toString());
     }
 
+    @GetMapping(value = "/validateToken")
+    public ResponseEntity<String> validateToken(@RequestHeader String token){
+
+        JSONObject obj = new JSONObject();
+        if(gv.verifyUser(token) != null || gv.verifyTreinador(token) != null ||  gv.verifyAdmin(token) != null) {
+            return ResponseEntity.ok().body("");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 }
