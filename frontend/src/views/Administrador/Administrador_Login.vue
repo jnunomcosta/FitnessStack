@@ -105,12 +105,13 @@ export default {
           password: this.input.password,
           //password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(this.input.password)),
         };
-        console.log(loginInfoAdmin);
+        console.log(process.env.VUE_APP_BASELINK+'/api/login/administrador');
         axios
           .post(process.env.VUE_APP_BASELINK+'/api/login/administrador', loginInfoAdmin)
           .then((response) => {
-
-          if (status == "200") {
+        console.log(response);
+          
+          if (response.status == "200") {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", this.input.username);
             localStorage.setItem("usertype", 2);

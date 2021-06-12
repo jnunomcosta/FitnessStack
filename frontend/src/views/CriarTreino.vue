@@ -1,15 +1,18 @@
 <template>
   <div class="criar_treino_page">
     <NavBar />
-    <v-row style="padding-bottom: 60px">
-      <v-col cols="12" md="1">
+    <v-row>
+      <v-col v-if="getUsertype == 1" cols="12" md="1">
+        <SideBarTreinador />
+      </v-col>
+      <v-col v-else cols="12" md="1">
         <SideBar />
       </v-col>
       <v-col cols="12" md="5" style="padding-top: 100px">
-        <v-card class="pt-10">
+        <v-card class="pb-4">
           <v-card-text>
-            <h1 class="text-center display-2 mb-6" style="color: #f95738">
-              Criar Treino
+            <h1 class="text-center display-1 mb-4" style="color: #f95738">
+              <b>Novo Treino</b>
             </h1>
             <v-form class="px-16 mx-8">
               <v-text-field
@@ -44,31 +47,18 @@
               >
               </v-combobox>
             </v-form>
-            <div class="text-center my-10">
-              <v-btn v-on:click="confirmar()" color="#f95738" dark
-                >Confirmar</v-btn
-              >
-            </div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" md="5" style="padding-top: 100px">
         <v-card v-scroll.self="onScroll" class="overflow-y-auto">
           <v-card-text>
-            <h1 class="text-center display-1" style="color:#f95738">Exercícios</h1>
+            <h1 class="text-center display-1" style="color: #f95738">
+              Exercícios
+            </h1>
           </v-card-text>
         </v-card>
-        <!-- <v-data-table
-            :headers="blocosHeaders"
-            :items="blocos"
-            item-key="name"
-            hide-default-footer
-            class="elevation-1"
-          >
-        <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">More info about {{ item.name }}</td>
-        </template>
-          </v-data-table> -->
+
         <draggable
           :list="blocos"
           :animation="200"
@@ -78,18 +68,18 @@
           class="w-full max-w-md mt-2"
           tag="ul"
         >
-          <v-card v-for="bloco in blocos" :key="bloco.nome" class="mr-6 mb-2">
+          <v-card v-for="(bloco, i) in blocos" :key="i" class="mr-6 mb-2">
             <div class="flex justify-between cursor-move border border-white">
               <v-toolbar flat dense rounded color="#000314" dark
-        ><v-icon>mdi-drag</v-icon><div class="ml-2 title">{{
-                    bloco.nome
-                  }}</div>
-        <v-spacer></v-spacer>
-        <v-btn icon @click="dialog = false"><v-icon>mdi-close</v-icon></v-btn>
-      </v-toolbar>
-              
+                ><v-icon>mdi-drag</v-icon>
+                <div class="ml-2 title">{{ bloco.nome }}</div>
+                <v-spacer></v-spacer>
+                <v-btn icon @click="apagar(i)"
+                  ><v-icon>mdi-close</v-icon></v-btn
+                >
+              </v-toolbar>
+
               <v-list class="transparent">
-                
                 <v-list-item class="mt-0">
                   <v-list-item-subtitle>
                     Séries: {{ bloco.series }}
@@ -108,6 +98,13 @@
       </v-col>
       <v-col cols="12" md="1"></v-col>
     </v-row>
+    <v-row style="padding-bottom: 60px">
+      <v-col cols="12" md="12">
+        <div class="text-center my-10">
+          <v-btn v-on:click="confirmar()" color="#f95738" dark>Confirmar</v-btn>
+        </div>
+      </v-col>
+    </v-row>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -117,7 +114,8 @@
           color="#f95738"
           fixed
           right
-          bottom
+          top
+          style="margin-top: 75px"
           v-bind="attrs"
           v-on="on"
         >
@@ -152,7 +150,7 @@
                 >
                 </v-text-field>
               </v-col>
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="4">
                 <v-combobox
                   v-model="modo"
                   :items="['Repetições', 'Duração']"
@@ -162,10 +160,20 @@
                 >
                 </v-combobox>
               </v-col>
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="4">
                 <v-text-field
                   v-model="valor_modo"
-                  label="Valor (unidades ou segundos)*"
+                  label="Duração (segundos)*"
+                  color="#f95738"
+                  type="number"
+                >
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" sm="4">
+                <v-text-field
+                  v-if="modo == 'Repetições'"
+                  v-model="n_repeticoes"
+                  label="Repetições (unidades)*"
                   color="#f95738"
                   type="number"
                 >
@@ -204,6 +212,7 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/SideBar_User.vue";
+import SideBarTreinador from "@/components/SideBar_Treinador.vue";
 import draggable from "vuedraggable";
 
 import axios from "axios";
@@ -213,10 +222,11 @@ export default {
   components: {
     NavBar,
     SideBar,
+    SideBarTreinador,
     draggable,
   },
   created() {
-    document.title = "Criar Treino";
+    document.title = "Novo Treino";
   },
   data() {
     return {
@@ -226,33 +236,27 @@ export default {
       modo: "",
       valor: "",
       series: "",
+      valor_modo: "",
+      n_repeticoes: "",
+      valor_descanso:"",
+      duracao_treino: "",
       input: {
         nome_treino: "",
         descricao: "",
         categorias: "",
         dificuldade: "",
       },
+
       select_categorias: [],
       categorias: ["Pernas", "Braços", "Peito", "Cardio", "Força"],
       select_dificuldade: "",
       dificuldades: ["Iniciante", "Intermédio", "Avançado"],
-      // blocosHeaders: [
-      //   {
-      //     text: "Nome Exercício",
-      //     align: "start",
-      //     sortable: false,
-      //     value: "nome",
-      //   },
-      //   { text: "Séries", value: "series" },
-      //   { text: "Repetições/Duração", value: "valor_repeticao" },
-      //   { text: "Descanso", value: "valor_descanso" },
-      // ],
       blocos: [],
     };
   },
   mounted() {
     axios
-      .get(process.env.VUE_APP_BASELINK+"/api/exercicio/getNomesExercicios", {
+      .get(process.env.VUE_APP_BASELINK + "/api/exercicio/getNomesExercicios", {
         headers: { token: localStorage.getItem("token") },
       })
       .then((response) => {
@@ -263,6 +267,19 @@ export default {
       });
   },
   methods: {
+    getDuracao() {
+      var duracao = 0;
+      for (var i = 0; i < this.blocos.length; i++) {
+          duracao += this.blocos[i].valor_modo;
+      }
+      return duracao;
+    },
+    getUsertype() {
+      return localStorage.getItem("usertype");
+    },
+    apagar(i) {
+      this.blocos.splice(i, 1);
+    },
     confirmar() {
       var exs = [];
       for (var i = 0; i < this.blocos.length; i++) {
@@ -279,34 +296,41 @@ export default {
         descricao: this.input.descricao,
         categorias: this.select_categorias,
         dificuldade: this.select_dificuldade,
+        duracao_treino: this.getDuracao(),
         exercicios: exs,
       };
       axios
-        .post(process.env.VUE_APP_BASELINK+"/api/treinos/novoTreino", post_body, {
-          headers: { token: localStorage.getItem("token") },
-        })
+        .post(
+          process.env.VUE_APP_BASELINK + "/api/treinos/novoTreino",
+          post_body,
+          {
+            headers: { token: localStorage.getItem("token") },
+          }
+        )
         .then((response) => {
           console.log(response);
           if (response.status == "200") {
             if (localStorage.getItem("usertype") == 0) {
               this.$router.push("/treinos");
-            }
-            else if (localStorage.getItem("usertype") == 1) {
+            } else if (localStorage.getItem("usertype") == 1) {
               this.$router.push("/treinador/treinos");
             }
           }
         });
     },
     criar() {
-      var rep_valor = "",
-        tipo = true;
+      var rep_valor = "";
+      var valor_repeticoes = "";
+      var tipo = true;
       switch (this.modo) {
         case "Repetições":
-          rep_valor = "Repetições: " + this.valor_modo + " reps";
+          rep_valor = "Repetições: " + this.n_repeticoes + " reps";
+          valor_repeticoes = this.n_repeticoes;
           tipo = true;
           break;
         case "Duração":
-          rep_valor ="Duração: " + this.valor_modo + "s";
+          rep_valor = "Duração: " + this.valor_modo + "s";
+          valor_repeticoes = this.valor_modo;
           tipo = false;
           break;
         default:
@@ -316,19 +340,25 @@ export default {
       var bloco_exercicios = {
         nome: this.exercicio,
         series: this.series,
-        repeticao: this.valor_modo,
+        modo: this.modo,
         valor_repeticao: rep_valor,
+        repeticao: valor_repeticoes,
+        duracao_repeticao: this.valor_modo,
         descanso: this.valor_descanso,
         tipo: tipo,
         valor_descanso: this.valor_descanso + "s",
       };
       this.blocos.push(bloco_exercicios);
       this.exercicio = "";
+      this.series = "";
       this.modo = "";
       this.valor_modo = "";
+      this.n_repeticoes= "";
+      this.valor_descanso = "";
+      this.duracao_repeticao = "",
       this.valor = "";
-      this.series = "";
       this.descanso = "";
+      console.log(this.blocos);
     },
     increment() {
       this.series = parseInt(this.series, 10) + 1;

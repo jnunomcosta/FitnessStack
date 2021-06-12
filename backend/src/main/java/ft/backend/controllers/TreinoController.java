@@ -168,8 +168,7 @@ public class TreinoController {
 
         treino.setData_criacao(new Date());
 
-        //treino.setDuracao(obj.getFloat("duracao"));
-        treino.setDuracao(10000);
+        treino.setDuracao(obj.getFloat("duracao_treino"));
 
         Set<Categoria> cats = new HashSet<>();
         JSONArray arr = obj.getJSONArray("categorias");

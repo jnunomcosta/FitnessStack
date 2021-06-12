@@ -70,18 +70,6 @@ export default {
           this.chartdata.datasets[2].data.push(x.m_gorda);
         })
     }
-    
-   /*axios
-      .get(process.env.VUE_APP_BASELINK+"/api/user/getHistoricoFisico",{headers: {'token': localStorage.getItem("token")}})
-      .then(resp => {
-        resp.data.forEach(x => {
-          this.chartdata.labels.push(x.data);
-          this.chartdata.datasets[0].data.push(x.peso);
-          this.chartdata.datasets[1].data.push(x.m_muscular);
-          this.chartdata.datasets[2].data.push(x.m_gorda);
-        })
-        console.log(this.chartdata);
-      })*/
     this.renderChart(this.chartdata, this.options)
   }
 }
