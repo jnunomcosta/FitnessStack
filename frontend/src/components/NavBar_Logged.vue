@@ -18,18 +18,9 @@
 
       <!-- Large screens -->
       <div class="hidden-sm-and-down mr-4">
-        <v-btn
-          v-for="item in menu"
-          :key="item.icon"
-          :to="item.link"
-          tile
-          text
-          small
-          class="mr-1 py-8"
-        >
-          {{ item.title }}
-          <v-icon v-if="item.icon == 'logout'" class="ml-2">mdi-{{ item.icon }}
-        </v-icon>
+        <v-btn tile v-on:click="logout" text small class="mr-1 py-8">
+          Logout
+          <v-icon class="ml-2">mdi-logout </v-icon>
         </v-btn>
       </div>
 
@@ -41,15 +32,14 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="item in menu" :key="item.icon" :to="item.link">
-            <v-icon dense color="black" style="margin-right: 5px"
-              >mdi-{{ item.icon }}</v-icon
-            >
-            <v-list-item-title>{{
-              item.title.toUpperCase()
-            }}</v-list-item-title>
+          <v-list-item>
+            <v-btn v-on:click="logout" tile text>
+              <v-icon dense color="black" style="margin-right: 5px"
+                >mdi-logout</v-icon
+              >
+              LOGOUT
+            </v-btn>
           </v-list-item>
-        
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -60,15 +50,16 @@
 <script>
 export default {
   data() {
-    return {
-      menu: [
-        { icon: "logout", title: "Logout", link: "/" },
-      ],
-    };
+    return {};
   },
   methods: {
     menuItems() {
       return this.menu;
+    },
+    logout() {
+      console.log("?");
+      localStorage.clear();
+      this.$router.push("/login");
     },
   },
 };

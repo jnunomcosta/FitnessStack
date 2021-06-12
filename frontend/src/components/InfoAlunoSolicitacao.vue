@@ -1,5 +1,5 @@
 <template>
-  <v-dialog transition="dialog-bottom-transition" max-width="600">
+  <v-dialog v-model="dialog2" transition="dialog-bottom-transition" max-width="600">
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         class="mx-2 my-2"
@@ -77,7 +77,7 @@ export default {
   name: "InfoAlunoSolicitacao",
   props:["data"],
   data: () => ({
-
+    dialog2: false,
     utilizador:null
   }),
   mounted(){
@@ -108,6 +108,7 @@ console.log("hellooo"+JSON.stringify(this.data))
       console.log("sucesso")
 
        console.log("dkansdjnsadjnsa"+ JSON.stringify(response.data))
+       this.$router.go();
       })
       .finally(() => (this.loading = false));
     }

@@ -74,9 +74,12 @@
           >
             <v-list three-line>
               <v-list-item class="ml-8">
-                <v-list-item-icon class="mx-0">
+                <!-- <v-list-item-icon class="mx-0">
                   <v-icon x-large>mdi-account-circle</v-icon>
-                </v-list-item-icon>
+                </v-list-item-icon> -->
+                <v-list-item-avatar size="50">
+                <v-img :src="linkapi() + item.foto_avaliador"></v-img>
+              </v-list-item-avatar>
 
                 <v-list-item-content>
                   <v-card-title class="subtitle-2 my-0 py-0 pb-2">{{
@@ -243,7 +246,6 @@ export default {
             fotos: [],
           },
         ],
-        avaliacoes: [],
       },
     };
   },

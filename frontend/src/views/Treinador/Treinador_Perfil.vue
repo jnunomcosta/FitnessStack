@@ -11,19 +11,37 @@
           margin-right: 25px;
         "
       >
-        <v-col cols="12" md="3">
-        </v-col>
-          <v-col cols="12" md="6">
+        <v-col cols="12" md="3"> </v-col>
+        <v-col cols="12" md="6">
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
                 <v-img :src="linkapi() + treinador.foto_perfil"></v-img>
               </v-avatar>
             </div>
-            <v-card-title class="justify-center">{{treinador.nome}}</v-card-title>
-            <v-card-subtitle> {{treinador.username}} </v-card-subtitle>
+            <v-card-title class="justify-center">{{
+              treinador.nome
+            }}</v-card-title>
+            <v-card-subtitle> {{ treinador.username }} </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            <div class="mt-4 body-2">{{treinador.email}}</div>
+            <v-card-text class="mb-0 pb-0">
+              <div class="text-center">
+                <v-rating
+                  readonly
+                  dense
+                  v-model="treinador.classsificacao"
+                  background-color="black"
+                  color="#f95738"
+                ></v-rating>
+
+                <div class="grey--text body-2">
+                  {{ parseFloat(treinador.classsificacao).toFixed(1) }} ({{
+                    treinador.numero_classsificacao
+                  }})
+                </div>
+              </div>
+            </v-card-text>
+            <div class="my-4 body-2">{{ treinador.email }}</div>
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -63,7 +81,14 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setUsername(new_username);dialog1 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setUsername(new_username);
+                        dialog1 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -108,7 +133,14 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setEmail(input_email);dialog2 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setEmail(input_email);
+                        dialog2 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -161,14 +193,19 @@
                     <v-btn color="#f95738" text @click="dialog3 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setPassword(old_password,new_password);dialog3 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setPassword(old_password, new_password);
+                        dialog3 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-
-
 
               <v-dialog v-model="dialog4" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -189,15 +226,13 @@
                   </v-card-title>
                   <v-card-text>
                     <v-container>
-                      
-                    <v-file-input
-                      id="imagem"
-                      v-model="imagem_input"
-                      label="Imagem de Perfil"
-                      name="imagem_perfil"
-                      prepend-icon="mdi-camera"
-                    />
-
+                      <v-file-input
+                        id="imagem"
+                        v-model="imagem_input"
+                        label="Imagem de Perfil"
+                        name="imagem_perfil"
+                        prepend-icon="mdi-camera"
+                      />
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
@@ -205,7 +240,14 @@
                     <v-btn color="#f95738" text @click="dialog4 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setImagem(imagem_input);dialog4 = false">
+                    <v-btn
+                      color="#f95738"
+                      text
+                      @click="
+                        setImagem(imagem_input);
+                        dialog4 = false;
+                      "
+                    >
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -214,8 +256,7 @@
             </v-container>
           </v-card>
         </v-col>
-        <v-col cols="12" md="3">
-        </v-col>
+        <v-col cols="12" md="3"> </v-col>
       </v-row>
     </div>
     <Footer />
@@ -225,7 +266,7 @@
 <script>
 import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Treinador.vue";
-import axios from 'axios';
+import axios from "axios";
 import sjcl from "sjcl";
 
 export default {
@@ -249,79 +290,85 @@ export default {
     input_email: "",
     old_password: "",
     new_password: "",
-    treinador : {
+    treinador: {
       username: "",
       foto_perfil: "",
       nome: "",
       email: "",
+      classificacao: 0,
     },
   }),
   mounted() {
     axios
-      .get(process.env.VUE_APP_BASELINK+"/api/treinador/getTreinadorInfo?username="+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
+      .get(
+        process.env.VUE_APP_BASELINK +
+          "/api/treinador/getTreinadorInfo?username=" +
+          localStorage.getItem("username"),
+        { headers: { token: localStorage.getItem("token") } }
+      )
       .then((response) => {
         this.treinador = response.data;
+        console.log(this.treinador);
       })
       .finally(() => (this.loading = false));
   },
   methods: {
-    linkapi(){
-      return process.env.VUE_APP_BASELINK
+    linkapi() {
+      return process.env.VUE_APP_BASELINK;
     },
     setEmail(new_email) {
       axios
         .post(
-          process.env.VUE_APP_BASELINK+"/api/treinador/mudarEmail",
-            {
-              "email": new_email
-            }
-            , {headers: {'token': localStorage.getItem("token")}}
+          process.env.VUE_APP_BASELINK + "/api/treinador/mudarEmail",
+          {
+            email: new_email,
+          },
+          { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          console.log(response)
-          this.treinador.email = new_email
+          console.log(response);
+          this.treinador.email = new_email;
         })
-        .finally(() => console.log("hi"));//msg erro a mudar email));
+        .finally(() => console.log("hi")); //msg erro a mudar email));
     },
-    setPassword(oldP,newP){
-        axios
+    setPassword(oldP, newP) {
+      axios
         .post(
-          process.env.VUE_APP_BASELINK+"/api/treinador/mudarPassword",
-            {
-              "new_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
-              "old_password": sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP))
-              }
-            , {headers: {'token': localStorage.getItem("token")}}
+          process.env.VUE_APP_BASELINK + "/api/treinador/mudarPassword",
+          {
+            new_password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newP)),
+            old_password: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldP)),
+          },
+          { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
           const status = JSON.parse(response.status);
-            if (status == "200") {
-              console.log("mudei a pass")
-            }   
+          if (status == "200") {
+            console.log("mudei a pass");
+          }
         })
-        .finally(() => console.log("hi"));//msg erro a mudar username));
+        .finally(() => console.log("hi")); //msg erro a mudar username));
     },
     setUsername(new_username) {
       axios
         .post(
-          process.env.VUE_APP_BASELINK+"/api/treinador/mudarUsername",
-            {
-              "username_novo": new_username,
-              }
-            , {headers: {'token': localStorage.getItem("token")}}
+          process.env.VUE_APP_BASELINK + "/api/treinador/mudarUsername",
+          {
+            username_novo: new_username,
+          },
+          { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          if(response.status == 200){
-            this.treinador.username = new_username
-            localStorage.setItem("token",response.data.token)
-            localStorage.setItem("username",new_username) 
+          if (response.status == 200) {
+            this.treinador.username = new_username;
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("username", new_username);
             //localStorage.setItem("usertype",1)
           }
-           
         })
-        .finally(() => console.log("hi"));//msg erro a mudar username));
+        .finally(() => console.log("hi")); //msg erro a mudar username));
     },
-    async setImagem(imagem){
+    async setImagem(imagem) {
       function carrega_foto(x) {
         return new Promise((resolve) => {
           let blob = new Blob([x]),
@@ -334,13 +381,17 @@ export default {
       }
 
       let foto = await carrega_foto(imagem);
-      axios.post(process.env.VUE_APP_BASELINK+"/api/treinador/mudarImagem",{nova_foto:foto},{headers: {'token': localStorage.getItem("token")}})
-           .then(response => {
-             console.log(response);
-           })
-    }
-  }
-  
+      axios
+        .post(
+          process.env.VUE_APP_BASELINK + "/api/treinador/mudarImagem",
+          { nova_foto: foto },
+          { headers: { token: localStorage.getItem("token") } }
+        )
+        .then((response) => {
+          console.log(response);
+        });
+    },
+  },
 };
 </script>
 

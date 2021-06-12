@@ -26,6 +26,7 @@ import Administrador_Alunos from '../views/Administrador/Administrador_Alunos.vu
 import Administrador_Treinadores from '../views/Administrador/Administrador_Treinadores.vue'
 import Administrador_Administradores from '../views/Administrador/Administrador_Administradores.vue'
 
+// import { AuthService } from './token'
 
 Vue.use(VueRouter)
 
@@ -152,11 +153,6 @@ const routes = [
     component: Administrador_Perfil
   },
   {
-    path: '/administrador',
-    name: 'Administrador_Perfil',
-    component: Administrador_Perfil
-  },
-  {
     // path: "*",
     path: "/:catchAll(.*)",
     name: "NotFound",
@@ -169,5 +165,57 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+// // Auth behavior
+// router.beforeEach((to, from, next) => {
+
+//   const isAuthenticated = AuthService.getToken();
+//   console.log(isAuthenticated)
+
+//   if (isAuthenticated == null) {
+//     if (to.name == 'Perfil') next('/login') // Go to index
+//     if (to.name == 'Agenda') next('/login') // Go to index
+//     if (to.name == 'Exercicios') next('/login') // Go to index
+//     if (to.name == 'Treino') next('/login') // Go to index
+//     if (to.name == 'Treinos') next('/login') // Go to index
+//     if (to.name == 'IniciarTreino') next('/login') // Go to index
+//     if (to.name == 'CriarTreino') next('/login') // Go to index
+//     if (to.name == 'Treinadores') next('/login') // Go to index
+//     if (to.name == 'Treinador_Perfil') next('/login') // Go to index
+//     if (to.name == 'Treinador_Exercicios') next('/login') // Go to index
+//     if (to.name == 'Treinos_Treinador') next('/login') // Go to index
+//     if (to.name == 'Treinador_Treino') next('/login') // Go to index
+//     if (to.name == 'Treinador_Alunos') next('/login') // Go to index
+//     if (to.name == 'Administrador_Alunos') next('/login') // Go to index
+//     if (to.name == 'Administrador_Treinadores') next('/login') // Go to index
+//     if (to.name == 'Administrador_Treinos') next('/login') // Go to index
+//     if (to.name == 'Administrador_Exercicios') next('/login') // Go to index
+//     if (to.name == 'Administrador_Administradores') next('/login') // Go to index
+//     if (to.name == 'Administrador_Perfil') next('/login') // Go to index
+//     else next() // Not logged, it's free
+//   }
+  
+//   //const hasAuth = AuthService.getUsertype();
+
+//   /*const isAuthenticated = AuthService.getToken();
+
+//   if (isAuthenticated == '{}') {
+//     if (to.name == 'Account') next('/login') // Go to index
+//     if (to.name == 'Agenda') next('/login') // Go to index
+//     if (to.name == 'Medicines') next('/login') // Go to index
+//     if (to.name == 'Family') next('/login') // Go to index
+//     else next() // Not logged, it's free
+//   }
+
+//   const hasAuth = AuthService.authorization(isAuthenticated);
+
+//   // Login & Register flow
+//   if (to.name == 'Login' && hasAuth) next('/agenda') // Go to index
+//   if (to.name == 'Home' && hasAuth) next('/agenda') // Go to index
+//   if (to.name == 'About' && hasAuth) next('/agenda') // Go to index
+//   //else if (to.name !== 'Login' && !hasAuth) next({ name: 'Login' }) // Go to login
+//   else next()*/
+// })
+
 
 export default router
