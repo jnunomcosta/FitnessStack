@@ -80,9 +80,9 @@ public class ExercicioController {
     }
 
     @GetMapping(value = "/listarExercicios")
-    public ResponseEntity<String> listarExercicios(@RequestHeader String token,@RequestParam String filtro,@RequestParam int pag){
+    public ResponseEntity<String> listarExercicios(@RequestHeader String token,@RequestParam String filtro){
         if(verify.verifyUser(token) != null || verify.verifyTreinador(token) != null){
-            return ResponseEntity.ok().body(ge.getExercicios(filtro,pag).toString());
+            return ResponseEntity.ok().body(ge.getExercicios(filtro).toString());
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }

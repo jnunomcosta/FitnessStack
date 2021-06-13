@@ -131,7 +131,7 @@
         </v-dialog>
 
         <v-container class="pa-0 ma-0">
-          <v-row align="center" justify="space-around">
+          <!-- <v-row align="center" justify="space-around">
             <v-col cols="12" md="12">
               <v-toolbar dense rounded class="mx-6" style="margin-top: 40px">
                 <v-text-field
@@ -146,7 +146,7 @@
                 </v-btn>
               </v-toolbar>
             </v-col>
-          </v-row>
+          </v-row> -->
           <Treinador
         /></v-container>
       </v-col>

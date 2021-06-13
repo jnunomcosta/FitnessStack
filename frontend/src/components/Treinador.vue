@@ -1,18 +1,42 @@
 <template>
+  <div>
+              <v-toolbar dense rounded class="mx-6" style="margin-top: 40px">
+                <v-text-field
+                  v-model="searchValue"
+                  @input="searchbarInput()"
+                  hide-details
+                  prepend-icon="mdi-magnify"
+                  label="Procurar treinador"
+                  single-line
+                  color="#f95738"
+                ></v-text-field>
+                <v-btn icon>
+                  <v-icon>mdi-filter</v-icon>
+                </v-btn>
+              </v-toolbar>
   <v-container>
-    <h5 class="mb-4 ml-8" style="color: #5b5b5b">
+    <!-- <h5 class="mb-4 ml-8" style="color: #5b5b5b">
       {{ titles.length }} treinadores
+    </h5> -->
+    <h5 class="mb-4 ml-8" style="color: #5b5b5b">
+      <span v-text="visibleTreinadores"></span> de
+      <span v-text="total"></span> treinadores
     </h5>
-    <v-row class="fill-height overflow-y-auto" v-if="titles.length">
+    <v-row class="fill-height overflow-y-auto" v-if="treinadores.length">
       <v-col
         lg="3"
         md="4"
         sm="6"
         cols="12"
-        v-for="(title, index) in titles"
+        v-for="(title, index) in treinadores"
         :key="index"
       >
         <v-sheet min-height="150px" class="fill-height" color="transparent">
+          <v-lazy
+            v-model="title.isActive"
+            :options="{ threshold: 0.5 }"
+            class="fill-height"
+          >
           <v-card hover class="white">
             <v-img
               :src="linkapi() + title.imagem"
@@ -169,10 +193,12 @@
             </v-card-actions>
           </v-card>
           <v-card v-intersect="infiniteScrolling"></v-card>
+          </v-lazy>
         </v-sheet>
       </v-col>
     </v-row>
   </v-container>
+  </div>
 </template>
 
 <script>
@@ -185,30 +211,76 @@ export default {
       dialog2: false,
       titles: [],
       page: 1,
+      total: 0,
+      searchValue: "",
+      treinadores: [],
+      treinadoresbackup: [],
+      total_treinadores: 0,
     };
+  },
+  mounted() {
+    this.pullData();
+    this.getDataTotal();
   },
   computed: {
     url() {
       return process.env.VUE_APP_BASELINK + "/api/treinador/listar";
     },
-  },
-  created() {
-    this.fetchData();
+    visibleTreinadores() {
+      return this.treinadores.filter(p=>p.isActive).length;
+    },
   },
   methods: {
+    searchbarInput(){
+      const searchContent = this.searchValue;
+      console.log(searchContent);
+      if(searchContent == ""){
+        this.treinadores = this.treinadoresbackup;
+        this.total_treinadores = this.treinadoresbackup.length;
+      }
+      else{
+        this.treinadores = [];
+        this.total_treinadores = 0;
+        this.getDataFiltered(searchContent);
+      }
+    },
+    pullData() {
+         axios.get(process.env.VUE_APP_BASELINK+"/api/treinador/listar",{headers: { token: localStorage.getItem("token")}})
+        .then(response => {
+          if(response.status==200){
+            response.data.forEach(x => {
+              this.treinadores.push(x);
+              this.treinadoresbackup.push(x);
+              this.total_treinadores++;
+            })
+          }
+         })
+    },
+    getDataTotal() {
+      axios.get(process.env.VUE_APP_BASELINK+"/api/treinador/getNumTreinadores",{headers: { token: localStorage.getItem("token")}})
+         .then(response => {
+           console.log(response);
+          if(response.status==200){
+            this.total=response.data.numero;
+          }
+         })
+    },
+    getDataFiltered(filtro){
+      axios.get(process.env.VUE_APP_BASELINK+"/api/treinador/listarFiltrado?filtro="+filtro,{headers: { token: localStorage.getItem("token")}})
+        .then(response => {
+          if(response.status==200){
+            response.data.forEach(x => {
+              this.treinadores.push(x);
+              //this.exerciciosBackup.push(x);
+              this.totalExercicios++;
+            })
+          }
+         })
+    },
     linkapi() {
       return process.env.VUE_APP_BASELINK;
     },
-    async fetchData() {
-      const response = await axios.get(this.url, {
-        headers: { token: localStorage.getItem("token") },
-      });
-      console.log("dsadsadsa" + response.data);
-      this.titles = response.data;
-    },
     solicitar(treinador, comment) {
-      console.log("ndfjds" + JSON.stringify(treinador));
-      console.log("zzzzzzzzzz" + JSON.stringify(comment));
       axios
         .post(
           process.env.VUE_APP_BASELINK + "/api/user/criarContrato",
@@ -220,9 +292,9 @@ export default {
         )
 
         .then((response) => {
-          console.log("sucesso");
+          console.log("sucesso"+response.status);
 
-          console.log("dkansdjnsadjnsa" + JSON.stringify(response.data));
+          //console.log("dkansdjnsadjnsa" + JSON.stringify(response.data));
         })
         .finally(() => console.log("jo"));
     },

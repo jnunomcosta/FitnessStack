@@ -89,9 +89,9 @@ public class gestao_exercicios {
         return true;
     }
 
-    public JSONArray getExercicios(String filtro,int pag){
+    public JSONArray getExercicios(String filtro){
         JSONArray res = new JSONArray();
-        List<Exercicio> l = exercicioDAO.listExerciciosByFiltro(filtro,pag,pag+10);
+        List<Exercicio> l = exercicioDAO.listExerciciosByFiltro(filtro);
         for(Exercicio e: l){
             JSONObject exe = new JSONObject();
             exe.put("id",e.getID());

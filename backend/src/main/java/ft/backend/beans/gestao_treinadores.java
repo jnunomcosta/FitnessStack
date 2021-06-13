@@ -66,6 +66,29 @@ public class gestao_treinadores {
         return ret;
     }
 
+    public JSONArray getTreinadores(String filtro){
+        JSONArray ret = new JSONArray();
+
+        List<Treinador> t = tDao.listTreinadoresByFiltro(filtro);
+        for(Treinador tr : t){
+            JSONObject exe = new JSONObject();
+            exe.put("nome", tr.getNome());
+            exe.put("username", tr.getUsername());
+            exe.put("email", tr.getEmail());
+            exe.put("descricao", tr.getDescricao());
+            exe.put("classsificacao",tr.getMediaAvaliacao());
+            exe.put("numero_classsificacao",tr.getNumeroAvaliacoes());
+            exe.put("imagem", "/api/assets/photo/"+tr.getFoto_perfil().getID());
+            ret.put(exe);
+        }
+
+        return ret;
+    }
+
+    public int getNumTreinador(){
+        return tDao.num_treinadores();
+    }
+
     public JSONObject getTreinadorInformation(String username){
         Treinador u = tDao.findTreinador_Username(username);
         if(u != null){

@@ -29,7 +29,7 @@
       >
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-lazy
-            v-model="ex.id"
+            v-model="ex.isActive"
             :options="{ threshold: 0.5 }"
             class="fill-height"
           >
@@ -183,29 +183,19 @@ export default {
   },
   computed: {
     visibleExercicios() {
-      return this.exercicios.length;
+      return this.exercicios.filter(p=>p.isActive).length;
     },
   },
   mounted() {
     this.pullData();
     this.getDataTotal();
   },
-  // mounted() {
-  //   axios
-  //     .get(process.env.VUE_APP_BASELINK + "/api/exercicio/listar", {
-  //       headers: { token: localStorage.getItem("token") },
-  //     })
-  //     .then((response) => {
-  //       this.titles = response.data;
-  //     });
-  // },
   methods: {
     linkfoto() {
       return process.env.VUE_APP_BASELINK;
     },
-    pullData() {  
-      this.skip = this.totalExercicios == 0 ? 0 : this.skip + 10;
-      axios.get(process.env.VUE_APP_BASELINK+"/api/exercicio/listarExerciciosPage?pag="+this.skip,{headers: { token: localStorage.getItem("token")}})
+    pullData() {
+         axios.get(process.env.VUE_APP_BASELINK+"/api/exercicio/listar",{headers: { token: localStorage.getItem("token")}})
         .then(response => {
           if(response.status==200){
             response.data.forEach(x => {
@@ -226,8 +216,7 @@ export default {
          })
     },
     getDataFiltered(filtro){
-      this.skip = this.totalExercicios == 0 ? 0 : this.skip + 10;
-      axios.get(process.env.VUE_APP_BASELINK+"/api/exercicio/listarExercicios?filtro="+filtro+"&pag="+this.skip,{headers: { token: localStorage.getItem("token")}})
+      axios.get(process.env.VUE_APP_BASELINK+"/api/exercicio/listarExercicios?filtro="+filtro,{headers: { token: localStorage.getItem("token")}})
         .then(response => {
           if(response.status==200){
             response.data.forEach(x => {
@@ -250,24 +239,6 @@ export default {
         this.totalExercicios = 0;
         this.getDataFiltered(searchContent);
       }
-    //   this.medicines = this.medicinesBackup;
-    //   this.totalMedicines = 0;
-    //   this.medicines = [];
-    //   this.medicinesBackup = [];
-    //   this.searchValue = searchContent;
-    //   this.pullData();
-    //   if (!searchContent) {
-    //     return;
-    //   }
-    //   if (searchContent && searchContent.trim() !== "") {
-    //     this.medicines = this.medicines.filter((c) => {
-    //       if (c.box.name && searchContent) {
-    //         return (
-    //           c.box.name.toLowerCase().indexOf(searchContent.toLowerCase()) > -1
-    //         );
-    //       }
-    //     });
-    //   }
     },
   },
 };

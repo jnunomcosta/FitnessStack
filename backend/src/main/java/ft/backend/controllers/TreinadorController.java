@@ -52,7 +52,22 @@ public class TreinadorController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
-    
+
+    @GetMapping(value = "/listarFiltrado")
+    public ResponseEntity<String> getTreinadores(@RequestHeader String token,@RequestParam String filtro){
+        if(verify.verifyTreinador(token) !=null || verify.verifyAdmin(token) !=null || verify.verifyUser(token) !=null){
+            return ResponseEntity.ok().body(gestao_treinadores.getTreinadores(filtro).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @GetMapping(value = "/getNumTreinadores")
+    public ResponseEntity<String> getNumTreinadores(@RequestHeader String token){
+        if(verify.verifyTreinador(token) !=null || verify.verifyAdmin(token) !=null || verify.verifyUser(token) !=null){
+            return ResponseEntity.ok().body("{\"numero\":"+gestao_treinadores.getNumTreinador()+"}");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
     @GetMapping(value = "/getTreinadorInfo")
     public ResponseEntity<String> getInfoTreinador(@RequestHeader String token,@RequestParam String username){
@@ -119,34 +134,67 @@ public class TreinadorController {
     }
     @GetMapping(value = "/getAlunosAtivos")
     public ResponseEntity<String> getAlunosAtivos(@RequestHeader String token){
-        String username= verify.verifyTreinador(token);
-        if( username != null){
-
+        String username = verify.verifyTreinador(token);
+        if(username != null){
             List<Contrato> c = gestao_contratos.getContratoTreinador(username);
             if(c!=null){
-
-
                 JSONArray cont = new JSONArray();
                  for(Contrato cr :c){
-
                     if (cr.isEstado()){
-                         JSONObject obj = new JSONObject();
-
-                    
+                        JSONObject obj = new JSONObject();
                         obj.put("treinador",cr.getTreinador_responsavel().getUsername());
                         obj.put("estado",cr.isEstado());
                         obj.put("comentario",cr.getComentario());
                         obj.put("utilizador",cr.getUtilizador().getUsername());
                         obj.put("foto_utilizador","/api/assets/photo/"+cr.getUtilizador().getFoto_perfil().getID());
-
-
                         cont.put(obj);
                     }
                 }
-                
-
                 return ResponseEntity.ok().body(cont.toString());
+            }
+                 
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 
+    @GetMapping(value = "/getAlunosAtivosFiltrado")
+    public ResponseEntity<String> getAlunosAtivos(@RequestHeader String token,@RequestParam String filtro){
+        String username = verify.verifyTreinador(token);
+        if(username != null){
+            List<Contrato> c = gestao_contratos.getContratoTreinador(username);
+            if(c!=null){
+                JSONArray cont = new JSONArray();
+                 for(Contrato cr :c){
+                    if (cr.isEstado() && cr.getUtilizador().getUsername().toLowerCase().contains(filtro.toLowerCase())){
+                        JSONObject obj = new JSONObject();
+                        obj.put("treinador",cr.getTreinador_responsavel().getUsername());
+                        obj.put("estado",cr.isEstado());
+                        obj.put("comentario",cr.getComentario());
+                        obj.put("utilizador",cr.getUtilizador().getUsername());
+                        obj.put("foto_utilizador","/api/assets/photo/"+cr.getUtilizador().getFoto_perfil().getID());
+                        cont.put(obj);
+                    }
+                }
+                return ResponseEntity.ok().body(cont.toString());
+            }
+                 
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @GetMapping(value = "/getAlunosAtivosNumber")
+    public ResponseEntity<String> getAlunosAtivosNumber(@RequestHeader String token){
+        String username = verify.verifyTreinador(token);
+        if(username != null){
+            List<Contrato> c = gestao_contratos.getContratoTreinador(username);
+            if(c!=null){
+                int number = 0;
+                 for(Contrato cr :c){
+                    if (cr.isEstado()){
+                        number++;
+                    }
+                }
+                return ResponseEntity.ok().body("{\"numero\":"+number+"}");
             }
                  
         }

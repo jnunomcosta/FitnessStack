@@ -22,7 +22,6 @@ public class gestao_contratos {
     @Autowired
     TreinadorDAO treinadorDAO;
 
-
     public Contrato getContratoUser(String username){
         Contrato ret =null;
         Utilizador u = utilizadorDAO.findUtilizador_Username(username);
@@ -40,10 +39,10 @@ public class gestao_contratos {
         if (u!=null){
             ret = contratoDAO.findContratoIdTreinador(u.getID());
            
-        }
-        
+        }   
         return ret;
     }
+    
     public boolean acceptContrato(String username,String treinador){
         Contrato ret =null;
         Utilizador u = utilizadorDAO.findUtilizador_Username(username);
