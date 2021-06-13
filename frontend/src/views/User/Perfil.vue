@@ -251,19 +251,21 @@
         <v-col cols="12" md="4">
           <v-card>
             <v-card-title class="justify-center">
-                      <span>Informação Física</span>
+                      <span style="color:#f95738">Informação Física</span>
                     </v-card-title>
-                    <v-divider class="mx-4"></v-divider>
+                    <v-divider></v-divider>
               <v-row class="mt-0">
                 <v-col cols="12" md="6">
                    <v-card-text>
-                  <h1 class="headline">
+                  <p style="font-size:20px">
                     <b>Peso atual:</b> {{ utilizador.peso }}kg
-                  </h1>
+                  </p>
                   <v-spacer class="mt-4"></v-spacer>
                   <p><b>Massa Gorda:</b> {{ utilizador.m_gorda }}%</p>
 
                   <p><b>Massa Muscular:</b> {{ utilizador.m_muscular }}%</p>
+
+                  <p><b>Género:</b> {{ utilizador.genero }}</p>
                   </v-card-text>
                 </v-col>
 
@@ -410,10 +412,10 @@
 
         <v-col cols="12" md="5">
           <v-card class="mx-auto text-center">
-            <v-card-title class="justify-center"
-              >Peso e Massa Muscular</v-card-title
+            <v-card-title class="justify-center" style="color:#f95738"
+              >Peso, Massa Muscular e Massa Gorda </v-card-title
             >
-            <v-divider class="mx-4"></v-divider>
+            <v-divider></v-divider>
             <div id="chart">
               <line-chart />
             </div>

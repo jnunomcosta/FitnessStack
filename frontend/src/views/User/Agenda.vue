@@ -5,7 +5,7 @@
       <v-col cols="12" md="1">
          <SideBar />
       </v-col>
-      <v-col cols="12" md="10" style="padding-top: 100px; padding-bottom: 100px">
+      <v-col cols="12" md="10" style="padding-top: 110px; padding-bottom: 100px">
         <AgendarTreino />
       </v-col>
     </v-row>

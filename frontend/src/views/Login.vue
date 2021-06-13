@@ -8,10 +8,10 @@
             <v-row class="mt-10">
               <v-col cols="12" md="8">
                 <v-card-text class="mt-16 pt-8" style="margin-bottom: 180px">
-                  <h1 class="text-center display-2" style="color: #f95738">
+                  <h1 class="titulo text-center" style="color: #f95738">
                     Entre no Fitness Stack
                   </h1>
-                  <v-form ref="login_form" class="px-16 mx-8 mt-6">
+                  <v-form ref="login_form" class="px-16 mx-8 mt-12">
                     <v-text-field
                       label="Nome de Utilizador"
                       name="Username"
@@ -69,7 +69,7 @@
               </v-col>
               <v-col cols="12" md="4" style="background-color: #f95738">
                 <v-card-text class="white--text mt-16">
-                  <h1 class="text-center display-1">Ainda não se registou?</h1>
+                  <h1 class="text-center">Ainda não se registou?</h1>
                   <h5 class="text-center my-3">
                     Registe-se já e comece a treinar!
                   </h5>
@@ -84,7 +84,7 @@
             <v-row class="mt-10">
               <v-col cols="12" md="4" style="background-color: #f95738">
                 <v-card-text class="white--text mt-16">
-                  <h1 class="text-center display-1">Já se registou?</h1>
+                  <h1 class="text-center">Já se registou?</h1>
                   <h5 class="text-center my-3">
                     Realize o login para se manter conectado!
                   </h5>
@@ -96,8 +96,8 @@
 
               <v-col cols="12" md="8">
                 <v-card-text class="mt-12">
-                  <h1 class="text-center display-2" style="color: #f95738">
-                    Criar Conta
+                  <h1 class="titulo text-center" style="color: #f95738">
+                    Nova Conta
                   </h1>
                   <v-form ref="register_form" class="px-16 mx-8 mt-6">
                     <v-text-field
@@ -189,8 +189,9 @@
                     <v-select
                       :items="['Masculino', 'Feminino']"
                       v-model="input_register.genero"
+                      prepend-icon="mdi-gender-male-female"
                       label="Género"
-                      color="#7189ff"
+                      color="#f95738"
                       required
                     />
 

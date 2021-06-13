@@ -14,6 +14,7 @@
         <v-icon>mdi-filter</v-icon>
       </v-btn>
     </v-toolbar>
+    <v-container>
     <h5 class="mb-4 ml-8" style="color: #5b5b5b">
       <span v-text="visibleExercicios"></span> de
       <span v-text="total"></span> exercícios
@@ -161,11 +162,12 @@
         </h5>
       </v-col>
     </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 
 export default {
   components: {},

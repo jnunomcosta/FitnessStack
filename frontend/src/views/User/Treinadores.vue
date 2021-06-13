@@ -5,7 +5,7 @@
       <v-col cols="12" md="1">
         <SideBar />
       </v-col>
-      <v-col cols="12" md="10" style="padding-top: 90px">
+      <v-col cols="12" md="10" style="padding-top: 120px; padding-bottom: 100px">
         <v-dialog transition="dialog-bottom-transition" max-width="700">
           <template v-slot:activator="{ on, attrs }">
             <v-btn 
@@ -131,22 +131,7 @@
         </v-dialog>
 
         <v-container class="pa-0 ma-0">
-          <!-- <v-row align="center" justify="space-around">
-            <v-col cols="12" md="12">
-              <v-toolbar dense rounded class="mx-6" style="margin-top: 40px">
-                <v-text-field
-                  hide-details
-                  prepend-icon="mdi-magnify"
-                  label="Procurar treinador"
-                  single-line
-                  color="#f95738"
-                ></v-text-field>
-                <v-btn icon>
-                  <v-icon>mdi-filter</v-icon>
-                </v-btn>
-              </v-toolbar>
-            </v-col>
-          </v-row> -->
+         
           <Treinador
         /></v-container>
       </v-col>

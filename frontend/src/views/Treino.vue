@@ -217,7 +217,7 @@
                               width="700"
                             >
                               <v-carousel-item
-                                v-for="(item1, i1) in ex.conteudo_media"
+                                v-for="(item1, i1) in exercicios[i].conteudo_media"
                                 :key="i1"
                               >
                                 <template v-if="item1.includes('photo')">
@@ -421,7 +421,7 @@ export default {
         headers: { token: localStorage.getItem("token") },
        })
        .then((response) => {
-         this.titles = response.data;
+         this.exercicios = response.data;
       });
   
   },

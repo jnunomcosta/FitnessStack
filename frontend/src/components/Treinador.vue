@@ -15,9 +15,6 @@
                 </v-btn>
               </v-toolbar>
   <v-container>
-    <!-- <h5 class="mb-4 ml-8" style="color: #5b5b5b">
-      {{ titles.length }} treinadores
-    </h5> -->
     <h5 class="mb-4 ml-8" style="color: #5b5b5b">
       <span v-text="visibleTreinadores"></span> de
       <span v-text="total"></span> treinadores

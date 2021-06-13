@@ -1,7 +1,11 @@
 <template>
   <v-container class="ma-0 pa-0">
-    <v-card class="pa-6">
-      <v-row>
+    <v-card>
+      <v-card-title class="justify-center" style="color:#f95738"
+              >Agenda de Treinos</v-card-title
+            >
+            <v-divider></v-divider>
+      <v-row class="pa-10">
         <v-col cols="12" md="8">
           <template>
             <v-sheet>

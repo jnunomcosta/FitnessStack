@@ -4,7 +4,7 @@
       class="text-center"
       cols="12"
     >
-      {{ new Date().getFullYear() }} — <strong>Fitness Stack</strong>
+      {{ new Date().getFullYear() }} &#169; <strong>Fitness Stack</strong>
     </v-col>
   </v-footer>
 </template>
