@@ -129,6 +129,7 @@
             <template v-slot:default>
               <thead>
                 <tr>
+                  <th class="text-center"></th>
                   <th class="text-center">Nome</th>
                   <th class="text-center">Séries</th>
                   <th class="text-center">Repetições/Duração</th>
@@ -138,9 +139,108 @@
               <tbody>
                 <tr
                   class="text-center"
-                  v-for="item in treino.exercicios"
-                  :key="item.nome"
+                  v-for="(item,i) in treino.exercicios"
+                  :key="i"
                 >
+                <td>
+                <v-dialog transition="dialog-bottom-transition" width="1000">
+                <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                    v-on="on"
+                  class="mx-2"
+                  icon
+                  dark
+                  small
+                  color="pink"
+                ><v-icon color="#f95738">mdi-text-box-search</v-icon>
+                </v-btn>
+                </template>
+                <template v-slot:default="dialog">
+                  <v-card>
+                    <v-toolbar color="#f95738" dark
+                      ><h3>{{ exercicios[i].nome }}</h3>
+                      <v-spacer></v-spacer>
+                      <v-btn icon @click="dialog.value = false"
+                        ><v-icon>mdi-close</v-icon></v-btn
+                      >
+                    </v-toolbar>
+                    <v-card-text>
+                      <v-row class="w-100">
+                        <v-col cols="12" md="3">
+                          <div
+                            class="d-flex flex-no-wrap justify-space-between"
+                          >
+                            <div class="mt-6">
+                              <v-list-item two-line>
+                                <v-list-item-content>
+                                  <v-list-item-title
+                                    >Descrição</v-list-item-title
+                                  >
+                                  <v-list-item-subtitle>{{
+                                    exercicios[i].descricao
+                                  }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                              </v-list-item>
+
+                              <v-list-item two-line>
+                                <v-list-item-content>
+                                  <v-list-item-title
+                                    >Duração média</v-list-item-title
+                                  >
+                                  <v-list-item-subtitle
+                                    >{{ exercicios[i].duracao }}s</v-list-item-subtitle
+                                  >
+                                </v-list-item-content>
+                              </v-list-item>
+
+                              <v-list-item two-line>
+                                <v-list-item-content>
+                                  <v-list-item-title
+                                    >Material necessário</v-list-item-title
+                                  >
+                                  <v-list-item-subtitle>{{
+                                    exercicios[i].material
+                                  }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                              </v-list-item>
+                            </div>
+                          </div>
+                        </v-col>
+
+                        <v-col md="9">
+                          <div>
+                            <v-carousel
+                              :show-arrows="false"
+                              class="mt-6"
+                              height="400"
+                              width="700"
+                            >
+                              <v-carousel-item
+                                v-for="(item1, i1) in ex.conteudo_media"
+                                :key="i1"
+                              >
+                                <template v-if="item1.includes('photo')">
+                                  <img :src="linkfoto() + item1" />
+                                </template>
+                                <template v-else>
+                                  <video controls>
+                                    <source
+                                      :src="linkfoto() + item1"
+                                      type="video/mp4"
+                                    />
+                                  </video>
+                                </template>
+                              </v-carousel-item>
+                            </v-carousel>
+                          </div>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </template>
+              </v-dialog>
+              </td>
                   <td>{{ item.nome }}</td>
                   <td>{{ item.series }}</td>
                   <td v-if="!item.tipo">{{ item.repeticoes }}s</td>
@@ -250,10 +350,15 @@ export default {
             fotos: [],
           },
         ],
+        
       },
+      exercicios: [],
     };
   },
   methods: {
+    linkfoto() {
+      return process.env.VUE_APP_BASELINK;
+    },
     getUsertype() {
       return localStorage.getItem("usertype");
     },
@@ -309,6 +414,16 @@ export default {
         console.log("heijsfidjs" + JSON.stringify(this.treino));
       })
       .finally(() => (this.loading = false));
+
+      
+   axios
+       .get(process.env.VUE_APP_BASELINK + "/api/exercicio/listar", {
+        headers: { token: localStorage.getItem("token") },
+       })
+       .then((response) => {
+         this.titles = response.data;
+      });
+  
   },
 };
 </script>
