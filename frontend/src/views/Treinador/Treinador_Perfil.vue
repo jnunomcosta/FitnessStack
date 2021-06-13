@@ -11,8 +11,7 @@
           margin-right: 25px;
         "
       >
-        <v-col cols="12" md="3"> </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="5">
           <v-card style="text-align: center">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
@@ -256,9 +255,7 @@
             </v-container>
           </v-card>
         </v-col>
-        <v-col cols="12" md="3"> </v-col>
-      </v-row>
-      <v-card
+        <v-col cols="12" md="7"><v-card
           v-scroll.self="onScroll"
           style="text-align: center margin-right: 90px max-width:700px"
           class="mt-4 pt-2 overflow-y-auto"
@@ -309,7 +306,10 @@
               ></v-divider>
             </v-list>
           </div>
-        </v-card>
+        </v-card> </v-col>
+      
+      
+        </v-row>
     </div>
     <Footer />
   </div>
