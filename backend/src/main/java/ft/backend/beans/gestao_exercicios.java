@@ -1,5 +1,6 @@
 package ft.backend.beans;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class gestao_exercicios {
     public void criaExercicio(Exercicio e, Treinador t, JSONArray media){
 
         e.setCriador_exercicio(t);
-        Set<ConteudoMedia> medias = new HashSet<>();
+        List<ConteudoMedia> medias = new ArrayList<>();
         for(int i = 0;i < media.length();i++){
             JSONObject obj = media.getJSONObject(i);
 
@@ -86,6 +87,62 @@ public class gestao_exercicios {
         Exercicio e = exercicioDAO.getOne(id);
         exercicioDAO.delete(e);
         return true;
+    }
+
+    public JSONArray getExercicios(String filtro,int pag){
+        JSONArray res = new JSONArray();
+        List<Exercicio> l = exercicioDAO.listExerciciosByFiltro(filtro,pag,pag+10);
+        for(Exercicio e: l){
+            JSONObject exe = new JSONObject();
+            exe.put("id",e.getID());
+            exe.put("nome", e.getNome());
+            exe.put("duracao",e.getDuracao_media());
+            exe.put("material", e.getMaterial_necessario());
+            exe.put("descricao", e.getDescricao());
+            JSONArray imgs = new JSONArray();
+            for(ConteudoMedia c : e.getORM_ConteudoMedia()){
+                if(!c.getExtensao()){
+                    imgs.put("/api/assets/photo/"+c.getID());
+                }
+                else{
+                    imgs.put("/api/assets/video/"+c.getID());
+                }
+            }
+            exe.put("conteudo_media", imgs);
+            res.put(exe);
+        }
+
+        return res;
+    }
+
+    public JSONArray getExercicios(int pag){
+        JSONArray res = new JSONArray();
+        List<Exercicio> l = exercicioDAO.listExerciciosByFiltro(pag,pag+10);
+        for(Exercicio e: l){
+            JSONObject exe = new JSONObject();
+            exe.put("id",e.getID());
+            exe.put("nome", e.getNome());
+            exe.put("duracao",e.getDuracao_media());
+            exe.put("material", e.getMaterial_necessario());
+            exe.put("descricao", e.getDescricao());
+            JSONArray imgs = new JSONArray();
+            for(ConteudoMedia c : e.getORM_ConteudoMedia()){
+                if(!c.getExtensao()){
+                    imgs.put("/api/assets/photo/"+c.getID());
+                }
+                else{
+                    imgs.put("/api/assets/video/"+c.getID());
+                }
+            }
+            exe.put("conteudo_media", imgs);
+            res.put(exe);
+        }
+
+        return res;
+    }
+
+    public int getNumExercicios(){
+        return exercicioDAO.num_exercicios();
     }
 
 }

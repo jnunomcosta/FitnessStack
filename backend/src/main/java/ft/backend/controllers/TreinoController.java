@@ -179,7 +179,7 @@ public class TreinoController {
         }
         treino.setCategorias(cats);
 
-        Set<Bloco> exs = new HashSet<>();
+        List<Bloco> exs = new ArrayList<>();
         arr = obj.getJSONArray("exercicios");
         for(int i=0;i<arr.length();i++){
             Bloco b = new Bloco();

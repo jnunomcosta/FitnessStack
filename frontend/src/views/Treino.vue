@@ -1,13 +1,14 @@
 <template>
   <div class="profile">
     <NavBar />
+    <v-row>
     <v-col v-if="getUsertype() == 1" cols="12" md="1">
         <SideBarTreinador />
       </v-col>
       <v-col v-else cols="12" md="1">
         <SideBar />
       </v-col>
-
+    </v-row>
     <v-row style="padding-top: 90px">
       <v-col cols="12" md="1"> </v-col>
       <v-col cols="12" md="5">
@@ -423,16 +424,6 @@ export default {
          this.titles = response.data;
       });
   
-  },
-  computed: {
-    categorias: function () {
-      var s = "";
-      for (var i = 0; i < this.treino.categorias.length - 1; i++) {
-        s += this.treino.categorias[i] + ", ";
-      }
-      s += this.treino.categorias[i];
-      return s;
-    },
   },
 };
 </script>

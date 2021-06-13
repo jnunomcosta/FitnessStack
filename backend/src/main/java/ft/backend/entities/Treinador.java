@@ -40,7 +40,7 @@ public class Treinador implements Serializable {
 	@OneToMany(targetEntity=Avaliacao_Treinador.class, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="TreinadorID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Avaliacao_Treinador> ORM_avaliacoes_t = new java.util.HashSet<>();
+	private java.util.List<Avaliacao_Treinador> ORM_avaliacoes_t = new java.util.ArrayList<>();
 
 	@ManyToOne(targetEntity=ConteudoMedia.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) })	
@@ -60,12 +60,12 @@ public class Treinador implements Serializable {
 		this.data_nascimento = data_nascimento;
 	}
 
-	public java.util.Set<Avaliacao_Treinador> getORM_avaliacoes_t() {
+	public java.util.List<Avaliacao_Treinador> getORM_avaliacoes_t() {
 		return ORM_avaliacoes_t;
 	}
 
-	public void setORM_avaliacoes_t(java.util.Set<Avaliacao_Treinador> oRM_avaliacoes_t) {
-		ORM_avaliacoes_t = oRM_avaliacoes_t;
+	public void setORM_avaliacoes_t(java.util.List<Avaliacao_Treinador> avals) {
+		ORM_avaliacoes_t = avals;
 	}
 
 	public float getMediaAvaliacao() {
@@ -152,7 +152,7 @@ public class Treinador implements Serializable {
 		return descricao;
 	}
 	
-	public void setORM_Avaliacoes_t(java.util.Set<Avaliacao_Treinador> value) {
+	public void setORM_Avaliacoes_t(java.util.List<Avaliacao_Treinador> value) {
 		this.ORM_avaliacoes_t = value;
 	}
 	
