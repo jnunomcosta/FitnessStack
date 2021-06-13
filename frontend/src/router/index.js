@@ -23,7 +23,7 @@ import Administrador_Alunos from '../views/Administrador/Administrador_Alunos.vu
 import Administrador_Treinadores from '../views/Administrador/Administrador_Treinadores.vue'
 import Administrador_Administradores from '../views/Administrador/Administrador_Administradores.vue'
 
-import { AuthService } from './token'
+//import { AuthService } from './token'
 
 Vue.use(VueRouter)
 
@@ -147,7 +147,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+/*
 // Auth behavior
 router.beforeEach((to, from, next) => {
 
@@ -234,8 +234,8 @@ router.beforeEach((to, from, next) => {
       else next()
     }
 
-  }
-})
+  } 
+})*/
 
 
 export default router

@@ -258,7 +258,7 @@
         <v-col cols="12" md="7"><v-card
           v-scroll.self="onScroll"
           style="text-align: center margin-right: 90px max-width:700px"
-          class="mt-4 pt-2 overflow-y-auto"
+          class="overflow-y-auto"
           max-height="400"
         >
           <h2 class="text-center" style="color: #f95738">Avaliações</h2>
