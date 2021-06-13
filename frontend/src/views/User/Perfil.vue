@@ -355,10 +355,10 @@
                         v-model="input_altura"
                         color="#f95738"
                         type="number"
-                        :rules="formRules"
                         :max="maxAltura"
                         :min="minAltura"
                         label="Altura (cm)"
+                        hint="Campo Opcional"
                         required
                       ></v-text-field>
                     </v-card-text>
@@ -543,7 +543,7 @@ export default {
   methods: {
     validateForm(input_peso, input_muscular, input_gorda, input_altura){
       if(this.$refs.form.validate()){
-        if(input_altura!=this.utilizador.username.altura) this.pesagem_altura(input_peso, input_muscular, input_gorda, input_altura);
+        if(input_altura!="") this.pesagem_altura(input_peso, input_muscular, input_gorda, input_altura);
         else this.pesagem(input_peso, input_muscular, input_gorda);
         this.dialog6 = false
       }

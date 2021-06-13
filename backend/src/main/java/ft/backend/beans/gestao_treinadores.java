@@ -74,7 +74,7 @@ public class gestao_treinadores {
             ret.put("nome",u.getNome());
             ret.put("username", username);
             ret.put("classsificacao",u.getMediaAvaliacao());
-            exe.put("numero_classsificacao",u.getNumeroAvaliacoes());
+            ret.put("numero_classsificacao",u.getNumeroAvaliacoes());
             ret.put("foto_perfil","/api/assets/photo/"+u.getFoto_perfil().getID());
             ret.put("descricao",u.getDescricao());
             JSONArray a = new JSONArray();
@@ -119,9 +119,8 @@ public class gestao_treinadores {
         if(t!=null){
             t.getORM_avaliacoes_t().add(at);
            
-
-            float numero= t.getNumeroAvaliacoes();
-            float media= t.getMediaAvaliacao();
+            float numero = t.getNumeroAvaliacoes();
+            float media = t.getMediaAvaliacao();
 
             float nova_media = (float) (media*numero + at.getClassificacao()) / ( numero +1);
 

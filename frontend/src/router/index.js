@@ -175,14 +175,16 @@ router.beforeEach((to, from, next) => {
   }
   else {
 
-    const hasAuth = AuthService.validateToken();
+    var hasAuth = AuthService.validateToken();
+
+    console.log("has auth = " + hasAuth);
+    console.log("usertype = " + AuthService.getUsertype())
 
     // User
     if (hasAuth && AuthService.getUsertype() == 0) {
       if (to.name == 'Login') next('/perfil') // Go to index
       if (to.name == 'Home') next('/perfil') // Go to index
       if (to.name == 'About') next('/perfil') // Go to index
-      if (to.name == 'Treinadores') next('/perfil') // Go to index
       if (to.name == 'Treinador_Perfil') next('/perfil') // Go to index
       if (to.name == 'Treinador_Alunos') next('/perfil') // Go to index
       if (to.name == 'Administrador_Alunos') next('/perfil') // Go to index
@@ -202,6 +204,7 @@ router.beforeEach((to, from, next) => {
       if (to.name == 'About') next('/treinador/perfil') // Go to index
       if (to.name == 'Perfil') next('/treinador/perfil') // Go to index
       if (to.name == 'Agenda') next('/treinador/perfil') // Go to index
+      if (to.name == 'Treinadores') next('/treinador/perfil') // Go to index
       if (to.name == 'IniciarTreino') next('/treinador/perfil') // Go to index
       if (to.name == 'Administrador_Alunos') next('/treinador/perfil') // Go to index
       if (to.name == 'Administrador_Treinadores') next('/treinador/perfil') // Go to index
