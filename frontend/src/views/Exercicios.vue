@@ -8,8 +8,8 @@
       <v-col v-else cols="12" md="1">
         <SideBar />
       </v-col>
-      <v-col cols="12" md="10">
-        <h1 style="padding-top: 100px; text-align: center; font-size: 40px">
+      <v-col cols="12" md="10" style="padding-top: 120px; padding-bottom: 100px">
+        <h1 style="text-align: center; font-size: 40px">
           Procure um exercício
         </h1>
         <v-container class="pa-0 ma-0">

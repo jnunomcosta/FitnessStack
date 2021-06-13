@@ -15,7 +15,7 @@
         <v-card>
           <v-toolbar flat rounded color="#f95738" dark class=""
             ><v-spacer></v-spacer
-            ><v-toolbar-title class="ml-2 title">{{
+            ><v-toolbar-title class="ml-2">{{
               treino.nome
             }}</v-toolbar-title
             ><v-spacer></v-spacer>

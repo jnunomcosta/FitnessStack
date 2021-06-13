@@ -20,7 +20,7 @@
             </div>
             <v-card-title class="justify-center">{{
               treinador.nome
-            }}</v-card-title>
+            }} <v-icon dense color="#f95738" class="ml-2">mdi-weight-lifter</v-icon></v-card-title>
             <v-card-subtitle> {{ treinador.username }} </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
             <v-card-text class="mb-0 pb-0">
@@ -40,7 +40,7 @@
                 </div>
               </div>
             </v-card-text>
-            <div class="my-4 body-2">{{ treinador.email }}</div>
+            <v-card-text class="my-1 black--text"><v-icon small class="mr-1">mdi-email</v-icon>{{ treinador.email }}</v-card-text>
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
                 <template v-slot:activator="{ on, attrs }">
@@ -57,7 +57,7 @@
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Alterar nome de utilizador</span>
+                    <span>Alterar nome de utilizador</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
@@ -109,7 +109,7 @@
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Alterar email</span>
+                    <span>Alterar email</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
@@ -161,7 +161,7 @@
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Alterar palavra-passe</span>
+                    <span>Alterar palavra-passe</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
@@ -221,7 +221,7 @@
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Alterar foto de perfil</span>
+                    <span>Alterar foto de perfil</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
@@ -257,12 +257,12 @@
         </v-col>
         <v-col cols="12" md="7"><v-card
           v-scroll.self="onScroll"
-          style="text-align: center margin-right: 90px max-width:700px"
+          style="text-align: center; margin-right: 90px; max-width:700px"
           class="overflow-y-auto"
-          max-height="400"
+          max-height="800"
         >
-          <h2 class="text-center" style="color: #f95738">Avaliações</h2>
-          <v-divider class="mt-3"></v-divider>
+          <v-card-title class="justify-center" style="color: #f95738">Avaliações</v-card-title>
+          <v-divider></v-divider>
           <div
             class="text-center"
             v-for="(item, i) in treinador.comentarios"

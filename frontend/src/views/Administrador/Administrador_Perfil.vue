@@ -8,7 +8,7 @@
         style="
           margin-left: 75px;
           padding-top: 100px;
-          padding-bottom: 100px;
+          padding-bottom: 200px;
           margin-right: 25px;
         "
       >
@@ -23,10 +23,10 @@
                 <v-img src="@/assets/favicon.png"></v-img>
               </v-avatar>
             </div>
-            <v-card-title class="justify-center"> {{ admin.nome }}</v-card-title>
-            <v-card-subtitle> {{ admin.username }} </v-card-subtitle>
+            <v-card-title class="justify-center"> {{ admin.nome }} <v-icon dense color="#f95738" class="ml-2">mdi-shield-account</v-icon></v-card-title>
+            <v-card-subtitle> {{ admin.username }}  </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            <div class="mt-4 body-2"> {{ admin.email }} </div>
+            <v-card-text class="my-1 black--text"><v-icon small class="mr-1">mdi-email</v-icon>{{ admin.email }}</v-card-text>
 
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
@@ -44,7 +44,7 @@
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Alterar nome de utilizador</span>
+                    <span >Alterar nome de utilizador</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
@@ -89,7 +89,7 @@
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Alterar email</span>
+                    <span >Alterar email</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
@@ -136,7 +136,7 @@
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Alterar palavra-passe</span>
+                    <span >Alterar palavra-passe</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
