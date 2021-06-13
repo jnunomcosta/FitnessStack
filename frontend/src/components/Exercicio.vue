@@ -29,7 +29,7 @@
       >
         <v-sheet min-height="150px" class="fill-height" color="transparent">
           <v-lazy
-            v-model="medicine.isActive"
+            v-model="ex.id"
             :options="{ threshold: 0.5 }"
             class="fill-height"
           >
@@ -143,8 +143,7 @@
               </v-dialog>
             </v-card-actions>
           </v-card>
-          </v-lazy
-          >
+          </v-lazy>
         </v-sheet>
       </v-col>
     </v-row>
@@ -184,7 +183,7 @@ export default {
   },
   computed: {
     visibleExercicios() {
-      return this.exercicios.filter((p) => p.isActive).length;
+      return this.exercicios.length;
     },
   },
   mounted() {
@@ -204,46 +203,53 @@ export default {
     linkfoto() {
       return process.env.VUE_APP_BASELINK;
     },
-    // pullData() {
-    //   this.skip = this.totalMedicines == 0 ? 0 : this.skip + 10;
-
-    //   Medicines.getMine(this.skip, this.searchValue)
-    //     .then((response) => {
-    //       if (response.status == 400) {
-    //         this.generalErrors = response.data.general_errors;
-    //       } else {
-    //         response.data.box.forEach((element) => {
-    //             element.box.due_date = element.box.due_date.substr(0, 10);
-    //           if (element.box.open_date) {
-    //             element.box.open_date = element.box.open_date.substr(0, 10);
-    //           }
-    //           this.medicines.push(element);
-    //           this.medicinesBackup.push(element);
-    //         });
-    //         this.totalMedicines = response.data.total;
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
-    // getDataTotal() {
-    //   this.skip = this.totalMedicines == 0 ? 0 : this.skip + 10;
-
-    //   Medicines.getMine(this.skip, "")
-    //     .then((response) => {
-    //       if (response.status == 400) {
-    //         this.generalErrors = response.data.general_errors;
-    //       } else {
-    //         this.total = response.data.box.length;
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
-    // searchbarInput(event) {
-    //   const searchContent = this.searchValue;
+    pullData() {  
+      this.skip = this.totalExercicios == 0 ? 0 : this.skip + 10;
+      axios.get(process.env.VUE_APP_BASELINK+"/api/exercicio/listarExerciciosPage?pag="+this.skip,{headers: { token: localStorage.getItem("token")}})
+        .then(response => {
+          if(response.status==200){
+            response.data.forEach(x => {
+              this.exercicios.push(x);
+              this.exerciciosBackup.push(x);
+              this.totalExercicios++;
+            })
+          }
+         })
+    },
+    getDataTotal() {
+      axios.get(process.env.VUE_APP_BASELINK+"/api/exercicio/getNumExercicios",{headers: { token: localStorage.getItem("token")}})
+         .then(response => {
+           console.log(response);
+          if(response.status==200){
+            this.total=response.data.numero;
+          }
+         })
+    },
+    getDataFiltered(filtro){
+      this.skip = this.totalExercicios == 0 ? 0 : this.skip + 10;
+      axios.get(process.env.VUE_APP_BASELINK+"/api/exercicio/listarExercicios?filtro="+filtro+"&pag="+this.skip,{headers: { token: localStorage.getItem("token")}})
+        .then(response => {
+          if(response.status==200){
+            response.data.forEach(x => {
+              this.exercicios.push(x);
+              //this.exerciciosBackup.push(x);
+              this.totalExercicios++;
+            })
+          }
+         })
+    },
+    searchbarInput() {
+      const searchContent = this.searchValue;
+      console.log(searchContent);
+      if(searchContent == ""){
+        this.exercicios = this.exerciciosBackup;
+        this.totalExercicios = this.exerciciosBackup.length;
+      }
+      else{
+        this.exercicios = [];
+        this.totalExercicios = 0;
+        this.getDataFiltered(searchContent);
+      }
     //   this.medicines = this.medicinesBackup;
     //   this.totalMedicines = 0;
     //   this.medicines = [];
@@ -262,7 +268,7 @@ export default {
     //       }
     //     });
     //   }
-    // },
+    },
   },
 };
 </script>

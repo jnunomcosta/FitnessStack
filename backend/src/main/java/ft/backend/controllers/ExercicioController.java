@@ -79,4 +79,28 @@ public class ExercicioController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @GetMapping(value = "/listarExercicios")
+    public ResponseEntity<String> listarExercicios(@RequestHeader String token,@RequestParam String filtro,@RequestParam int pag){
+        if(verify.verifyUser(token) != null || verify.verifyTreinador(token) != null){
+            return ResponseEntity.ok().body(ge.getExercicios(filtro,pag).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @GetMapping(value = "/listarExerciciosPage")
+    public ResponseEntity<String> listarExerciciosPage(@RequestHeader String token,@RequestParam int pag){
+        if(verify.verifyUser(token) != null || verify.verifyTreinador(token) != null){
+            return ResponseEntity.ok().body(ge.getExercicios(pag).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @GetMapping(value="getNumExercicios")
+    public ResponseEntity<String> getNumExercicios(@RequestHeader String token){
+        if(verify.verifyUser(token) != null || verify.verifyTreinador(token) != null){
+            return ResponseEntity.ok().body("{\"numero\":"+ge.getNumExercicios()+"}");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
 }

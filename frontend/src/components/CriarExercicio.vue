@@ -84,9 +84,9 @@
                 v-model="conteudos"
                 multiple
                 accept="image/png, image/jpeg, image/bmp, video/mp4"
-                placeholder="Selecione uma imagem ou vídeo"
+                placeholder="Selecione imagens e/ou vídeos"
                 prepend-icon="mdi-paperclip"
-                label="Demonstração do Exercício (só está a dar imagem para já)"
+                label="Demonstração do Exercício"
                 color="#f95738"
               ></v-file-input>
             </v-card-text>
@@ -196,19 +196,20 @@ export default {
         conteudo_media: conteudos_lindos,
       };
       
-      axios
-        .post(process.env.VUE_APP_BASELINK+'/api/exercicio/novo',exercicio_post,{headers:{'token':localStorage.getItem("token")}})
-        .then(response => {
-          console.log(response);
-        })
+      var response = await axios.post(process.env.VUE_APP_BASELINK+'/api/exercicio/novo',exercicio_post,{headers:{'token':localStorage.getItem("token")}})
+      if(response.status==200){
+        this.nome = "";
+        this.descricao = "";
+        this.duracao = "";
+        this.material = "";
+        this.conteudos = [];
+
+        this.$router.go();
+      } 
 
       //VER SE O POST CORREU BEM  
       
-      this.nome = "";
-      this.descricao = "";
-      this.duracao = "";
-      this.material = "";
-      this.conteudos = [];
+      
     },
   },
 };

@@ -51,13 +51,13 @@ public class Treino implements Serializable {
 	@OneToMany(targetEntity=Bloco.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Bloco> ORM_blocos_exercicios = new java.util.HashSet<>();
+	private java.util.List<Bloco> ORM_blocos_exercicios = new java.util.ArrayList<>();
 	
 	@OneToMany(targetEntity=Avaliacao_Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })
 //	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.HashSet<>();
+	private java.util.List<Avaliacao_Treino> ORM_avaliacoes_treino = new java.util.ArrayList<>();
 
 	@OneToMany(targetEntity=Categoria.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})
 	@JoinColumns({ @JoinColumn(name="TreinoID", nullable=true) })	
@@ -152,19 +152,19 @@ public class Treino implements Serializable {
 		return data_criacao;
 	}
 	
-	public void setORM_Blocos_exercicios(java.util.Set<Bloco> value) {
+	public void setORM_Blocos_exercicios(java.util.List<Bloco> value) {
 		this.ORM_blocos_exercicios = value;
 	}
 	
-	public java.util.Set<Bloco> getORM_Blocos_exercicios() {
+	public java.util.List<Bloco> getORM_Blocos_exercicios() {
 		return ORM_blocos_exercicios;
 	}
 	
-	public void setORM_Avaliacoes_treino(java.util.Set<Avaliacao_Treino> value) {
+	public void setORM_Avaliacoes_treino(java.util.List<Avaliacao_Treino> value) {
 		this.ORM_avaliacoes_treino = value;
 	}
 	
-	public java.util.Set<Avaliacao_Treino> getORM_Avaliacoes_treino() {
+	public java.util.List<Avaliacao_Treino> getORM_Avaliacoes_treino() {
 		return ORM_avaliacoes_treino;
 	}
 

@@ -1,13 +1,11 @@
 package ft.backend.repositories;
 
-import ft.backend.entities.Utilizador;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import ft.backend.entities.Exercicio;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import ft.backend.entities.Exercicio;
 
 public interface ExercicioDAO extends JpaRepository<Exercicio,Integer>{
 
@@ -17,4 +15,12 @@ public interface ExercicioDAO extends JpaRepository<Exercicio,Integer>{
     @Query(value = "SELECT e.nome FROM exercicio e",nativeQuery = true)
     public List<String> listNomeExercicios();
 
+    @Query(value = "SELECT * FROM exercicio e where e.nome like %:filtro% limit :pag,:pag_max",nativeQuery = true)
+    public List<Exercicio> listExerciciosByFiltro(@Param("filtro") String filtro,@Param("pag") int pag,@Param("pag_max") int pag_max);
+
+    @Query(value = "SELECT * FROM exercicio e limit :pag,:pag_max",nativeQuery = true)
+    public List<Exercicio> listExerciciosByFiltro(@Param("pag") int pag,@Param("pag_max") int pag_max);
+
+    @Query(value = "SELECT COUNT(*) FROM exercicio", nativeQuery = true)
+    public int num_exercicios();
 }
