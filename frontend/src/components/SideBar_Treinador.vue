@@ -78,8 +78,8 @@ export default {
       username: "",
       items: [
         {title: "Perfil", icon: "mdi-account", link: "/treinador/perfil"},
-        { title: "Exercícios", icon: "mdi-dumbbell", link: "/treinador/exercicios" },
-        { title: "Treinos", icon: "mdi-timer", link: "/treinador/treinos" },
+        { title: "Exercícios", icon: "mdi-dumbbell", link: "/exercicios" },
+        { title: "Treinos", icon: "mdi-timer", link: "/treinos" },
         {
           title: "Alunos",
           icon: "mdi-account-group",

@@ -57,7 +57,6 @@ export default {
       return this.menu;
     },
     logout() {
-      console.log("?");
       localStorage.clear();
       this.$router.push("/login");
     },

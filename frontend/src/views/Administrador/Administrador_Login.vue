@@ -7,7 +7,7 @@
         <v-row class="mt-10">
           <v-col cols="12" md="8">
             <v-card-text class="mt-16 pt-10" style="margin-bottom: 180px">
-              <h1 class="text-center display-2" style="color: #f95738">
+              <h1 class="text-center display-2" style="color: #7189ff">
                 Entre no Fitness Stack
               </h1>
               <v-form ref="login_form" class="px-16 mx-8 mt-10">
@@ -17,7 +17,7 @@
                   v-model="input.username"
                   prepend-icon="mdi-account"
                   type="text"
-                  color="#f95738"
+                  color="#7189ff"
                   :rules="usernameLoginRules"
                 />
                 <v-text-field
@@ -27,12 +27,12 @@
                   v-model="input.password"
                   prepend-icon="mdi-lock"
                   type="password"
-                  color="#f95738"
+                  color="#7189ff"
                   :rules="passwordLoginRules"
                 />
 
                 <div class="text-center my-8">
-                  <v-btn v-on:click="validate_login()" color="#f95738" dark
+                  <v-btn v-on:click="validate_login()" color="#7189ff" dark
                     >Login</v-btn
                   >
                 </div>
@@ -59,7 +59,7 @@
               </v-form>
             </v-card-text>
           </v-col>
-          <v-col cols="12" md="4" style="background-color: #f95738">
+          <v-col cols="12" md="4" style="background-color: #7189ff">
             <v-card-text class="white--text mt-16">
               <h1 class="text-center display-1">É administrador?</h1>
               <h5 class="text-center my-3">Realize aqui o seu login!</h5>

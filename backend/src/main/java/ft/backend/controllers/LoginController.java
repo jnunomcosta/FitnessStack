@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +35,9 @@ public class LoginController {
 
     @Autowired
     gestao_administradores ga;
+
+    @Autowired
+    gestao_verificacoes gv;
     
     @PostMapping(value = "/user")
     public ResponseEntity<String> login_utilizador(@RequestBody PedidoLogin pl){
@@ -65,11 +70,17 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("null");
         }
 
-
         JSONObject obj = new JSONObject();
         obj.put("token", Authorization.generateToken(pl.getUsername(), 2));
 
         return ResponseEntity.ok().body(obj.toString());
     }
 
+    @GetMapping(value = "/validateToken")
+    public ResponseEntity<String> validateToken(@RequestHeader String token){
+        if(gv.verifyUser(token) != null || gv.verifyTreinador(token) != null || gv.verifyAdmin(token) != null) {
+            return ResponseEntity.ok().body("");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 }
