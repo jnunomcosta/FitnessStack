@@ -11,63 +11,48 @@
         md="10"
         class="mt-4 pb-16"
         align="center"
-        style="color: #f95738"
+        style="color: #f95738; padding-top: 120px"
       >
-        <h1
-          class="text-center display-2 mb-6"
-          style="color: #f95738; padding-top: 70px"
-        >
-          <b> {{ treino.nome }} </b>
-        </h1>
+
+      <v-card class="py-8" style="color: #f95738">
+          <v-card-text>
+            <h1 class="text-center" style="color: #f95738; font-size: 40px">
+              <b> {{ treino.nome }} </b>
+            </h1>
+          </v-card-text>
+        </v-card>
+
+
+
+
         <v-carousel
           ref="carousel"
           v-model="slide"
           height="600"
           hide-delimiter-background
           show-arrows-on-hover
+          class="mb-8"
         >
           <v-carousel-item v-for="(item, i) in treino.exercicios" :key="i">
             <v-sheet color="grey" height="100%">
               <v-row class="fill-height" align="center" justify="center">
-                <v-col cols="12" md="1"> </v-col>
-                <v-col cols="12" md="7">
+                 <v-col cols="12" md="8">
                   <v-card
                     elevation="17"
                     color="white"
-                    class="text-center"
+                    class="text-center mt-8"
                     style="text-align: center"
+                    height="500"
                   >
-                    <div class="text-center mx-4">
-                      <div class="mx-auto text-center">
-                        <v-carousel
-                          :show-arrows="true"
-                          height="300"
-                          width="300"
-                        >
-                          <v-carousel-item
-                            v-for="(otim, o) in item.fotos"
-                            :key="o"
-                          >
-                            <template v-if="otim.includes('photo')">
-                              <img :src="linkapi() + otim" />
-                            </template>
-                            <template v-else>
-                              <video controls>
-                                <source
-                                  :src="linkapi() + otim"
-                                  type="video/mp4"
-                                />
-                              </video>
-                            </template>
-                          </v-carousel-item>
-                        </v-carousel>
-                      </div>
-
-                      <v-list-item-content class="black--text">
+                  <v-row  class="ml-6">
+                    <v-col cols="12" md="5">
+                    
+                    <div class="text-center mx-4 ">
+                      <v-list-item-content class="black--text mt-8" style="font-size: 20px">
                         <h2>{{ item.nome }}</h2>
                         <h2>{{ n_series }} / {{ item.series }} Séries</h2>
 
-                        <v-row class="text-center" style="text-align: center">
+                        <v-row class="text-center mt-6" style="text-align: center">
                           <v-col v-if="tipoDuracao(item.tipo)" cols="12" md="6">
                             <p
                               class="
@@ -78,8 +63,20 @@
                                 rounded-pill
                               "
                             >
-                              <b>Duração: {{ duracao_serie }}s</b>
+                              <b>Duração</b>
                             </p>
+                            <div class="text-center" style="font-size:40px">
+                            <v-progress-circular
+                              :rotate="360"
+                              :size="150"
+                              :width="15"
+                              :value="duracao_serie_reverso"
+                              color="#f95738"
+                            >
+                              {{ duracao_serie }} s
+                            </v-progress-circular>
+                            </div>                     
+                            
                           </v-col>
                           <v-col
                             v-if="tipoRepeticoes(item.tipo)"
@@ -95,8 +92,20 @@
                                 rounded-pill
                               "
                             >
-                              <b>Repetições: {{ item.repeticoes }} reps</b>
+                              <b > {{ item.repeticoes }} reps </b>
                             </p>
+                            
+                              <div class="text-center">
+                                <v-progress-circular
+                                  :size="150"
+                                  :width="15"
+                                  color="#f95738"
+                                  indeterminate
+                                >
+                                </v-progress-circular>
+                            </div>
+                           
+
                           </v-col>
                           <v-col cols="12" md="6">
                             <p
@@ -108,8 +117,20 @@
                                 rounded-pill
                               "
                             >
-                              <b>Descanso: {{ duracao_descanso }}s</b>
+                              <b>Descanso </b>
                             </p>
+                            <div class="text-center" style="font-size:40px">
+                            <v-progress-circular
+                              :rotate="360"
+                              :size="150"
+                              :width="15"
+                              
+                              :value=" duracao_descanso_reverso "
+                              color="#7189FF"
+                            >
+                              {{ duracao_descanso }} s
+                            </v-progress-circular>
+                            </div>
                           </v-col>
                         </v-row>
                         <v-btn
@@ -132,6 +153,39 @@
                         >
                       </v-list-item-content>
                     </div>
+                    </v-col>
+                    <v-col cols="12" md="7">
+
+                    <div class="text-center">
+                      <div class="mx-auto text-center">
+                        <v-carousel
+                        cycle
+                          :show-arrows="false"
+                          height="420"
+                          width="300"
+                        >
+                          <v-carousel-item
+                            v-for="(otim, o) in item.fotos"
+                            :key="o"
+                            class="pa-8 pe-10"
+                          >
+                            <template v-if="otim.includes('photo')">
+                              <img :src="linkapi() + otim" />
+                            </template>
+                            <template v-else>
+                              <video controls>
+                                <source
+                                  :src="linkapi() + otim"
+                                  type="video/mp4"
+                                />
+                              </video>
+                            </template>
+                          </v-carousel-item>
+                        </v-carousel>
+                      </div>
+                    </div>
+                    </v-col>
+                  </v-row>
                   </v-card>
                 </v-col>
                 <v-col
@@ -190,41 +244,36 @@ export default {
       slide: false,
       dialog1: false,
       terminar_series: true,
-      //i: 0,
-      
+      interval: {},
       n_series: 0,
       duracao_descanso: 0,
       duracao_serie: 0,
-      //duracao_descanso: [],
-      //n_series: [],
-      //duracao_serie: [],
-
+      duracao_descanso_reverso: 0,
+      duracao_serie_reverso: 0,
 
       treino: {
         nome: "",
         duracao: "",
         categorias: [{ categoria: "" }],
         dificuldade: "",
-        //treinador: "",
         data: "",
         exercicios: [
           {
-            //i: 0,
             nome: "",
             series: 0,
             tipo: "",
             repeticoes: 0,
             descanso: 0,
             fotos: [],
-            //duracao_serie: 0,  
-            //duracao_descanso: 0,
-            //n_series: 0         
           },
         ],
         avaliacoes: [],
       },
     };
   },
+  beforeDestroy () {
+      clearInterval(this.interval)
+    },
   methods: {
     tipoRepeticoes: function (bool) {
       return bool;
@@ -234,105 +283,96 @@ export default {
     },
     terminarTreino: function () {
       this.$router.push("/treino/" + this.$route.params.codigo);
-     },
+    },
+
+
+
+
+
+
+
+
+
+
+
     countDownTimer_serie(item, i) {
       if (!this.terminar_series) {
+        
         if (this.duracao_serie > 0) {
           setTimeout(() => {
-            //var value = this.treino.exercicios[i].duracao_serie[i] - 1;
-            //this.$set(this.treino.exercicios[i], 'duracao_serie', value);
+            
+            this.duracao_serie_reverso+=this.value_duracao(item.repeticoes);
             this.duracao_serie--;
-            //console.log(this.treino.exercicios[i].duracao_serie);
             this.countDownTimer_serie(item, i);
           }, 1000);
-          
-        } else {
+        } 
+        else {
+          this.duracao_serie_reverso+=this.value_duracao(item.repeticoes);
           if (this.duracao_serie == 0) {
-            this.playSound();
             this.countDownTimer_descanso1(item, i);
           }
         }
-      } else {
-
-        this.n_series=0;
+      } 
+      else {
+        this.n_series = 0;
         this.duracao_descanso = 0;
-        this.duracao_serie=0;
-
-        //this.$set(this.treino.exercicios[i], 'n_series', 0);
-
-          //  this.$set(this.treino.exercicios[i], 'duracao_descanso',0);
-
-            //this.$set(this.treino.exercicios[i], 'duracao_serie', 0);
-
-
-        //this.treino.exercicios[i].n_series= 0;
-        //this.treino.exercicios[i].duracao_descanso= 0;
-        //this.treino.exercicios[i].duracao_serie= 0;
-        //this.terminar_series = false; //se terminou as series, entao fica a false para a proxima 
-      }
+        this.duracao_serie = 0;
+        }
     },
     countDownTimer_serie1(item, i) {
-      if(this.terminar_series && !item.tipo){
-        this.n_series=0;
-            //this.$set(this.treino.exercicios[i], 'n_series', 0);
-        //this.treino.exercicios[i].n_series=0;
-      } 
-      this.terminar_series = false; 
-      this.duracao_serie=item.repeticoes;
-      //this.$set(this.treino.exercicios[i], 'duracao_serie', item.repeticoes);
-     // this.treino.exercicios[i].duracao_serie = item.repeticoes;
+      if (this.terminar_series && !item.tipo) {
+        this.n_series = 0;
+      }
+      this.terminar_series = false;
+      this.duracao_serie = item.repeticoes;
       this.countDownTimer_serie(item, i);
     },
     countDownTimer_descanso1(item, i) {
+      this.duracao_descanso_reverso=0;
       this.terminar_series = false;
       this.duracao_descanso = item.descanso;
-            //this.$set(this.treino.exercicios[i], 'duracao_descanso', item.descanso);
-      //this.treino.exercicios[i].duracao_descanso = item.descanso;
-      this.countDownTimer_descanso(item,i);
+      this.countDownTimer_descanso(item, i);
     },
     countDownTimer_descanso(item, i) {
       if (this.duracao_descanso > 0) {
         setTimeout(() => {
+          this.duracao_descanso_reverso =  this.duracao_descanso_reverso + this.value_descanso(item.descanso);
           this.duracao_descanso--;
-          //var value = this.treino.exercicios[i].duracao_descanso - 1;
-            //this.$set(this.treino.exercicios[i], 'duracao_descanso', value);
-          //this.treino.exercicios[i].duracao_descanso --;
-          //console.log(this.treino.exercicios[i].duracao_descanso);
           this.countDownTimer_descanso(item, i);
         }, 1000);
       } else {
+        this.duracao_descanso_reverso =  this.duracao_descanso_reverso + this.value_descanso(item.descanso);
         if (this.duracao_descanso == 0) {
-          if (!item.tipo) { //tipo=duraçao
+          this.duracao_serie_reverso=0;
+          if (!item.tipo) {
             this.aumentar_serie(item, i);
-            if(!this.terminar_series) this.countDownTimer_serie1(item, i);
-          }
-          else{
-            this.terminar_series = true;
-            
+            if (!this.terminar_series) this.countDownTimer_serie1(item, i);
           } 
-          this.playSound();
+          else {
+            if(this.n_series==item.series) this.n_series=0;
+            this.terminar_series = true;
+          }
         }
       }
     },
     aumentar_serie(item, i) {
+      if(!item.tipo){
+         this.n_series++;
+      }
       if (this.n_series < item.series) {
-        this.n_series++;
-        //var value = this.treino.exercicios[i].n_series +1;
-        //this.$set(this.treino.exercicios[i], 'n_series', value);
-        //this.treino.exercicios[i].n_series++;
-        //console.log("NUMERO SERIE" + this.treino.exercicios[i].n_series);
-        if (item.tipo) this.countDownTimer_descanso1(item, i);
+          if(item.tipo){
+            this.n_series++;
+            this.countDownTimer_descanso1(item, i);
+          } 
       } 
-      else{
-        this.terminar_series = true;
-        this.n_series=0;
-        //this.$set(this.treino.exercicios[i], 'n_series', 0);
-        //this.treino.exercicios[i].n_series=0;
+      else {
+          this.terminar_series = true;
+          this.n_series = 0;
       }
     },
     linkapi() {
-          return process.env.VUE_APP_BASELINK;
-        },
+      return process.env.VUE_APP_BASELINK;
+    },
     playSound() {
       //var audio = new Audio('http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3');
       //var audio = new Audio("http://localhost:4576/api/assets/audio/37");
@@ -342,7 +382,16 @@ export default {
     submit() {
       this.$router.push("/treinos??");
     },
+    value_duracao(item){
+      console.log(100/item);
+      return 100/item;
+    },
+    value_descanso(item){
+      console.log(100/item);
+      return 100/item;
+    },
   },
+  
   mounted() {
     axios
       .get(
@@ -354,19 +403,6 @@ export default {
       .then((response) => {
         this.treino = response.data;
         console.log("heijsfidjs" + JSON.stringify(this.treino));
-
-        //var n = 0;
-        //this.treino.exercicios.forEach(x => x["indice"]= 0);
-        //this.treino.exercicios.forEach(x => x["i"]= n++);
-        //this.treino.exercicios.forEach(x => x["n_series"]= 0);
-        //this.treino.exercicios.forEach(x => x["duracao_descanso"]= 0);
-        //this.treino.exercicios.forEach(x => x["duracao_serie"]= 0);
-
-        //this.treino.exercicios.forEach(() => this.n_series.push(0));
-        //this.treino.exercicios.forEach(x => this.duracao_descanso.push(x.descanso));
-        //this.treino.exercicios.forEach(x => this.duracao_serie.push(x.repeticoes));
-        //console.log(this.duracao_descanso);
-       
       })
 
       .finally(() => (this.loading = false));
