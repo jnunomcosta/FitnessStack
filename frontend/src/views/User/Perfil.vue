@@ -273,7 +273,7 @@
                             v-model="input_playlist"
                             color="#f95738"
                             prepend-icon="mdi-music"
-                            
+                            placeholder= "https://open.spotify.com/playlist/XXXXXXXXXX"
                             required
                           ></v-text-field>
                           </v-form>
@@ -540,7 +540,7 @@ export default {
     dialog4: false,
     dialog5: false,
     dialog6: false,
-        dialog7: false,
+    dialog7: false,
     imagem_input: null,
     username: "",
     new_username: "",
@@ -552,7 +552,7 @@ export default {
     input_gorda: "",
     input_altura: "",
     input_playlist: "",
-
+    playlist: "",
     minPeso: 30,
     maxPeso: 200,
     minPercentagem: 0,
@@ -572,7 +572,7 @@ export default {
       genero: false,
       foto_perfil: "",
       info_fisica: [],
-      playlist: ""
+      
     },
   }),
   mounted() {
@@ -588,9 +588,6 @@ export default {
             (this.utilizador.altura * this.utilizador.altura)) *
           10000;
         this.imc = parseFloat(valor).toFixed(1);
-
-
-        this.input_playlist= this.utilizador.playlist;
       })
       .finally(() => (this.loading = false));
   },
@@ -654,8 +651,29 @@ export default {
     },
     validatePlaylist(){
       if (this.input_playlist.match("https://open.spotify.com/playlist/(.*)[^/]")) {
-          //var list = str.split('/');
-          //var string_final = list[0] + "//" + list[2] + "/embed/" + list[3] + "/" + list[4];
+          var list = this.input_playlist.split('/');
+          var string_final = list[0] + "//" + list[2] + "/embed/" + list[3] + "/" + list[4];
+
+
+        axios
+        .post(
+          process.env.VUE_APP_BASELINK + "/api/user/changePlaylist",
+          {
+            nova_playlist: string_final
+          },
+          { headers: { token: localStorage.getItem("token") } }
+        )
+        .then((response) => {
+          
+          this.playlist = string_final;
+          console.log(response);
+        })
+        .finally(() => console.log("hi")); 
+
+
+
+
+
 
       }
       else {

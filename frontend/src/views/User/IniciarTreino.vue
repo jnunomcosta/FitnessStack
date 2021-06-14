@@ -259,10 +259,7 @@ export default {
       duracao_serie: 0,
       duracao_descanso_reverso: 0,
       duracao_serie_reverso: 0,
-      //playlist: "",
-      //https://open.spotify.com/embed/playlist/37i9dQZF1DX6bJVMtDYJHx" 
-
-      playlist: "https://open.spotify.com/embed/playlist/37i9dQZF1DX6bJVMtDYJHx",
+      playlist: "",
       treino: {
         nome: "",
         duracao: "",
@@ -370,11 +367,7 @@ export default {
       return process.env.VUE_APP_BASELINK;
     },
     playSound() {
-      //var audio = new Audio('@/assets/audio/beep');
-      //var audio = new Audio(require('http://localhost:4576/api/assets/audio/beep.mp3'));
       var audio = new Audio(require('@/assets/audio/beep.mp3'));
-      //http://soundbible.com/mp3/1598-Electronic-Chime.mp3');
-      //var audio = new Audio("http://localhost:4576/api/assets/audio/37");
       audio.play();
     },
 
@@ -408,27 +401,20 @@ export default {
       })
 
       .finally(() => (this.loading = false));
-    /*
+    
     axios
       .get(
         process.env.VUE_APP_BASELINK +
-          "/api/utilizador/getPlaylist
+          "/api/utilizador/getPlaylist" +
         { headers: { token: localStorage.getItem("token") } }
       )
       .then((response) => {
         if (response.status==200){
-          var s = response.data;
-        this.playlist = s.split('?');
-        this.playlist + "?theme=0";
-        console.log(this.playlist);
+        this.playlist = response.data;
         }
       })
 
-      //https://open.spotify.com/embed/playlist/37i9dQZF1DX6bJVMtDYJHx" 
-      
-      playlist: "https://open.spotify.com/playlist/37i9dQZF1DX6bJVMtDYJHx?theme=0",
-
-      .finally(() => (this.loading = false));*/
+      .finally(() => (this.loading = false));
   },
 };
 </script>
