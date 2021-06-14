@@ -5,7 +5,7 @@
       <h1 style="padding-top: 150px; font-size: 60px" class="white--text mb-8">
         Sobre o Fitness Stack
       </h1>
-      <p
+      <div
         style="
           padding-left: 300px;
           padding-right: 300px;
@@ -14,17 +14,16 @@
         "
         class="text-center"
       >
-        <b>
           O Fitness Stack é uma plataforma que incentiva a prática de exercício
           físico, disponibilizando aos seus utilizadores a capacidade de
           planear, criar e partilhar os seus treinos de uma forma simples, fácil
           e rápida.
-        </b>
-      </p>
+      </div>
+    </div>
       <div class="details">
         <v-row class="pt-4 py-16">
           <v-col class="pl-16" cols="12" md="2"> </v-col>
-          <v-col class="pl-16" cols="12" md="5">
+          <v-col class="pl-16 pt-8" cols="12" md="5">
             <v-list style="text-align: left; background-color: transparent">
               <v-list-item v-for="(item, i) in array" :key="i">
                 <v-list-item-title style="font-size: 20px">
@@ -37,7 +36,7 @@
               </v-list-item>
             </v-list>
           </v-col>
-          <v-col class="text-center mt-8" cols="12" md="5">
+          <v-col class="text-center mt-12" cols="12" md="5">
             <div class="d-flex align-center">
               <v-img
                 alt="Fitness Stack Logo"
@@ -51,8 +50,7 @@
           </v-col>
         </v-row>
       </div>
-    </div>
-    <div class="info text-center">
+    <div class="text-center" style="background-color:#7189FF">
       <v-row >
         <v-col cols="12" md="2"> </v-col>
         <v-col
@@ -79,9 +77,9 @@
       <v-btn
         :href="'https://github.com/jnuno420/FitnessStack'"
         icon
-        class="ma-2"
+        class="ma-2 mb-12"
       >
-        <v-icon x-large dark> mdi-github </v-icon>
+        <v-icon x-large color="black"> mdi-github </v-icon>
       </v-btn>
     </div>
   </div>
@@ -111,25 +109,25 @@ export default {
       ],
       info: [
         {
-          nome: "José Nuno Costa",
-          numero: "A84829",
-          foto: "",
-        },
-        {
-          nome: "João Pedro Parente",
-          numero: "A84197",
-          foto: "",
-        },
-        {
-          nome: "Ana Margarida Ferreira",
-          numero: "PG44412",
-          foto: "",
-        },
-        {
           nome: "Alexandra Reigada",
           numero: "A84584",
           foto: require("@/assets/xana.jpg"),
+        },{
+          nome: "Ana Margarida Ferreira",
+          numero: "PG44412",
+          foto: require("@/assets/margarida.jpg"),
         },
+        
+        {
+          nome: "João Pedro Parente",
+          numero: "A84197",
+          foto: require("@/assets/84197.png"),
+        },
+        {
+          nome: "José Nuno Costa",
+          numero: "A84829",
+          foto: require("@/assets/nuno.png"),
+        },  
       ],
     };
   },
@@ -143,8 +141,5 @@ export default {
 }
 .details {
   background-color: #d3d3d2;
-}
-.info {
-  background-color: #7189ff;
 }
 </style>

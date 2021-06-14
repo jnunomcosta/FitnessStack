@@ -388,7 +388,7 @@ export default {
       (v) => !!v || "Campo obrigatório",
       (v) =>
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) ||
-        "A palavra-passe deve ter no mínimo 8 letras e pelo menos 1 minúscula e 1 maiúscula",
+        "A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
     ],
     avatarRules: [
       (value) =>
