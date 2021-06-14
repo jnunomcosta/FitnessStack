@@ -69,22 +69,6 @@ export default {
     linkfoto(){
       return  process.env.VUE_APP_BASELINK
     },
-  
-    /*infiniteScrolling(entries, observer, isIntersecting) {
-      setTimeout(() => {
-        this.page++;
-        axios
-          .get(this.url)
-          .then((response) => {
-            if (response.data.length > 1) {
-              response.data.forEach((item) => this.titles.push(item));
-            } 
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }, 500);
-    },*/
   },
 };
 </script>

@@ -96,13 +96,12 @@
               <v-btn
                 v-if="n == 1"
                 color="#f95738"
-                rounded
                 text
                 @click="nextStep(n)"
               >
                 Continuar
               </v-btn>
-              <v-btn color="#f95738" rounded dark @click="dialog = false" v-on:click="confirmarTreino()" >
+              <v-btn color="#f95738" dark @click="dialog = false" v-on:click="confirmarTreino()" >
                 Confirmar
               </v-btn>
             </v-card-actions>

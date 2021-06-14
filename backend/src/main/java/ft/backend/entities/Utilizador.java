@@ -56,12 +56,6 @@ public class Utilizador implements Serializable {
 	@JoinColumns({ @JoinColumn(name="UtilizadorID3", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE) 	
 	private java.util.List<InformacaoFisica> informacao_fisica = new java.util.ArrayList<>();
-	//private java.util.Set<InformacaoFisica> informacao_fisica = new java.util.HashSet<>();
-
-	@OneToMany(targetEntity=Treino.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
-	@JoinColumns({ @JoinColumn(name="UtilizadorID4", nullable=true) })	
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
-	private java.util.Set<Treino> historico_treinos = new java.util.HashSet<>();
 
 	@ManyToOne(targetEntity=ConteudoMedia.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns(value={ @JoinColumn(name="ConteudoMediaID", referencedColumnName="ID", nullable=true) })	
@@ -195,14 +189,6 @@ public class Utilizador implements Serializable {
 	public void setInformacao_fisica(java.util.List<InformacaoFisica> informacao_fisica) {
 		this.informacao_fisica = informacao_fisica;
 	}
-
-	public java.util.Set<Treino> getHistorico_treinos() {
-		return historico_treinos;
-	}
-
-	public void setHistorico_treinos(java.util.Set<Treino> historico_treinos) {
-		this.historico_treinos = historico_treinos;
-	} 
 	
 	public String toString() {
 		return String.valueOf(getID());

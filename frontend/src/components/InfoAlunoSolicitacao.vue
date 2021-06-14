@@ -50,7 +50,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="#f95738" text @click="dialog.value = false">
+          <v-btn color="#f95738" text @click="reject(); dialog.value = false">
             Recusar contrato
           </v-btn>
           <v-btn
@@ -111,6 +111,12 @@ export default {
           console.log(JSON.stringify(response.data));
           this.$router.go();
         })
+    },
+    async reject() {
+      var response = await axios.post(process.env.VUE_APP_BASELINK+"/api/treinador/removerContrato",{username:this.data.utilizador},{headers: {'token': localStorage.getItem("token")}})
+      if(response.status==200){
+        this.$router.go();
+      }
     },
   },
 };

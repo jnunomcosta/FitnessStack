@@ -66,7 +66,48 @@ public class gestao_treinos {
         for(Treino t : treinos){
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
-            exe.put("duracao",t.getDuracao());
+            if(t.getDuracao()/60<1){
+                exe.put("duracao", (int) t.getDuracao()+"s");
+            }
+            else{
+                exe.put("duracao", (int) t.getDuracao()/60 + "min");
+            }
+            if(t.getCriador_u() != null){
+                exe.put("criador",t.getCriador_u().getUsername());
+            }
+            else{
+                if(t.getCriador_t() != null){
+                    exe.put("criador",t.getCriador_t().getUsername());
+                }
+            }
+            JSONArray a = new JSONArray();
+            for(Categoria c : t.getCategorias()){
+                a.put(c.getCategoria());
+            }
+            exe.put("categoria", a);
+            exe.put("dificuldade", t.getDificuldade());
+            exe.put("classificacao",t.getMediaAvaliacao());
+            exe.put("data", t.getData_criacao());
+            exe.put("codigo", t.getCodigo());
+            ret.put(exe);
+        }
+
+        return ret;
+    }
+
+    public JSONArray listarTreinos(int pag){
+        JSONArray ret = new JSONArray();
+
+        List<Treino> treinos = tDao.findTreinosPaged(pag,pag+10);
+        for(Treino t : treinos){
+            JSONObject exe = new JSONObject();
+            exe.put("nome", t.getNome());
+            if(t.getDuracao()/60<1){
+                exe.put("duracao", (int) t.getDuracao()+"s");
+            }
+            else{
+                exe.put("duracao", (int) t.getDuracao()/60 + "min");
+            }
             if(t.getCriador_u() != null){
                 exe.put("criador",t.getCriador_u().getUsername());
             }
@@ -97,7 +138,12 @@ public class gestao_treinos {
         for(Treino t : treinos){
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
-            exe.put("duracao",t.getDuracao());
+            if(t.getDuracao()/60<1){
+                exe.put("duracao", (int) t.getDuracao()+"s");
+            }
+            else{
+                exe.put("duracao", (int) t.getDuracao()/60 + "min");
+            }
             if(t.getCriador_u() != null){
                 exe.put("criador",t.getCriador_u().getUsername());
             }

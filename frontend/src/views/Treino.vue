@@ -52,8 +52,11 @@
                   ><b>Dificuldade:</b>
                   {{ treino.dificuldade }}</v-list-item-title
                 >
-                <v-list-item-title class="mb-4"
+                <v-list-item-title class="mb-4" v-if="treino.duracao/60 < 1"
                   ><b>Duração:</b> {{ treino.duracao }}s</v-list-item-title
+                >
+                <v-list-item-title class="mb-4" v-else
+                  ><b>Duração:</b> {{ parseFloat(treino.duracao/60).toFixed(0) }}min</v-list-item-title
                 >
                 <v-list-item-title class="mb-4"
                   ><b>Código:</b> {{ $route.params.codigo }}</v-list-item-title
@@ -159,7 +162,7 @@
                 <template v-slot:default="dialog">
                   <v-card>
                     <v-toolbar color="#f95738" dark
-                      ><h3>{{ exercicios[i].nome }}</h3>
+                      ><h3>{{ item.nome }}</h3>
                       <v-spacer></v-spacer>
                       <v-btn icon @click="dialog.value = false"
                         ><v-icon>mdi-close</v-icon></v-btn
@@ -178,7 +181,7 @@
                                     >Descrição</v-list-item-title
                                   >
                                   <v-list-item-subtitle>{{
-                                    exercicios[i].descricao
+                                    item.descricao
                                   }}</v-list-item-subtitle>
                                 </v-list-item-content>
                               </v-list-item>
@@ -189,7 +192,7 @@
                                     >Duração média</v-list-item-title
                                   >
                                   <v-list-item-subtitle
-                                    >{{ exercicios[i].duracao }}s</v-list-item-subtitle
+                                    >{{ item.duracao }}s</v-list-item-subtitle
                                   >
                                 </v-list-item-content>
                               </v-list-item>
@@ -200,7 +203,7 @@
                                     >Material necessário</v-list-item-title
                                   >
                                   <v-list-item-subtitle>{{
-                                    exercicios[i].material
+                                    item.material
                                   }}</v-list-item-subtitle>
                                 </v-list-item-content>
                               </v-list-item>
@@ -217,7 +220,7 @@
                               width="700"
                             >
                               <v-carousel-item
-                                v-for="(item1, i1) in exercicios[i].conteudo_media"
+                                v-for="(item1, i1) in item.fotos"
                                 :key="i1"
                               >
                                 <template v-if="item1.includes('photo')">
@@ -352,7 +355,7 @@ export default {
         ],
         
       },
-      exercicios: [],
+      /* exercicios: [], */
     };
   },
   methods: {
@@ -411,18 +414,19 @@ export default {
       )
       .then((response) => {
         this.treino = response.data;
+        console.log(this.treino);
         console.log("heijsfidjs" + JSON.stringify(this.treino));
       })
       .finally(() => (this.loading = false));
 
       
-   axios
+   /* axios
        .get(process.env.VUE_APP_BASELINK + "/api/exercicio/listar", {
         headers: { token: localStorage.getItem("token") },
        })
        .then((response) => {
          this.exercicios = response.data;
-      });
+      }); */
   
   },
 };
