@@ -124,6 +124,7 @@
                           label="Data de Nascimento"
                           prepend-icon="mdi-calendar"
                           readonly
+                          :rules="birthdateRules"
                           hint="Deve ter no mínimo 12 anos"
                           persistent-hint
                           v-bind="attrs"
@@ -187,6 +188,7 @@
                     />
 
                     <v-select
+                      :rules="nameRules"
                       :items="['Masculino', 'Feminino']"
                       v-model="input_register.genero"
                       prepend-icon="mdi-gender-male-female"
@@ -372,6 +374,7 @@ export default {
     loginServerError: false,
     nameRules: [(v) => !!v || "Campo obrigatório"],
     birthdateRules: [
+      (v) => !!v || "Campo obrigatório",
       (v) =>
         Math.abs(new Date().getFullYear() - new Date(v).getFullYear()) > 12 ||
         "Data de nascimento inválida",
@@ -391,6 +394,7 @@ export default {
         "A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
     ],
     avatarRules: [
+      (value) => !!value || "Campo obrigatório",
       (value) =>
         !value ||
         value.size < 5000000 ||
@@ -517,8 +521,6 @@ export default {
           };
         });
       }
-
-      //FALTA VERIFICAR SE O EMAIL E A PASS SAO CORRETOS OU EXISTEM OU QQ COISA ASSIM
 
       let genero_registo = true;
       if (this.input_register.genero != "Masculino") {

@@ -1,10 +1,10 @@
 <template>
   <v-container class="ma-0 pa-0">
     <v-card>
-      <v-card-title class="justify-center" style="color:#f95738"
-              >Agenda de Treinos</v-card-title
-            >
-            <v-divider></v-divider>
+      <v-card-title class="justify-center" style="color: #f95738"
+        >Agenda de Treinos</v-card-title
+      >
+      <v-divider></v-divider>
       <v-row class="pa-10">
         <v-col cols="12" md="8">
           <template>
@@ -83,13 +83,18 @@
                     ></v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="verTreino(treino_info.codigo)">
-                      <v-icon>mdi-magnify</v-icon>
+                      <v-icon>mdi-text-box-search</v-icon>
                     </v-btn>
                   </v-toolbar>
                   <v-card-text>
-                    <h3 class="text-center">{{treino_info.nome}}</h3>
-                    <h3 class="text-center">{{treino_info.dificuldade}}</h3>
-                    <h3 class="text-center">{{treino_info.duracao}}</h3>
+                    <h4>Dificuldade: {{ treino_info.dificuldade }}</h4>
+                    <h4 v-if="treino_info.duracao / 60 < 1">
+                      Duração: {{ treino_info.duracao }}s
+                    </h4>
+                    <h4 v-else>
+                      Duração:
+                      {{ parseFloat(treino_info.duracao / 60).toFixed(0) }}min
+                    </h4>
                   </v-card-text>
                   <v-card-actions>
                     <v-btn text color="#f95738" @click="selectedOpen = false">
@@ -103,83 +108,101 @@
         </v-col>
         <v-col cols="12" md="1"> </v-col>
         <v-col cols="12" md="3" class="mt-16">
-       
-          <v-autocomplete
-                    label="Código Treino*"
-                    v-model="select"
-                    :items="items"
-                    color="#f95738"
-                    required
-                  >
-                  </v-autocomplete>
-          
-          <template>
-            <v-menu
-              ref="menu"
-              v-model="menu_1"
-              :close-on-content-click="false"
-              :return-value.sync="date"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
+          <v-form ref="agendaForm">
+            <v-autocomplete
+              label="Código Treino"
+              v-model="select"
+              :rules="formRules"
+              :items="items"
+              color="#f95738"
+              required
             >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="date_1"
-                  label="Data"
-                  prepend-icon="mdi-calendar"
-                  color="#f95738"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="date_1" color="#7189ff" no-title scrollable>
-                <v-spacer></v-spacer>
-                <v-btn text color="#7189ff" @click="menu_1 = false">
-                  Cancelar
-                </v-btn>
-                <v-btn text color="#7189ff" @click="$refs.menu.save(date_1)">
-                  OK
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
-            <v-spacer></v-spacer>
-          </template>
+            </v-autocomplete>
 
-          <template>
-            <v-dialog
-              ref="dialog"
-              v-model="modal2"
-              :return-value.sync="time"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
+            <template>
+              <v-menu
+                ref="menu"
+                v-model="menu_1"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="date_1"
+                    label="Data"
+                    prepend-icon="mdi-calendar"
+                    color="#f95738"
+                    readonly
+                    :rules="dateRules"
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="date_1"
+                  color="#7189ff"
+                  :rules="dateRules"
+                  :min="new Date().toISOString().slice(0, 10)"
+                  no-title
+                  scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn text color="#7189ff" @click="menu_1 = false">
+                    Cancelar
+                  </v-btn>
+                  <v-btn text color="#7189ff" @click="$refs.menu.save(date_1)">
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
+              <v-spacer></v-spacer>
+            </template>
+
+            <template>
+              <v-dialog
+                ref="dialog"
+                v-model="modal2"
+                :return-value.sync="time"
+                persistent
+                width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="time"
+                    label="Hora"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    :rules="formRules"
+                    color="#f95738"
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-if="modal2"
+                  color="#7189ff"
                   v-model="time"
-                  label="Hora"
-                  prepend-icon="mdi-clock-time-four-outline"
-                  readonly
-                  color="#f95738"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker v-if="modal2" color="#7189ff" v-model="time" full-width>
-                <v-spacer></v-spacer>
-                <v-btn text color="#7189ff" @click="modal2 = false">
-                  Cancelar
-                </v-btn>
-                <v-btn text color="#7189ff" @click="$refs.dialog.save(time)">
-                  OK
-                </v-btn>
-              </v-time-picker>
-            </v-dialog>
-          </template>
-          <div class="text-center mt-10">
-            <v-btn color="#f95738" v-on:click="confirmar()" dark> Confirmar </v-btn>
-          </div>
+                  full-width
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn text color="#7189ff" @click="modal2 = false">
+                    Cancelar
+                  </v-btn>
+                  <v-btn text color="#7189ff" @click="$refs.dialog.save(time)">
+                    OK
+                  </v-btn>
+                </v-time-picker>
+              </v-dialog>
+            </template>
+            <div class="text-center mt-10">
+              <v-btn color="#f95738" v-on:click="validateForm()" dark>
+                Confirmar
+              </v-btn>
+            </div>
+          </v-form>
         </v-col>
       </v-row>
     </v-card>
@@ -187,13 +210,18 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "AgendarTreino",
   data: () => ({
+    formRules: [(v) => !!v || "Campo obrigatório"],
+    dateRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) => Math.abs(new Date(v) - new Date()) > 0 || "Data inválida",
+    ],
     select: "",
-    items:[],
+    items: [],
     time: null,
     menu2: false,
     modal2: false,
@@ -238,33 +266,45 @@ export default {
   mounted() {
     //this.$refs.calendar.checkChange();
     axios
-      .get(process.env.VUE_APP_BASELINK+"/api/treinos/getCodigos",{headers: {'token': localStorage.getItem("token")}})
-      .then(response => {
-        this.items = response.data
+      .get(process.env.VUE_APP_BASELINK + "/api/treinos/getCodigos", {
+        headers: { token: localStorage.getItem("token") },
       })
+      .then((response) => {
+        this.items = response.data;
+      });
     axios
-      .get(process.env.VUE_APP_BASELINK+"/api/agenda/getAgenda?username="+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
-      .then(response => {
-        console.log(response.data)
-        response.data.forEach(x => {
+      .get(
+        process.env.VUE_APP_BASELINK +
+          "/api/agenda/getAgenda?username=" +
+          localStorage.getItem("username"),
+        { headers: { token: localStorage.getItem("token") } }
+      )
+      .then((response) => {
+        console.log(response.data);
+        response.data.forEach((x) => {
           var objjjj = {
             name: x.name,
             start: new Date(x.start),
             end: new Date(x.end),
             color: x.color,
-          }
+          };
           console.log(objjjj);
           this.events.push(objjjj);
         });
         console.log(this.events);
-      })  
+      });
   },
   methods: {
+    validateForm() {
+      if (this.$refs.agendaForm.validate()) {
+        this.confirmar();
+      }
+    },
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
     },
-    verTreino(cod){
+    verTreino(cod) {
       this.$router.push("/treino/" + cod);
     },
     getEventColor(event) {
@@ -280,43 +320,54 @@ export default {
       this.$refs.calendar.next();
     },
     confirmar() {
-      var d = new Date(this.date_1 + ' ' + this.time);
+      var d = new Date(this.date_1 + " " + this.time);
       console.log(d);
       var da = new Date(d);
-      da.setHours(da.getHours()+1);
-      var cor = this.colors[this.rnd(0, this.colors.length - 1)]
+      da.setHours(da.getHours() + 1);
+      var cor = this.colors[this.rnd(0, this.colors.length - 1)];
       var evento = {
         name: this.select,
         start: d,
         end: da,
         color: cor,
-      }
+      };
       var body = {
         treino: this.select,
-        data_hora: this.date_1 + ' ' + this.time,
+        data_hora: this.date_1 + " " + this.time,
         utilizador: localStorage.getItem("username"),
         cor: cor,
-      }
+      };
       axios
-        .post(process.env.VUE_APP_BASELINK+"/api/agenda/novaMarcacao",body,{headers: {'token': localStorage.getItem("token")}})
-        .then(response => {
-          console.log(response)
-        })  
+        .post(process.env.VUE_APP_BASELINK + "/api/agenda/novaMarcacao", body, {
+          headers: { token: localStorage.getItem("token") },
+        })
+        .then((response) => {
+          console.log(response);
+        });
       axios
-        .get(process.env.VUE_APP_BASELINK+"/api/treinos/getNomeTreino?codigo="+this.select,{headers: {'token': localStorage.getItem("token")}})
-        .then(response => {
+        .get(
+          process.env.VUE_APP_BASELINK +
+            "/api/treinos/getNomeTreino?codigo=" +
+            this.select,
+          { headers: { token: localStorage.getItem("token") } }
+        )
+        .then((response) => {
           evento.name = this.select + " - " + response.data.nome;
-          this.events.push(evento); 
-        })  
-       
+          this.events.push(evento);
+        });
     },
     showEvent({ nativeEvent, event }) {
-      var splited = event.name.split("-",1);
+      var splited = event.name.split("-", 1);
       axios
-        .get(process.env.VUE_APP_BASELINK+"/api/treinos/getTreinoInfo?codigo="+splited[0],{headers: {'token': localStorage.getItem("token")}})
-        .then(response => {
-          this.treino_info = response.data
-        })
+        .get(
+          process.env.VUE_APP_BASELINK +
+            "/api/treinos/getTreinoInfo?codigo=" +
+            splited[0],
+          { headers: { token: localStorage.getItem("token") } }
+        )
+        .then((response) => {
+          this.treino_info = response.data;
+        });
       const open = () => {
         this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
@@ -334,14 +385,13 @@ export default {
 
       nativeEvent.stopPropagation();
     },
-    updateRange ({ start, end }) {
+    updateRange({ start, end }) {
       console.log(start.toISOString());
       console.log(end.toISOString());
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
-    
   },
 };
 </script>

@@ -51,13 +51,16 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo nome de utilizador.
+                          <v-form ref="usernameForm">
                           <v-text-field
                             v-model="new_nome"
                             color="#f95738"
+                            :rules="usernameRules"
                             prepend-icon="mdi-account-lock"
                             label="Nome de Utilizador"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -67,7 +70,7 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setUsername(new_nome);dialog1 = false">
+                    <v-btn color="#f95738" dark @click="validateUsername()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -96,13 +99,16 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo email.
+                          <v-form ref="emailForm">
                           <v-text-field
                             v-model="new_email"
                             color="#f95738"
+                            :rules="emailRules"
                             prepend-icon="mdi-email"
                             label="Email"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -112,7 +118,7 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setEmail(new_email);dialog2 = false">
+                    <v-btn color="#f95738" dark @click="validateEmail()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -142,10 +148,14 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" md="12">
+                          <v-form ref="passwordForm">
                           Digite a palavra-passe antiga.
                           <v-text-field
                             v-model="old_pass"
+                            :rules="passwordRules"
+                            type="password"
                             color="#f95738"
+                            counter
                             prepend-icon="mdi-lock"
                             label="Palavra-Passe Antiga"
                             required
@@ -154,10 +164,14 @@
                           <v-text-field
                             v-model="new_pass"
                             color="#f95738"
+                            type="password"
+                            counter
+                            :rules="passwordRules"
                             prepend-icon="mdi-lock-question"
                             label="Palavra-Passe Nova"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -167,7 +181,7 @@
                     <v-btn color="#f95738" text @click="dialog3 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="setPassword(old_pass,new_pass);dialog3 = false">
+                    <v-btn color="#f95738" dark @click="validatePassword()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -175,6 +189,26 @@
               </v-dialog>
             </v-container>
           </v-card>
+          <v-alert
+            border="left"
+            v-if="success"
+            text
+            dismissible
+            elevation="2"
+            type="success"
+          >
+            Informação atualizada com sucesso
+          </v-alert>
+          <v-alert
+            border="left"
+            v-if="error"
+            text
+            dismissible
+            elevation="2"
+            type="error"
+          >
+            Erro ao atualizar informação
+          </v-alert>
         </v-col>
         
         <v-col cols="12" md="3">
@@ -203,27 +237,50 @@ export default {
   created() {
     document.title = "Fitness Stack";
   },
-
-
   mounted() {
-
-
-
-
     axios
       //.get(process.env.VUE_APP_BASELINK+"/api/admin/getAdminInfo",{headers: {'token': localStorage.getItem("token")}})
       .get(process.env.VUE_APP_BASELINK+"/api/admin/getAdminInfo/"+localStorage.getItem("username"),{headers: {'token': localStorage.getItem("token")}})
       .then((response) => {
-       
             this.admin.username=response.data.username;
             this.admin.email=response.data.email;
             this.admin.nome=response.data.nome;
-
-
       })
-      .finally(() => (this.loading = false));
   },
   methods: {
+    validateUsername() {
+      if (this.$refs.usernameForm.validate()) {
+        if (this.new_nome != "") {
+          this.setUsername(this.new_nome);
+          this.dialog1 = false;
+        }
+        else {
+          this.dialog1 = false;
+        }
+      }
+    },
+    validateEmail() {
+      if (this.$refs.emailForm.validate()) {
+        if (this.new_email != "") {
+          this.setEmail(this.new_email);
+          this.dialog2 = false;
+        }
+        else {
+          this.dialog2 = false;
+        }
+      }
+    },
+    validatePassword() {
+      if (this.$refs.passwordForm.validate()) {
+        if (this.old_pass != this.new_pass) {
+          this.setPassword(this.old_pass,this.new_pass);
+          this.dialog3 = false;
+        }
+        else {
+          this.dialog3 = false;
+        }
+      }      
+    },
     setEmail(new_email) {
       axios
         .post(
@@ -234,14 +291,24 @@ export default {
             ,{headers: {'token': localStorage.getItem("token")}})
         
         .then((response) => {
-          console.log(response)
-          if(response.status==200){
-            this.admin.email=new_email
-          }
-          
-          
+          const status = JSON.parse(response.status);
+          this.admin.email=new_email;
+
+          if(status == "200"){
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
+          }          
         })
-        .finally(() => console.log("hi"));//msg erro a mudar email));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
     setUsername(new_username) {
       axios
@@ -253,14 +320,28 @@ export default {
         , {headers: {'token': localStorage.getItem("token")}})
         
         .then((response) => {
-          console.log(response  )
-          if(response.status == 200){
+          const status = JSON.parse(response.status);
+
+          if (status == "200") {
             this.admin.username = new_username
             localStorage.setItem("token",response.data.token)
             localStorage.setItem("username",new_username)
-          }      
+
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
+          }    
         })
-        .finally(() => console.log("hi"));//msg erro a mudar username));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
+
     },
     setPassword(oldP,newP){
         axios
@@ -278,28 +359,45 @@ export default {
           const status = JSON.parse(response.status);
             
             if (status == "200") {
-              console.log("mudei a pass")
+              this.success = true;
+              setTimeout(() => {
+              this.success = false;
+            }, 5000);
             }
-            
-        
-          
         })
-        .finally(() => console.log("hi"));//msg erro a mudar username));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     }
-    
   },
-
-
-
   data: () => ({
-
     admin:{
       username:"",
       email:"",
       nome:"",
     },
-
-
+    usernameRules: [
+      (v) =>
+        v == "" ||
+        /^[a-zA-Z0-9.-]{2,}$/.test(v) ||
+        "Nome de utilizador inválido",
+    ],
+    emailRules: [
+      (v) => v == "" || /.+@.+/.test(v) || "Email inválido",
+    ],
+    passwordRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) =>
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) ||
+        "A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
+    ],
+    error: false,
+    success: false,
     dialog1: false,
     dialog2: false,
     dialog3: false,

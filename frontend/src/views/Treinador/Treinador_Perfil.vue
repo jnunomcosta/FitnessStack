@@ -173,6 +173,7 @@
                             v-model="old_password"
                             color="#f95738"
                             type="password"
+                            counter
                             :rules="passwordRules"
                             prepend-icon="mdi-lock"
                             label="Palavra-Passe Antiga"
@@ -183,6 +184,7 @@
                             v-model="new_password"
                             color="#f95738"
                             type="password"
+                            counter
                             :rules="passwordRules"
                             prepend-icon="mdi-lock-question"
                             label="Palavra-Passe Nova"
