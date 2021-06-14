@@ -224,7 +224,7 @@
                             >
                           </v-card-title>
                           <v-card-text>
-                            <v-container>
+                            <v-form ref="form">
                               <v-row>
                                 <v-col cols="12">
                                   <v-subheader>Peso (kg)</v-subheader>
@@ -242,6 +242,9 @@
                                         class="mt-0 pt-0"
                                         hide-details
                                         single-line
+                                        :max="maxPeso"
+                                        :min="minPeso"
+                                        :rules="pesoRules"
                                         color="#7189ff"
                                         type="number"
                                         style="width: 60px"
@@ -266,6 +269,9 @@
                                         class="mt-0 pt-0"
                                         hide-details
                                         single-line
+                                        :rules="alturaRules"
+                                        :max="maxAltura"
+                                        :min="minAltura"
                                         type="number"
                                         style="width: 60px"
                                         color="#7189ff"
@@ -274,11 +280,11 @@
                                   </v-slider>
                                 </v-col>
                               </v-row>
-                            </v-container>
+                            </v-form>
                           </v-card-text>
                           <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="#7189ff" text @click="dialog = false">
+                            <v-btn color="#7189ff" text @click="validate_form()">
                               OK
                             </v-btn>
                           </v-card-actions>
@@ -392,6 +398,12 @@ export default {
     ],
     registerAuthError: false,
     registerServerError: false,
+    pesoRules: [
+      (v) => v >= 30 && v <= 200 || "30 a 200",
+    ],
+    alturaRules: [
+      (v) => v >= 100 && v <= 250 || "100 a 250"
+    ]
   }),
   methods: {
     validate_login() {
@@ -403,6 +415,11 @@ export default {
       if (this.$refs.register_form.validate()) {
         this.registar();
       }
+    },
+    validate_form() {
+      if(this.$refs.form.validate()) {
+        this.dialog = false;
+        }
     },
     login() {
       console.log(process.env.VUE_APP_BASELINK + "/api/login/user");
@@ -442,7 +459,6 @@ export default {
                 }, 5000);
               }
             })
-            .finally(() => (this.loading = false));
         } else {
           console.log("A username and password must be present");
         }
@@ -485,7 +501,6 @@ export default {
                 }, 5000);
               }
             })
-            .finally(() => (this.loading = false));
         } else {
           console.log("A username and password must be present");
         }

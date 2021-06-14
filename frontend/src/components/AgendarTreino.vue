@@ -166,12 +166,12 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-time-picker v-if="modal2" v-model="time" full-width>
+              <v-time-picker v-if="modal2" color="#7189ff" v-model="time" full-width>
                 <v-spacer></v-spacer>
-                <v-btn text color="#f95738" @click="modal2 = false">
+                <v-btn text color="#7189ff" @click="modal2 = false">
                   Cancelar
                 </v-btn>
-                <v-btn text color="#f95738" @click="$refs.dialog.save(time)">
+                <v-btn text color="#7189ff" @click="$refs.dialog.save(time)">
                   OK
                 </v-btn>
               </v-time-picker>

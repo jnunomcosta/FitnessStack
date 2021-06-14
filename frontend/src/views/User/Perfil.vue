@@ -12,7 +12,7 @@
         "
       >
         <v-col cols="12" md="3">
-          <v-card style="text-align: center">
+          <v-card style="text-align: center" class="mb-6">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
                 <v-img :src="linkfoto() + utilizador.foto_perfil"></v-img>
@@ -25,8 +25,11 @@
               {{ utilizador.username }}
             </v-card-subtitle>
             <v-divider class="mx-4"></v-divider>
-            
-            <v-card-text class="my-1 black--text"><v-icon small class="mr-1">mdi-email</v-icon>{{ utilizador.email }}</v-card-text>
+
+            <v-card-text class="my-1 black--text"
+              ><v-icon small class="mr-1">mdi-email</v-icon
+              >{{ utilizador.email }}</v-card-text
+            >
 
             <v-container class="justify-center">
               <v-dialog v-model="dialog1" persistent max-width="400px">
@@ -51,13 +54,16 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo nome de utilizador.
-                          <v-text-field
-                            v-model="new_username"
-                            color="#f95738"
-                            prepend-icon="mdi-account-lock"
-                            label="Nome de Utilizador"
-                            required
-                          ></v-text-field>
+                          <v-form ref="usernameForm">
+                            <v-text-field
+                              v-model="new_username"
+                              color="#f95738"
+                              :rules="usernameRules"
+                              prepend-icon="mdi-account-lock"
+                              label="Nome de Utilizador"
+                              required
+                            ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -67,14 +73,7 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn
-                      color="#f95738"
-                      text
-                      @click="
-                        setUsername(new_username);
-                        dialog1 = false;
-                      "
-                    >
+                    <v-btn color="#f95738" text @click="validateUsername()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -103,13 +102,16 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo email.
+                          <v-form ref="emailForm">
                           <v-text-field
                             v-model="input_email"
                             color="#f95738"
+                            :rules="emailRules"
                             prepend-icon="mdi-email"
                             label="Email"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -122,10 +124,7 @@
                     <v-btn
                       color="#f95738"
                       text
-                      @click="
-                        setEmail(input_email);
-                        dialog2 = false;
-                      "
+                      @click="validateEmail()"
                     >
                       Atualizar
                     </v-btn>
@@ -154,12 +153,15 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" md="12">
+                          <v-form ref="passwordForm"> 
                           Digite a palavra-passe antiga.
                           <v-text-field
                             type="password"
                             v-model="old_password"
+                            :rules="passwordRules"
                             color="#f95738"
                             prepend-icon="mdi-lock"
+                            counter
                             label="Palavra-Passe Antiga"
                             required
                           ></v-text-field>
@@ -167,11 +169,14 @@
                           <v-text-field
                             type="password"
                             v-model="new_password"
+                            :rules="passwordRules"
                             color="#f95738"
+                            counter
                             prepend-icon="mdi-lock-question"
                             label="Palavra-Passe Nova"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -184,10 +189,7 @@
                     <v-btn
                       color="#f95738"
                       text
-                      @click="
-                        setPassword(old_password, new_password);
-                        dialog3 = false;
-                      "
+                      @click="validatePassword()"
                     >
                       Atualizar
                     </v-btn>
@@ -215,13 +217,17 @@
 
                   <v-card-text>
                     <v-container>
+                      <v-form ref="avatarForm">
                       <v-file-input
                         id="imagem"
                         v-model="imagem_input"
+                        :rules="avatarRules"
+                        color="#f95738"
                         label="Imagem de Perfil"
                         name="imagem_perfil"
                         prepend-icon="mdi-camera"
                       />
+                      </v-form>
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
@@ -232,10 +238,7 @@
                     <v-btn
                       color="#f95738"
                       text
-                      @click="
-                        setImagem(imagem_input);
-                        dialog4 = false;
-                      "
+                      @click="validateAvatar()"
                     >
                       Atualizar
                     </v-btn>
@@ -244,6 +247,26 @@
               </v-dialog>
             </v-container>
           </v-card>
+          <v-alert
+            border="left"
+            v-if="success"
+            text
+            dismissible
+            elevation="2"
+            type="success"
+          >
+            Informação atualizada com sucesso
+          </v-alert>
+          <v-alert
+            border="left"
+            v-if="error"
+            text
+            dismissible
+            elevation="2"
+            type="error"
+          >
+            Erro ao atualizar informação
+          </v-alert>
         </v-col>
 
         <v-col cols="12" md="4">
@@ -312,7 +335,7 @@
                         v-model="input_peso"
                         color="#f95738"
                         type="number"
-                        :rules="formRules"
+                        :rules="pesoRules"
                         :max="maxPeso"
                         :min="minPeso"
                         label="Peso (kg)"
@@ -350,6 +373,7 @@
                         v-model="input_altura"
                         color="#f95738"
                         type="number"
+                        :rules="alturaRules"
                         :max="maxAltura"
                         :min="minAltura"
                         label="Altura (cm)"
@@ -383,31 +407,6 @@
             </div>
           </v-card>
 
-          <!-- <v-card class="mt-4">
-            <v-card-title class="justify-center"> Os meus treinos </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-subtitle>Total de horas de treino</v-card-subtitle>
-            <v-card-subtitle>Média de minutos por treino</v-card-subtitle>
-            <v-card-subtitle
-              >Média de minutos de treino por dia</v-card-subtitle
-            >
-          </v-card>  
-
-          <v-card class="mt-7">
-            <v-card-title class="justify-center">
-              Categorias de treinos
-            </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <div id="chart">
-              <apexchart
-                type="pie"
-                width="350"
-                height="400"
-                :options="chartOptions_categorias"
-                :series="series_categorias"
-              ></apexchart>
-            </div>
-          </v-card>-->
         </v-col>
 
         <v-col cols="12" md="5">
@@ -421,44 +420,6 @@
             </div>
           </v-card>
 
-          <!-- <v-card class="mt-4">
-            <v-card-title class="justify-center">
-              Os meus treinos
-            </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <v-row>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >Total de horas de treino</v-list-item-title
-                    >
-                    <v-list-item-subtitle>12</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title>Média de minutos</v-list-item-title>
-                    <v-list-item-title>por treino</v-list-item-title>
-                    <v-list-item-subtitle>1</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-              <v-col cols="12" md="4">
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >Média de minutos de treino</v-list-item-title
-                    >
-                    <v-list-item-title>por dia</v-list-item-title>
-                    <v-list-item-subtitle>10</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-col>
-            </v-row>
-          </v-card> -->
         </v-col>
       </v-row>
     </div>
@@ -485,7 +446,38 @@ export default {
     document.title = "Fitness Stack";
   },
   data: () => ({
-    formRules: [(v) => !!v || "Campo obrigatório"],
+    formRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) => (v >= 0 && v <= 100) || "0 a 100",
+    ],
+    alturaRules: [(v) => v == "" || (v >= 100 && v <= 250) || "100 a 250"],
+    pesoRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) => (v >= 30 && v <= 200) || "30 a 200",
+    ],
+    usernameRules: [
+      (v) =>
+        v == "" ||
+        /^[a-zA-Z0-9.-]{2,}$/.test(v) ||
+        "Nome de utilizador inválido",
+    ],
+    emailRules: [
+      (v) => v == "" || /.+@.+/.test(v) || "Email inválido",
+    ],
+    passwordRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) =>
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) ||
+        "A palavra-passe deve ter no mínimo 8 letras e pelo menos 1 minúscula e 1 maiúscula",
+    ],
+    avatarRules: [
+      (value) =>
+        !value ||
+        value.size < 5000000 ||
+        "O tamanho da imagem deve ser inferior a 5 MB",
+    ],
+    error: false,
+    success: false,
     dialog1: false,
     dialog2: false,
     dialog3: false,
@@ -553,6 +545,50 @@ export default {
         else this.pesagem(input_peso, input_muscular, input_gorda);
         this.dialog6 = false;
       }
+    },
+    validateUsername() {
+      if (this.$refs.usernameForm.validate()) {
+        if (this.new_username != "") {
+          this.setUsername(this.new_username);
+          this.dialog1 = false;
+        }
+        else {
+          this.dialog1 = false;
+        }
+      }
+    },
+    validateEmail() {
+      if (this.$refs.emailForm.validate()) {
+        if (this.input_email != "") {
+          this.setEmail(this.input_email);
+          this.dialog2 = false;
+        }
+        else {
+          this.dialog2 = false;
+        }
+      }
+    },
+    validatePassword() {
+      if (this.$refs.passwordForm.validate()) {
+        if (this.old_password != this.new_password) {
+          this.setPassword(this.old_password, this.new_password);
+          this.dialog3 = false;
+        }
+        else {
+          this.dialog3 = false;
+        }
+      }      
+    },
+    validateAvatar() {
+      if (this.$refs.avatarForm.validate()) {
+        if (this.imagem_input != null) {
+          this.setImagem(this.imagem_input);
+          this.dialog4 = false;
+        }
+        else {
+          this.dialog4 = false;
+        }
+      }      
     },
     pesagem_altura(new_peso, new_muscular, new_gorda, new_altura) {
       var data = new Date(),
@@ -630,11 +666,25 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          console.log(response);
+          const status = JSON.parse(response.status);
           this.utilizador.email = new_email;
+
+          if (status == 200) {
+          this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
+          }
         })
-        .finally(() => console.log("hi")); //msg erro a mudar email));
-    },
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
+},
     setUsername(new_username) {
       axios
         .post(
@@ -645,14 +695,27 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          if (response.status == 200) {
+          const status = JSON.parse(response.status);
+
+          if (status == 200) {
             this.utilizador.username = new_username;
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", new_username);
-            //localStorage.setItem("usertype",0)
+            
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
           }
         })
-        .finally(() => console.log("hi")); //msg erro a mudar username));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
     setPassword(oldP, newP) {
       axios
@@ -668,10 +731,20 @@ export default {
           const status = JSON.parse(response.status);
 
           if (status == "200") {
-            console.log("mudei a pass");
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
           }
         })
-        .finally(() => console.log("hi")); //msg erro a mudar username));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
     linkfoto() {
       return process.env.VUE_APP_BASELINK;
@@ -700,9 +773,22 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          if (response.status == 200) {
-            console.log("funfou");
-            console.log(this.utilizador.foto_perfil);
+          const status = JSON.parse(response.status);
+
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+              this.$router.go();
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
           }
         });
     },

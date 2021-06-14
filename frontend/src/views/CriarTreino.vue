@@ -9,12 +9,18 @@
         <SideBar />
       </v-col>
       <v-col cols="12" md="5" style="padding-top: 100px">
-        <v-card class="pb-4">
+        <v-card class="pb-8">
           <v-card-text>
-            <h1 class="text-center display-1 mb-4" style="color: #f95738">
+            <h1
+              class="text-center py-2"
+              style="color: #f95738; font-size: 34px"
+            >
               <b>Novo Treino</b>
             </h1>
-            <v-form class="px-16 mx-8">
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-form class="pt-4 px-16 mx-8">
               <v-text-field
                 label="Nome do Treino"
                 v-model="input.nome_treino"
@@ -53,7 +59,10 @@
       <v-col cols="12" md="5" style="padding-top: 100px">
         <v-card v-scroll.self="onScroll" class="overflow-y-auto">
           <v-card-text>
-            <h1 class="text-center display-1" style="color: #f95738">
+            <h1
+              class="text-center py-2"
+              style="color: #f95738; font-size: 34px"
+            >
               Exercícios
             </h1>
           </v-card-text>
@@ -238,7 +247,7 @@ export default {
       series: 0,
       valor_modo: 0,
       n_repeticoes: 0,
-      valor_descanso:0,
+      valor_descanso: 0,
       duracao_treino: 0,
       input: {
         nome_treino: "",
@@ -270,11 +279,13 @@ export default {
     getDuracao() {
       var duracao = 0.0;
       for (var i = 0; i < this.blocos.length; i++) {
-          duracao += parseFloat(this.blocos[i].duracao_repeticao) + parseFloat(this.blocos[i].descanso);
-          console.log(this.blocos[i].duracao_repeticao)
-          console.log(this.blocos[i].descanso)
+        duracao +=
+          parseFloat(this.blocos[i].duracao_repeticao) +
+          parseFloat(this.blocos[i].descanso);
+        console.log(this.blocos[i].duracao_repeticao);
+        console.log(this.blocos[i].descanso);
       }
-      console.log(duracao)
+      console.log(duracao);
       return duracao;
     },
     getUsertype() {
@@ -356,10 +367,9 @@ export default {
       this.series = "";
       this.modo = "";
       this.valor_modo = "";
-      this.n_repeticoes= "";
+      this.n_repeticoes = "";
       this.valor_descanso = "";
-      this.duracao_repeticao = "",
-      this.valor = "";
+      (this.duracao_repeticao = ""), (this.valor = "");
       this.descanso = "";
       console.log(this.blocos);
     },
