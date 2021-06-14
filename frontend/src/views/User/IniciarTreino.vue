@@ -15,11 +15,19 @@
       >
 
       <v-card class="py-8" style="color: #f95738">
+        <v-row class="d-flex flex-no-wrap justify-space-between">
+        <v-cols class="mt-4" style="margin-left: 520px"  cols="12" md="6">
           <v-card-text>
             <h1 class="text-center" style="color: #f95738; font-size: 40px">
               <b> {{ treino.nome }} </b>
             </h1>
           </v-card-text>
+        </v-cols>
+        <v-cols  class= "mr-8" cols="12" md="6">
+            <iframe src="https://open.spotify.com/embed/playlist/28nRTAuO50OzDEoP8ioyjz?theme=0" 
+            width="100%" height="80" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </v-cols>
+        </v-row>
         </v-card>
 
 
@@ -68,7 +76,7 @@
                             <div class="text-center" style="font-size:40px">
                             <v-progress-circular
                               :rotate="360"
-                              :size="150"
+                              :size="120"
                               :width="15"
                               :value="duracao_serie_reverso"
                               color="#f95738"
@@ -97,7 +105,7 @@
                             
                               <div class="text-center">
                                 <v-progress-circular
-                                  :size="150"
+                                  :size="120"
                                   :width="15"
                                   color="#f95738"
                                   indeterminate
@@ -122,7 +130,7 @@
                             <div class="text-center" style="font-size:40px">
                             <v-progress-circular
                               :rotate="360"
-                              :size="150"
+                              :size="120"
                               :width="15"
                               
                               :value=" duracao_descanso_reverso "
@@ -149,6 +157,7 @@
                           block
                           :disabled="!terminar_series"
                           v-on:click="countDownTimer_serie1(item, i)"
+                          class="mt-8"
                           >Iniciar bloco</v-btn
                         >
                       </v-list-item-content>
@@ -193,10 +202,10 @@
                   md="3"
                   v-if="i + 1 < Object.keys(treino.exercicios).length"
                 >
-                  <h3 class="text-center" style="color: black">
+                  <h3  class="text-center" style="color: black">
                     Próximo exercício
                   </h3>
-                  <v-card elevation="17" color="white" class="black--text">
+                  <v-card  elevation="17" color="white" class="black--text">
                     <div class="text-center mx-4">
                       <h4>{{ treino.exercicios[i + 1].nome }}</h4>
                       <h5>{{ treino.exercicios[i + 1].series }} séries</h5>
@@ -212,8 +221,9 @@
                       </h5>
                     </div>
                   </v-card>
+
                 </v-col>
-                <v-col cols="12" md="3" v-else> </v-col>
+                <v-col v-else cols="12" md="3"></v-col>
                 <v-col cols="12" md="3"></v-col>
               </v-row>
             </v-sheet>
@@ -280,22 +290,10 @@ export default {
       this.$router.push("/treino/" + this.$route.params.codigo);
     },
 
-
-
-
-
-
-
-
-
-
-
     countDownTimer_serie(item, i) {
       if (!this.terminar_series) {
-        
         if (this.duracao_serie > 0) {
           setTimeout(() => {
-            
             this.duracao_serie_reverso+=this.value_duracao(item.repeticoes);
             this.duracao_serie--;
             this.countDownTimer_serie(item, i);
@@ -338,6 +336,7 @@ export default {
       } else {
         this.duracao_descanso_reverso =  this.duracao_descanso_reverso + this.value_descanso(item.descanso);
         if (this.duracao_descanso == 0) {
+          this.playSound();
           this.duracao_serie_reverso=0;
           if (!item.tipo) {
             this.aumentar_serie(item, i);
@@ -369,9 +368,12 @@ export default {
       return process.env.VUE_APP_BASELINK;
     },
     playSound() {
-      //var audio = new Audio('http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3');
+      //var audio = new Audio('@/assets/audio/beep');
+      //var audio = new Audio(require('http://localhost:4576/api/assets/audio/beep.mp3'));
+      var audio = new Audio(require('@/assets/audio/beep.mp3'));
+      //http://soundbible.com/mp3/1598-Electronic-Chime.mp3');
       //var audio = new Audio("http://localhost:4576/api/assets/audio/37");
-      //audio.play();
+      audio.play();
     },
 
     submit() {
