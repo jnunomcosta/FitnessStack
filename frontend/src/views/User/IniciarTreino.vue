@@ -53,7 +53,7 @@
                         <h2>{{ n_series }} / {{ item.series }} Séries</h2>
 
                         <v-row class="text-center mt-6" style="text-align: center">
-                          <v-col v-if="tipoDuracao(item.tipo)" cols="12" md="6">
+                          <v-col v-if="!item.tipo" cols="12" md="6">
                             <p
                               class="
                                 pa-4
@@ -79,7 +79,7 @@
                             
                           </v-col>
                           <v-col
-                            v-if="tipoRepeticoes(item.tipo)"
+                            v-if="item.tipo"
                             cols="12"
                             md="6"
                           >
@@ -138,13 +138,13 @@
                           block
                           dark
                           :disabled="!terminar_series"
-                          v-if="tipoRepeticoes(item.tipo)"
+                          v-if="item.tipo"
                           v-on:click="aumentar_serie(item, i)"
                         >
                           Próxima série
                         </v-btn>
                         <v-btn
-                          v-if="tipoDuracao(item.tipo)"
+                          v-if="!item.tipo"
                           color="black"
                           block
                           :disabled="!terminar_series"
@@ -200,11 +200,11 @@
                     <div class="text-center mx-4">
                       <h4>{{ treino.exercicios[i + 1].nome }}</h4>
                       <h5>{{ treino.exercicios[i + 1].series }} séries</h5>
-                      <h5 v-if="tipoRepeticoes(treino.exercicios[i + 1].tipo)">
+                      <h5 v-if="treino.exercicios[i + 1].tipo">
                         Repetições:
                         {{ treino.exercicios[i + 1].repeticoes }} reps
                       </h5>
-                      <h5 v-if="tipoDuracao(treino.exercicios[i + 1].tipo)">
+                      <h5 v-if="!(treino.exercicios[i + 1].tipo)">
                         Duração: {{ treino.exercicios[i + 1].repeticoes }}s
                       </h5>
                       <h5>
@@ -275,12 +275,7 @@ export default {
       clearInterval(this.interval)
     },
   methods: {
-    tipoRepeticoes: function (bool) {
-      return bool;
-    },
-    tipoDuracao: function (bool) {
-      return !bool;
-    },
+    
     terminarTreino: function () {
       this.$router.push("/treino/" + this.$route.params.codigo);
     },
