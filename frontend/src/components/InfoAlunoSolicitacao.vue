@@ -55,7 +55,7 @@
           </v-btn>
           <v-btn
             color="#f95738"
-            text
+            dark
             @click="
               accept();
               dialog.value = false

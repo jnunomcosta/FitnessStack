@@ -37,6 +37,25 @@ public class gestao_utilizadores {
         return false;
     }
 
+    public JSONObject getPlaylist(String username){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            JSONObject ret = new JSONObject();
+            ret.put("playlist", u.getPlaylist());
+            return ret;
+        }
+        return null;
+    }
+
+    public boolean changePlaylist(String username,String playlist){
+        Utilizador u = uDao.findUtilizador_Username(username);
+        if(u != null){
+            u.setPlaylist(playlist);
+            return true;
+        }
+        return false;
+    }
+
     public JSONObject getUserInformation(String username){
         Utilizador u = uDao.findUtilizador_Username(username);
         if(u != null){

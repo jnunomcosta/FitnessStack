@@ -32,10 +32,7 @@ public class UtilizadorController {
 
     @GetMapping(value = "/getUser")
     public ResponseEntity<String> getInfoUser(@RequestHeader String token, @RequestParam String username){
-
-
-        if( verify.verifyUser(token) !=null  || verify.verifyTreinador(token) !=null  || verify.verifyAdmin(token) !=null  ){
-
+        if(verify.verifyUser(token) !=null || verify.verifyTreinador(token) != null || verify.verifyAdmin(token) != null){
             JSONObject obj = gestao_utilizadores.getUserInformation(username);
             if(obj!=null){
                 return ResponseEntity.ok().body(obj.toString());
@@ -165,6 +162,27 @@ public class UtilizadorController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @GetMapping(value = "/getPlaylist")
+    public ResponseEntity<String> getPlaylist(@RequestHeader String token){
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
+            return ResponseEntity.ok().body(gestao_utilizadores.getPlaylist(username).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
+    @PostMapping(value = "/changePlaylist")
+    public ResponseEntity<String> changePlaylist(@RequestHeader String token,@RequestBody String t){
+        String username = null;
+        if((username = verify.verifyUser(token)) != null){
+            JSONObject tobj = new JSONObject(t);
+            if(gestao_utilizadores.changePlaylist(username, tobj.getString("nova_playlist"))){
+                return ResponseEntity.ok().body("");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
     @GetMapping(value = "/getHistoricoFisicoTreinador")
     public ResponseEntity<String> getHistoricoFisicoTreinador(@RequestHeader String token,@RequestParam String username){
         if(verify.verifyTreinador(token) != null){
@@ -183,22 +201,17 @@ public class UtilizadorController {
 
     @GetMapping(value = "/getTreinadorResp")
     public ResponseEntity<String> getTreinador(@RequestHeader String token){
-        String username= verify.verifyUser(token);
-        if( username != null){
-
+        String username = verify.verifyUser(token);
+        if(username != null){
             Contrato c = gestao_contratos.getContratoUser(username);
             if(c!=null){
                 JSONObject obj = new JSONObject();
-
-                obj.put("utilizador:",c.getUtilizador().getUsername());
+                obj.put("utilizador",c.getUtilizador().getUsername());
                 obj.put("treinador",c.getTreinador_responsavel().getUsername());
                 obj.put("estado",c.isEstado());
                 obj.put("comentario",c.getComentario());
-
                 return ResponseEntity.ok().body(obj.toString());
-
-            }
-                 
+            }   
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
