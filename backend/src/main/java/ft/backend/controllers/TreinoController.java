@@ -96,6 +96,15 @@ public class TreinoController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    @GetMapping(value = "/listarPagina")
+    public ResponseEntity<String> getTreinos(@RequestHeader String token,@RequestParam int pag){
+
+        if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null){
+            return ResponseEntity.ok().body(gt.listarTreinos(pag).toString());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+
     @GetMapping(value = "/listarUtilizador")
     public ResponseEntity<String> getTreinos(@RequestHeader String token,@RequestParam String username){
 
@@ -200,7 +209,7 @@ public class TreinoController {
     @GetMapping(value="/getTreino")
     public ResponseEntity<String> getTreino(@RequestHeader String token,@RequestParam String codigo){
 
-      if( verify.verifyUser(token)  != null  || verify.verifyTreinador(token)  != null || verify.verifyAdmin(token)  != null){
+      if(verify.verifyUser(token) != null || verify.verifyTreinador(token) != null || verify.verifyAdmin(token) != null){
 
         Treino t = gt.getTreino(codigo);
         JSONObject ret = new JSONObject();
@@ -215,6 +224,7 @@ public class TreinoController {
         ret.put("data", t.getData_criacao());
         ret.put("dificuldade", t.getDificuldade());
         ret.put("duracao", t.getDuracao());
+
         if(t.getCriador_u()!=null){
             ret.put("criador", t.getCriador_u().getUsername());
             ret.put("criador_foto", "/api/assets/photo/" + t.getCriador_u().getFoto_perfil().getID());
@@ -233,6 +243,10 @@ public class TreinoController {
             ex_aux.put("series", c.getSeries());
             ex_aux.put("repeticoes", c.getDuracao());
             ex_aux.put("descanso", c.getDescanso());
+            ex_aux.put("descricao", c.getExercicio().getDescricao());
+            ex_aux.put("duracao",c.getExercicio().getDuracao_media());
+            ex_aux.put("material",c.getExercicio().getMaterial_necessario());
+            ex_aux.put("id",c.getExercicio().getID());
             
             JSONArray fotos = new JSONArray();
             for(ConteudoMedia cm : c.getExercicio().getORM_ConteudoMedia()){

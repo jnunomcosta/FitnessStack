@@ -573,8 +573,8 @@ export default {
       .get(process.env.VUE_APP_BASELINK+"/api/user/getUser?username="+this.data.utilizador,{headers: {'token': localStorage.getItem("token")}})
       .then((response) => { 
         this.utilizador = response.data;
-        console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(this.utilizador))
-        console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
+        //console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(this.utilizador))
+        //console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
         var valor =
           (this.utilizador.peso /
             (this.utilizador.altura * this.utilizador.altura)) *
@@ -618,8 +618,13 @@ export default {
           this.events.push(evento); 
         })  
     },
-    removeContrato(){
-      axios
+    async removeContrato(){
+      //console.log("entrei no coiso")
+      var response = await axios.post(process.env.VUE_APP_BASELINK+"/api/treinador/removerContrato",{username:this.data.utilizador},{headers: {'token': localStorage.getItem("token")}})
+      if(response.status==200){
+        this.$router.go();
+      }
+      /* axios
         .post(process.env.VUE_APP_BASELINK+"/api/treinador/removerContrato",
         {username:this.data.utilizador},
         {headers: {'token': localStorage.getItem("token")}}
@@ -627,8 +632,8 @@ export default {
         .then((response) => {
             console.log(JSON.stringify(response.data))
         
-          })
-      this.$router.go();
+          }) */
+      
     },
     viewDay({ date }) {
       this.focus = date;

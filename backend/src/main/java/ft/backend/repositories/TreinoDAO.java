@@ -12,6 +12,9 @@ public interface TreinoDAO extends JpaRepository<Treino,Integer>{
     @Query(value = "SELECT * FROM treino",nativeQuery = true)
     public List<Treino> findAllTreinos();
 
+    @Query(value = "SELECT * FROM treino limit :pag_min,:pag_max",nativeQuery = true)
+    public List<Treino> findTreinosPaged(@Param("pag_min") int pag_min,@Param("pag_max") int pag_max);
+
     @Query(value = "SELECT * FROM treino u WHERE u.id = :id",nativeQuery = true)
     public Treino findbyId(@Param("id") int id);
 

@@ -168,7 +168,7 @@ export default {
         { text: "Favoritos", value: "favoritos" },
       ],
       headersTreinador: [
-         { text: "", value: "ver", sortable: false },
+        { text: "", value: "ver", sortable: false },
         { text: "Nome do Treino", value: "nome" },
         { text: "Duração", value: "duracao" },
         { text: "Categoria", value: "categoria" },
@@ -226,20 +226,30 @@ export default {
     },
   },
   mounted() {
-    axios
-      .get(process.env.VUE_APP_BASELINK+"/api/treinos/listarUtilizador?username="+localStorage.getItem("username"), {
-        headers: { token: localStorage.getItem("token") },
-      })
-      .then((response) => {
-        this.treinos = response.data;
-      })
-      .finally(() => (this.loading = false));
+    if(sessionStorage.getItem("treinos_cache")==null){
+      if(this.getUsertype()==0){
       axios
-      .get(process.env.VUE_APP_BASELINK+'/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
-      .then(response => {
-        this.treinos = response.data 
-      })
-      .finally(() => this.loading = false)
+        .get(process.env.VUE_APP_BASELINK+"/api/treinos/listarUtilizador?username="+localStorage.getItem("username"), {
+          headers: { token: localStorage.getItem("token") },})
+        .then((response) => {
+          this.treinos = response.data;
+          sessionStorage.setItem("treinos_cache",JSON.stringify(this.treinos));
+        })
+        .finally(() => (this.loading = false));
+    }
+    else if(this.getUsertype()==1){
+      axios
+        .get(process.env.VUE_APP_BASELINK+'/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
+        .then(response => {
+          this.treinos = response.data 
+          sessionStorage.setItem("treinos_cache",JSON.stringify(this.treinos));
+        })
+        .finally(() => this.loading = false)
+    }
+    }
+    else{
+      this.treinos = JSON.parse(sessionStorage.getItem("treinos_cache"));
+    }
   },
 };
 </script>
