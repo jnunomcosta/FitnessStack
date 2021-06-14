@@ -14,7 +14,7 @@
     </v-carousel>
 
 
-    <div class="py-5 details">
+    <div class="py-5" style="background-color: #f95738">
         <v-row class="mx-16 py-10">
         <v-col class="text-center" cols="12" md="3">
           <div class="my-6 mx-16" style="color: #f4f5f5">
@@ -85,8 +85,5 @@ export default {
 <style>
 .home {
   background-color: #d3d3d2;
-}
-.details {
-  background-color: #f95738;
 }
 </style>

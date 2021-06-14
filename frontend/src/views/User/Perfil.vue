@@ -73,7 +73,7 @@
                     <v-btn color="#f95738" text @click="dialog1 = false">
                       Sair
                     </v-btn>
-                    <v-btn color="#f95738" text @click="validateUsername()">
+                    <v-btn color="#f95738" dark @click="validateUsername()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -123,7 +123,7 @@
                     </v-btn>
                     <v-btn
                       color="#f95738"
-                      text
+                      dark
                       @click="validateEmail()"
                     >
                       Atualizar
@@ -188,7 +188,7 @@
                     </v-btn>
                     <v-btn
                       color="#f95738"
-                      text
+                      dark
                       @click="validatePassword()"
                     >
                       Atualizar
@@ -237,7 +237,7 @@
                     </v-btn>
                     <v-btn
                       color="#f95738"
-                      text
+                      dark
                       @click="validateAvatar()"
                     >
                       Atualizar
@@ -669,7 +669,7 @@ export default {
           const status = JSON.parse(response.status);
           this.utilizador.email = new_email;
 
-          if (status == 200) {
+          if (status == "200") {
           this.success = true;
             setTimeout(() => {
               this.success = false;
@@ -684,7 +684,7 @@ export default {
             }, 5000);
           }
         });
-},
+    },
     setUsername(new_username) {
       axios
         .post(
@@ -697,7 +697,7 @@ export default {
         .then((response) => {
           const status = JSON.parse(response.status);
 
-          if (status == 200) {
+          if (status == "200") {
             this.utilizador.username = new_username;
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", new_username);

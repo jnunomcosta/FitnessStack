@@ -17,7 +17,7 @@
       
         <v-col cols="12" md="6">
           
-          <v-card style="text-align: center">
+          <v-card style="text-align: center" class="mb-6">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
                 <v-img src="@/assets/favicon.png"></v-img>

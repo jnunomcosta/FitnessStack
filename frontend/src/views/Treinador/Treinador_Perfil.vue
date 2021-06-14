@@ -12,7 +12,7 @@
         "
       >
         <v-col cols="12" md="5">
-          <v-card style="text-align: center">
+          <v-card style="text-align: center" class="mb-6">
             <div class="mx-auto text-center">
               <v-avatar class="mt-4" size="150">
                 <v-img :src="linkapi() + treinador.foto_perfil"></v-img>
@@ -64,13 +64,16 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo nome de utilizador.
+                          <v-form ref="usernameForm">
                           <v-text-field
                             v-model="new_username"
+                            :rules="usernameRules"
                             color="#f95738"
                             prepend-icon="mdi-account-lock"
                             label="Nome de Utilizador"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -82,11 +85,8 @@
                     </v-btn>
                     <v-btn
                       color="#f95738"
-                      text
-                      @click="
-                        setUsername(new_username);
-                        dialog1 = false;
-                      "
+                      dark
+                      @click="validateUsername()"
                     >
                       Atualizar
                     </v-btn>
@@ -116,13 +116,16 @@
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo email.
+                          <v-form ref="emailForm">
                           <v-text-field
                             v-model="input_email"
                             color="#f95738"
+                            :rules="emailRules"
                             prepend-icon="mdi-email"
                             label="Email"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -134,11 +137,8 @@
                     </v-btn>
                     <v-btn
                       color="#f95738"
-                      text
-                      @click="
-                        setEmail(input_email);
-                        dialog2 = false;
-                      "
+                      dark
+                      @click="validateEmail()"
                     >
                       Atualizar
                     </v-btn>
@@ -167,10 +167,13 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" md="12">
+                          <v-form ref="passwordForm">
                           Digite a palavra-passe antiga.
                           <v-text-field
                             v-model="old_password"
                             color="#f95738"
+                            type="password"
+                            :rules="passwordRules"
                             prepend-icon="mdi-lock"
                             label="Palavra-Passe Antiga"
                             required
@@ -179,10 +182,13 @@
                           <v-text-field
                             v-model="new_password"
                             color="#f95738"
+                            type="password"
+                            :rules="passwordRules"
                             prepend-icon="mdi-lock-question"
                             label="Palavra-Passe Nova"
                             required
                           ></v-text-field>
+                          </v-form>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -194,11 +200,8 @@
                     </v-btn>
                     <v-btn
                       color="#f95738"
-                      text
-                      @click="
-                        setPassword(old_password, new_password);
-                        dialog3 = false;
-                      "
+                      dark
+                      @click="validatePassword()"
                     >
                       Atualizar
                     </v-btn>
@@ -225,13 +228,17 @@
                   </v-card-title>
                   <v-card-text>
                     <v-container>
+                      <v-form ref="avatarForm">
                       <v-file-input
                         id="imagem"
+                        color="#f95738"
                         v-model="imagem_input"
+                        :rules="avatarRules"
                         label="Imagem de Perfil"
                         name="imagem_perfil"
                         prepend-icon="mdi-camera"
                       />
+                      </v-form>
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
@@ -241,11 +248,8 @@
                     </v-btn>
                     <v-btn
                       color="#f95738"
-                      text
-                      @click="
-                        setImagem(imagem_input);
-                        dialog4 = false;
-                      "
+                      dark
+                      @click="validateAvatar()"
                     >
                       Atualizar
                     </v-btn>
@@ -254,6 +258,26 @@
               </v-dialog>
             </v-container>
           </v-card>
+          <v-alert
+            border="left"
+            v-if="success"
+            text
+            dismissible
+            elevation="2"
+            type="success"
+          >
+            Informação atualizada com sucesso
+          </v-alert>
+          <v-alert
+            border="left"
+            v-if="error"
+            text
+            dismissible
+            elevation="2"
+            type="error"
+          >
+            Erro ao atualizar informação
+          </v-alert>
         </v-col>
         <v-col cols="12" md="7"><v-card
           v-scroll.self="onScroll"
@@ -270,9 +294,6 @@
           >
             <v-list three-line>
               <v-list-item class="ml-8">
-                <!-- <v-list-item-icon class="mx-0">
-                  <v-icon x-large>mdi-account-circle</v-icon>
-                </v-list-item-icon> -->
                 <v-list-item-avatar size="50">
                 <v-img :src="linkapi() + item.foto_user"></v-img>
               </v-list-item-avatar>
@@ -331,6 +352,29 @@ export default {
     document.title = "Fitness Stack";
   },
   data: () => ({
+    usernameRules: [
+      (v) =>
+        v == "" ||
+        /^[a-zA-Z0-9.-]{2,}$/.test(v) ||
+        "Nome de utilizador inválido",
+    ],
+    emailRules: [
+      (v) => v == "" || /.+@.+/.test(v) || "Email inválido",
+    ],
+    passwordRules: [
+      (v) => !!v || "Campo obrigatório",
+      (v) =>
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) ||
+        "A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
+    ],
+    avatarRules: [
+      (value) =>
+        !value ||
+        value.size < 5000000 ||
+        "O tamanho da imagem deve ser inferior a 5 MB",
+    ],
+    error: false,
+    success: false,
     dialog1: false,
     dialog2: false,
     dialog3: false,
@@ -370,9 +414,52 @@ export default {
         this.treinador = response.data;
         console.log(this.treinador);
       })
-      .finally(() => (this.loading = false));
   },
   methods: {
+    validateUsername() {
+      if (this.$refs.usernameForm.validate()) {
+        if (this.new_username != "") {
+          this.setUsername(this.new_username);
+          this.dialog1 = false;
+        }
+        else {
+          this.dialog1 = false;
+        }
+      }
+    },
+    validateEmail() {
+      if (this.$refs.emailForm.validate()) {
+        if (this.input_email != "") {
+          this.setEmail(this.input_email);
+          this.dialog2 = false;
+        }
+        else {
+          this.dialog2 = false;
+        }
+      }
+    },
+    validatePassword() {
+      if (this.$refs.passwordForm.validate()) {
+        if (this.old_password != this.new_password) {
+          this.setPassword(this.old_password, this.new_password);
+          this.dialog3 = false;
+        }
+        else {
+          this.dialog3 = false;
+        }
+      }      
+    },
+    validateAvatar() {
+      if (this.$refs.avatarForm.validate()) {
+        if (this.imagem_input != null) {
+          this.setImagem(this.imagem_input);
+          this.dialog4 = false;
+        }
+        else {
+          this.dialog4 = false;
+        }
+      }      
+    },
     linkapi() {
       return process.env.VUE_APP_BASELINK;
     },
@@ -386,10 +473,24 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          console.log(response);
+          const status = JSON.parse(response.status);
           this.treinador.email = new_email;
+
+          if (status == "200") {
+          this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
+          }
         })
-        .finally(() => console.log("hi")); //msg erro a mudar email));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
     setPassword(oldP, newP) {
       axios
@@ -404,10 +505,20 @@ export default {
         .then((response) => {
           const status = JSON.parse(response.status);
           if (status == "200") {
-            console.log("mudei a pass");
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
           }
         })
-        .finally(() => console.log("hi")); //msg erro a mudar username));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
     setUsername(new_username) {
       axios
@@ -419,14 +530,27 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          if (response.status == 200) {
+          const status = JSON.parse(response.status);
+
+          if (status == "200") {
             this.treinador.username = new_username;
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", new_username);
-            //localStorage.setItem("usertype",1)
+            
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
           }
         })
-        .finally(() => console.log("hi")); //msg erro a mudar username));
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
     async setImagem(imagem) {
       function carrega_foto(x) {
@@ -448,7 +572,23 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          console.log(response);
+          const status = JSON.parse(response.status);
+
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+              this.$router.go();
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
         });
     },
   },
