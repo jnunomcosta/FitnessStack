@@ -47,6 +47,9 @@ public class Utilizador implements Serializable {
 	@Column(name="Username", nullable=false, length=512)	
 	private String username;
 
+	@Column(name="Playlist", nullable=false, length=512)	
+	private String playlist;
+
 	@OneToMany(targetEntity=Marcacao.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	
 	@JoinColumns({ @JoinColumn(name="UtilizadorID", nullable=true) })	
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
@@ -148,6 +151,14 @@ public class Utilizador implements Serializable {
 	
 	public String getUsername() {
 		return username;
+	}
+
+	public void setPlaylist(String value) {
+		this.playlist = value;
+	}
+	
+	public String getPlaylist() {
+		return this.playlist;
 	}
 
 	public void setORM_Treinos_favoritos(java.util.Set<Treino> value) {
