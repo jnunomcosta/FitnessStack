@@ -51,6 +51,7 @@ public class gestao_utilizadores {
         Utilizador u = uDao.findUtilizador_Username(username);
         if(u != null){
             u.setPlaylist(playlist);
+            uDao.save(u);
             return true;
         }
         return false;
