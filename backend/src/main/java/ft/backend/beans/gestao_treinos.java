@@ -67,7 +67,7 @@ public class gestao_treinos {
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
             if(t.getDuracao()/60<1){
-                exe.put("duracao", t.getDuracao()+"s");
+                exe.put("duracao", (int) t.getDuracao()+"s");
             }
             else{
                 exe.put("duracao", (int) t.getDuracao()/60 + "min");
@@ -103,7 +103,7 @@ public class gestao_treinos {
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
             if(t.getDuracao()/60<1){
-                exe.put("duracao", t.getDuracao()+"s");
+                exe.put("duracao", (int) t.getDuracao()+"s");
             }
             else{
                 exe.put("duracao", (int) t.getDuracao()/60 + "min");
@@ -139,7 +139,7 @@ public class gestao_treinos {
             JSONObject exe = new JSONObject();
             exe.put("nome", t.getNome());
             if(t.getDuracao()/60<1){
-                exe.put("duracao", t.getDuracao()+"s");
+                exe.put("duracao", (int) t.getDuracao()+"s");
             }
             else{
                 exe.put("duracao", (int) t.getDuracao()/60 + "min");
