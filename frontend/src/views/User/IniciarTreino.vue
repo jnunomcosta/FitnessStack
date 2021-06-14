@@ -16,7 +16,7 @@
 
       <v-card class="py-8" style="color: #f95738">
         <v-row class="d-flex flex-no-wrap justify-space-between">
-        <v-cols class="mt-4" style="margin-left: 520px"  cols="12" md="6">
+        <v-cols class="mt-4" style="margin-left: 100px"  cols="12" md="6">
           <v-card-text>
             <h1 class="text-center" style="color: #f95738; font-size: 40px">
               <b> {{ treino.nome }} </b>
@@ -395,26 +395,25 @@ export default {
       .then((response) => {
         this.treino = response.data;
 
-      
-      
         console.log("heijsfidjs" + JSON.stringify(this.treino));
       })
 
-      .finally(() => (this.loading = false));
-    
+
     axios
       .get(
         process.env.VUE_APP_BASELINK +
-          "/api/utilizador/getPlaylist" +
+          "/api/user/getPlaylist",
         { headers: { token: localStorage.getItem("token") } }
       )
       .then((response) => {
         if (response.status==200){
-        this.playlist = response.data;
+        this.playlist = response.data.playlist;
+        console.log(this.response.data)
+
+        console.log(this.playlist)
+
         }
       })
-
-      .finally(() => (this.loading = false));
   },
 };
 </script>

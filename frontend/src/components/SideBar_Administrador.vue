@@ -81,8 +81,8 @@ export default {
         { title: "Exercícios", icon: "mdi-dumbbell", link: "/administrador/Exercicios" },
         { title: "Treinos", icon: "mdi-timer", link: "/administrador/Treinos" },
         { title: "Alunos", icon: "mdi-account-group", link: "/administrador/Alunos"},
-        { title: "Treinadores", icon: "mdi-shield-account", link: "/administrador/Treinadores"},
-        { title: "Admins", icon: "mdi-weight-lifter", link: "/administrador/Administradores"}
+        { title: "Treinadores", icon: "mdi-weight-lifter", link: "/administrador/Treinadores"},
+        { title: "Admins", icon: "mdi-shield-account", link: "/administrador/Administradores"}
       ],
       mini: true,
     };

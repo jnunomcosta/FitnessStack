@@ -85,17 +85,6 @@
                               <v-list-item two-line>
                                 <v-list-item-content>
                                   <v-list-item-title
-                                    >Duração média</v-list-item-title
-                                  >
-                                  <v-list-item-subtitle
-                                    >{{ ex.duracao }}s</v-list-item-subtitle
-                                  >
-                                </v-list-item-content>
-                              </v-list-item>
-
-                              <v-list-item two-line>
-                                <v-list-item-content>
-                                  <v-list-item-title
                                     >Material necessário</v-list-item-title
                                   >
                                   <v-list-item-subtitle>{{

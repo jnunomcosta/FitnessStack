@@ -267,13 +267,16 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
-                          Digite o link da nova playlist.
-                          <v-form >
+                          <p>Playlist atual: <a :href="playlist">{{ playlist }}</a></p>
+
+                          <p>Digite o link da nova playlist.</p>
+                          <v-form ref="playlistForm">
                           <v-text-field
                             v-model="input_playlist"
                             color="#f95738"
+                            :rules="playlistRules"
                             prepend-icon="mdi-music"
-                            placeholder= "https://open.spotify.com/playlist/XXXXXXXXXX"
+                            placeholder="https://open.spotify.com/playlist/XXXXXXXXXX"
                             required
                           ></v-text-field>
                           </v-form>
@@ -319,10 +322,6 @@
           >
             Erro ao atualizar informação
           </v-alert>
-
-          
-
-
         </v-col>
 
         <v-col cols="12" md="4">
@@ -526,6 +525,11 @@ export default {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(v) ||
         "A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
     ],
+    playlistRules: [
+      //(v) =>
+        ///^https://open.spotify.com/playlist/(.*)[^/]$/.test(v) ||
+        //"A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
+    ],
     avatarRules: [
       (value) =>
         !value ||
@@ -589,7 +593,22 @@ export default {
           10000;
         this.imc = parseFloat(valor).toFixed(1);
       })
-      .finally(() => (this.loading = false));
+      
+      axios
+      .get(
+        process.env.VUE_APP_BASELINK +
+          "/api/user/getPlaylist",
+        { headers: { token: localStorage.getItem("token") } }
+      )
+      .then((response) => {
+        if (response.status==200){
+        this.playlist = response.data.playlist;
+        console.log(this.response.data)
+
+        console.log(this.playlist)
+
+        }
+      })
   },
   methods: {
     validateForm(input_peso, input_muscular, input_gorda, input_altura) {
@@ -651,9 +670,9 @@ export default {
     },
     validatePlaylist(){
       if (this.input_playlist.match("https://open.spotify.com/playlist/(.*)[^/]")) {
+        console.log("fafasfas")
           var list = this.input_playlist.split('/');
           var string_final = list[0] + "//" + list[2] + "/embed/" + list[3] + "/" + list[4];
-
 
         axios
         .post(
@@ -664,12 +683,9 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          
           this.playlist = string_final;
           console.log(response);
         })
-        .finally(() => console.log("hi")); 
-
 
 
 

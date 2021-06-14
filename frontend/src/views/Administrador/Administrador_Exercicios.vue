@@ -9,6 +9,29 @@
         <h1 style="padding-top: 100px; text-align: center; font-size: 40px">
           Procure um exercício
         </h1>
+
+        <v-alert
+          border="left"
+          v-if="successDelete"
+          text
+          dismissible
+          elevation="2"
+          type="success"
+        >
+          Treinador(es) eliminado(s) com sucesso
+        </v-alert>
+
+        <v-alert
+          border="left"
+          v-if="registerServerError"
+          text
+          dismissible
+          elevation="2"
+          type="error"
+        >
+          Erro do servidor
+        </v-alert>
+
         <v-container>
           <v-row align="center" justify="space-around">
             <v-col cols="12" md="8">
@@ -35,7 +58,6 @@
               show-select
               item-key="nome"
               :search="search"
-              @click:row="verExercicio"
               >
             </v-data-table>
             
@@ -53,10 +75,46 @@
         right
         bottom
         v-bind="attrs"
-        v-on:click="apagarExercicio()"
+        v-on:click="apagarTreinador()"
       >
         <v-icon>mdi-delete</v-icon>
       </v-btn>
+
+      <v-dialog v-model="dialogDelete" persistent max-width="300">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            fab
+            dark
+            large
+            color="#f95738"
+            fixed
+            right
+            bottom
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="error white--text">
+            Apagar Exercício(s)
+          </v-card-title>
+          <v-card-text class="mt-4"
+            >Deseja apagar o(s) exercício(s)? Esta ação é
+            irreversível!</v-card-text
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" text @click="dialogDelete = false">
+              Cancelar
+            </v-btn>
+            <v-btn color="error" dark @click="confirmar_apagar()">
+              Confirmar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
      
     </v-row>
     
@@ -80,6 +138,8 @@ export default {
   },
   data() {
     return {
+      successDelete: false,
+      registerServerError: false,
       singleSelect: false,
       selected: [],
       search: "",
@@ -114,13 +174,6 @@ export default {
           }
         }) 
     },
-    verExercicio(){
-
-    }
-    //verExercicio: function (value) {
-      //console.log("ROW VALUES:", value);
-      //this.$router.push("/treinos/" + value.codigo);
-    //},
   },
 };
 </script>
