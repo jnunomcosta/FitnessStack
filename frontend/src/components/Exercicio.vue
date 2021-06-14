@@ -10,9 +10,6 @@
         single-line
         color="#f95738"
       ></v-text-field>
-      <v-btn icon>
-        <v-icon>mdi-filter</v-icon>
-      </v-btn>
     </v-toolbar>
     <v-container>
     <h5 class="mb-4 ml-8" style="color: #5b5b5b">

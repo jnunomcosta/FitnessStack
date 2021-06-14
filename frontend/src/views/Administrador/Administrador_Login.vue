@@ -7,7 +7,7 @@
         <v-row class="mt-10">
           <v-col cols="12" md="8">
             <v-card-text class="mt-16 pt-10" style="margin-bottom: 180px">
-              <h1 class="text-center display-2" style="color: #7189ff">
+              <h1 class="text-center titulo" style="color: #7189ff">
                 Entre no Fitness Stack
               </h1>
               <v-form ref="login_form" class="px-16 mx-8 mt-10">
@@ -61,7 +61,7 @@
           </v-col>
           <v-col cols="12" md="4" style="background-color: #7189ff">
             <v-card-text class="white--text mt-16">
-              <h1 class="text-center display-1">É administrador?</h1>
+              <h1 class="text-center">É administrador?</h1>
               <h5 class="text-center my-3">Realize aqui o seu login!</h5>
             </v-card-text>
           </v-col>

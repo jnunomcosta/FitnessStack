@@ -19,7 +19,7 @@
         </v-btn>
       </template>
       <template v-slot:default="dialog">
-        <v-card>
+        <v-card color="#d3d3d2">
           <v-toolbar color="#f95738" dark
             ><h3>Agendar treino</h3>
             <v-spacer></v-spacer>
@@ -27,10 +27,12 @@
               ><v-icon>mdi-close</v-icon></v-btn
             >
           </v-toolbar>
+          
           <v-row
             justify="space-around"
             style="margin-top: 70px; margin-left: 100px; margin-right: 100px"
           >
+          <v-card class="px-10">
             <v-col cols="12" md="8">
               <template>
                 <v-sheet>
@@ -93,7 +95,6 @@
                     @click:event="showEvent"
                     @click:more="viewDay"
                     @click:date="viewDay"
-                    @change="updateRange"
                   ></v-calendar>
                   <v-menu
                     v-model="selectedOpen"
@@ -101,37 +102,6 @@
                     :activator="selectedElement"
                     offset-x
                   >
-                    <!-- <v-card color="grey lighten-4" min-width="200px" flat>
-                      <v-toolbar :color="selectedEvent.color" dark>
-                        <v-btn icon>
-                          <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                        <v-toolbar-title
-                          v-html="selectedEvent.name"
-                        ></v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-btn icon>
-                          <v-icon>mdi-heart</v-icon>
-                        </v-btn>
-                        <v-btn icon>
-                          <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
-                      </v-toolbar>
-                      <v-card-text>
-                        <h3 class="text-center">{{treino_info.nome}}</h3>
-                        <h3 class="text-center">{{treino_info.dificuldade}}</h3>
-                        <h3 class="text-center">{{treino_info.duracao}}</h3>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-btn
-                          text
-                          color="#f95738"
-                          @click="selectedOpen = false"
-                        >
-                          Cancelar
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card> -->
                     <v-card color="grey lighten-4" min-width="200px" flat>
                   <v-toolbar :color="selectedEvent.color" dark>
                     <v-toolbar-title
@@ -157,11 +127,13 @@
                 </v-sheet>
               </template>
             </v-col>
-
-            <v-col cols="12" md="4" class="mt-16">
+          </v-card>
+          <v-card>
+            <v-col cols="12" md="12" class="mt-16">
               <v-autocomplete
                     label="Código Treino*"
                     v-model="select"
+                    color="#f95738"
                     :items="items"
                     required
                   >
@@ -187,12 +159,12 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="date_1" no-title scrollable>
+              <v-date-picker v-model="date_1" color="#7189ff" no-title scrollable>
                 <v-spacer></v-spacer>
-                <v-btn text color="#f95738" @click="menu_1 = false">
+                <v-btn text color="#7189ff" @click="menu_1 = false">
                   Cancelar
                 </v-btn>
-                <v-btn text color="#f95738" @click="$refs.menu.save(date_1)">
+                <v-btn text color="#7189ff" @click="$refs.menu.save(date_1)">
                   OK
                 </v-btn>
               </v-date-picker>
@@ -219,12 +191,12 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-time-picker v-if="modal2" v-model="time" full-width>
+              <v-time-picker v-if="modal2" color="#7189ff" v-model="time" full-width>
                 <v-spacer></v-spacer>
-                <v-btn text color="#f95738" @click="modal2 = false">
+                <v-btn text color="#7189ff" @click="modal2 = false">
                   Cancelar
                 </v-btn>
-                <v-btn text color="#f95738" @click="$refs.dialog.save(time)">
+                <v-btn text color="#7189ff" @click="$refs.dialog.save(time)">
                   OK
                 </v-btn>
               </v-time-picker>
@@ -234,6 +206,7 @@
             <v-btn color="#f95738" v-on:click="confirmar()" dark> Confirmar </v-btn>
           </div>
             </v-col>
+          </v-card>
           </v-row>
         </v-card>
       </template>
@@ -258,7 +231,7 @@
         </v-btn>
       </template>
       <template v-slot:default="dialog">
-        <v-card>
+        <v-card color="#d3d3d2">
           <v-toolbar color="#f95738" dark
             ><h3>{{ utilizador.nome }} </h3>
             <v-spacer></v-spacer>
@@ -266,6 +239,7 @@
               ><v-icon>mdi-close</v-icon></v-btn
             >
           </v-toolbar>
+          <v-row class="ma-6">
           <v-col cols="12" md="2">
             <v-card style="text-align: center">
               <div class="mx-auto text-center">
@@ -275,162 +249,73 @@
               ></v-img>
                 </v-avatar>
               </div>
+             <v-card-title>{{ utilizador.nome }} </v-card-title>
               <v-card-subtitle> {{utilizador.username}} </v-card-subtitle>
               <v-divider class="mx-4"></v-divider>
-              <div class="mt-4 body-2">{{utilizador.email}}</div>
+              <v-card-text class="py-4 black--text">{{utilizador.email}}</v-card-text>
+              <v-btn color="#f95738" text @click="removeContrato();dialog.value = false">
+              Terminar contrato
+            </v-btn>
             </v-card>
           </v-col>
 
           <v-col cols="12" md="5">
             <v-card>
-              <v-card-title
-                >Peso atual: {{utilizador.peso}}
+            <v-card-title class="justify-center">
+              <span style="color: #f95738">Informação Física</span>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-row class="mt-0">
+              <v-col cols="12" md="6">
+                <v-card-text>
+                  <p style="font-size: 20px">
+                    <b>Peso atual:</b> {{ utilizador.peso }}kg
+                  </p>
+                  <v-spacer class="mt-4"></v-spacer>
+                  <p><b>Massa Gorda:</b> {{ utilizador.m_gorda }}%</p>
 
-                <v-spacer></v-spacer>
-               <!-- Meta: 70kg--> 
-              </v-card-title>
-              <!--  <div style="margin-left: 50px; margin-right: 50px">
-                <br />
-                <v-progress-linear
-                  color="#f95738"
-                  height="20"
-                  value="20"
-                  striped
-                ></v-progress-linear>
-              </div>--> 
-              <v-card-text>
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <p>Altura: {{utilizador.altura}}cm</p> 
+                  <p><b>Massa Muscular:</b> {{ utilizador.m_muscular }}%</p>
 
-                    <p>Percentagem de massa gorda {{utilizador.m_gorda}}%</p>
+                  <p><b>Género:</b> {{ utilizador.genero }}</p>
+                </v-card-text>
+              </v-col>
 
-                    <p>Percentagem de massa muscular {{utilizador.m_muscular}}%</p>
-                  </v-col>
-
-                  <v-col cols="12" md="6">
-                    <p>IMC: {{imc}}</p>
-                    <p>IMC ideal: 18.5 - 24.9</p>
-                  </v-col>
-                </v-row>
-              </v-card-text>
+              <v-col cols="12" md="6">
+                <v-card-text>
+                  <p><b>Altura:</b> {{ utilizador.altura }}cm</p>
+                  <p>
+                    <b>IMC:</b>
+                    <v-chip
+                      v-if="verifyIMC"
+                      class="ma-2"
+                      color="green"
+                      text-color="white"
+                    >
+                      {{ imc }}
+                    </v-chip>
+                    <v-chip v-else class="ma-2" color="red" text-color="white">
+                      {{ imc }}
+                    </v-chip>
+                  </p>
+                  <p><b>IMC ideal:</b> 18.5 - 24.9</p>
+                </v-card-text>
+              </v-col>
+            </v-row>
             </v-card>
 
-            <!-- <v-card class="mt-4">
-              <v-card-title class="justify-center">
-                Os meus treinos
-              </v-card-title>
-              <v-divider class="mx-4"></v-divider>
-              <v-row>
-                <v-col cols="12" md="4">
-                  <v-list-item two-line>
-                    <v-list-item-content>
-                      <v-list-item-title
-                        >Total de horas de treino</v-list-item-title
-                      >
-                      <v-list-item-subtitle>12</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-list-item two-line>
-                    <v-list-item-content>
-                      <v-list-item-title>Média de minutos</v-list-item-title>
-                      <v-list-item-title>por treino</v-list-item-title>
-                      <v-list-item-subtitle>1</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-list-item two-line>
-                    <v-list-item-content>
-                      <v-list-item-title
-                        >Média de minutos de treino</v-list-item-title
-                      >
-                      <v-list-item-title>por dia</v-list-item-title>
-                      <v-list-item-subtitle>10</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-col>
-              </v-row>
-            </v-card> -->
-
-            <!-- <v-card class="mt-4">
-            <v-card-title class="justify-center"> Os meus treinos </v-card-title>
-            <v-divider class="mx-4"></v-divider>
-            <v-card-subtitle>Total de horas de treino</v-card-subtitle>
-            <v-card-subtitle>Média de minutos por treino</v-card-subtitle>
-            <v-card-subtitle
-              >Média de minutos de treino por dia</v-card-subtitle
-            >
-          </v-card>  -->
-          <!--
-            <v-card class="mt-7">
-              <v-card-title class="justify-center">
-                Categorias de treinos
-              </v-card-title>
-              <v-divider class="mx-4"></v-divider>
-              <div id="chart">
-                <apexchart
-                  type="pie"
-                  width="350"
-                  height="400"
-                  :options="chartOptions_categorias"
-                  :series="series_categorias"
-                ></apexchart>
-              </div>
-            </v-card>-->
           </v-col>
           <v-col cols="12" md="5">
           <v-card class="mx-auto text-center">
-            <v-card-title class="justify-center"
-              >Peso e Massa Muscular</v-card-title
-            >
-            <v-divider class="mx-4"></v-divider>
+            <v-card-title class="justify-center">
+              <span style="color: #f95738">Peso, Massa Muscular e Massa Gorda</span>
+            </v-card-title>
+            <v-divider></v-divider>
             <div id="chart">
               <line-chart :data="utilizador"/>
             </div>
           </v-card>
           </v-col>
-  <!--
-          <v-col cols="12" md="5">
-            <v-card class="mx-auto text-center">
-              <v-card-title class="justify-center"
-                >Peso e Massa Muscular</v-card-title
-              >
-              <v-divider class="mx-4"></v-divider>
-              <div id="chart">
-                <apexchart
-                  type="line"
-                  height="250"
-                  :options="chartOptions_peso_massa"
-                  :series="series_peso_massa"
-                ></apexchart>
-              </div>
-            </v-card>
-
-            <v-card class="mt-4">
-              <v-card-title class="justify-center"
-                >Minutos por treino</v-card-title
-              >
-              <v-divider class="mx-4"></v-divider>
-              <div width="300" height="300">
-                <apexchart
-                  type="bar"
-                  height="350"
-                  :options="chartOptions_treinos"
-                  :series="series_treinos"
-                ></apexchart>
-              </div>
-            </v-card>
-          </v-col>-->
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="#f95738" text @click="removeContrato();dialog.value = false">
-              Terminar contrato
-            </v-btn>
-          </v-card-actions>
+          </v-row>
         </v-card>
       </template>
     </v-dialog>
@@ -438,7 +323,6 @@
 </template>
 
 <script>
-//import VueApexCharts from "vue-apexcharts";
 import LineChart from "@/components/InfoFisicaGrafico.vue";
 import axios from "axios";  
 
@@ -446,11 +330,15 @@ export default {
   name: "InfoAluno",
   components: {
     LineChart,
-    //apexchart: VueApexCharts,
+  },
+  computed: {
+    verifyIMC() {
+      return this.imc >= 18.5 && this.imc <= 24.9;
+    },
   },
   data: () => ({
     utilizador:null,
-    imc:0,
+    imc: 0,
     select:"",
     items:[],
     time: null,
@@ -467,16 +355,6 @@ export default {
     dialog5: false,
     dialog6: false,
     treino_info: {},
-    infos: {
-      nome: "10 Min Ab Workout",
-      username: "10 min",
-      email: "Abdominais",
-      password: "Iniciante",
-      genero: "Pamela Reif",
-      datanascimento: "07/05/2021",
-      peso: "4.6/5",
-      altura: "true",
-    },
     series_categorias: [44, 55, 13, 43, 22, 10, 10, 10, 10],
     chartOptions_categorias: {
       chart: {
@@ -686,7 +564,6 @@ export default {
             end: new Date(x.end),
             color: x.color,
           }
-          console.log(objjjj);
           this.events.push(objjjj);
         });
         console.log(this.events);
@@ -698,12 +575,12 @@ export default {
         this.utilizador = response.data;
         console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(this.utilizador))
         console.log("dkansdjnsadjnsa"+ JSON.stringify(this.utilizador))
-        this.imc =
+        var valor =
           (this.utilizador.peso /
             (this.utilizador.altura * this.utilizador.altura)) *
           10000;
+        this.imc = parseFloat(valor).toFixed(1);
       })
-      .finally(() => (this.loading = false));
 
     this.$refs.calendar.checkChange();
   },
@@ -742,17 +619,16 @@ export default {
         })  
     },
     removeContrato(){
-      console.log("wiiiiiiiiiiiiiiiii")
-       axios
-          .post(process.env.VUE_APP_BASELINK+"/api/treinador/removerContrato",
-          {username:this.data.utilizador},
-          {headers: {'token': localStorage.getItem("token")}}
-          )   
-          .then((response) => {
-              console.log("zzzzzzzzzzzzzzzzzzz"+JSON.stringify(response.data))
-              console.log("removeuuuuu")
-           })
-          .finally(() => (this.loading = false));
+      axios
+        .post(process.env.VUE_APP_BASELINK+"/api/treinador/removerContrato",
+        {username:this.data.utilizador},
+        {headers: {'token': localStorage.getItem("token")}}
+        )   
+        .then((response) => {
+            console.log(JSON.stringify(response.data))
+        
+          })
+      this.$router.go();
     },
     viewDay({ date }) {
       this.focus = date;
@@ -796,34 +672,6 @@ export default {
     },
     verTreino(treino_cod){
       this.$router.push("/treinador/treino/" + treino_cod);
-    },
-    updateRange({ start, end }) {
-      /* const events = [];
-
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
-
-      for (let i = 0; i < eventCount; i++) {
-        const allDay = this.rnd(0, 3) === 0;
-        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-        const second = new Date(first.getTime() + secondTimestamp);
-
-        events.push({
-          name: this.names[this.rnd(0, this.names.length - 1)],
-          start: first,
-          end: second,
-          color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
-        }); 
-
-      }*/
-      console.log(start.toISOString());
-      console.log(end.toISOString());
-      //this.events = events;
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;

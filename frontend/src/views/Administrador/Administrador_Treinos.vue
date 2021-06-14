@@ -35,9 +35,21 @@
               show-select
               item-key="codigo"
               :search="search"
-              @click:row="verTreino"
               >
-              
+              <template v-slot:item.categoria="props">
+                <v-chip
+                    class="mr-1"
+                    v-for="categoria in props.item.categoria"
+                    :key="categoria"
+                    >{{ categoria }}</v-chip>
+              </template>
+
+              <template v-slot:item.classificacao="props">
+                <div>
+                  {{ parseFloat(props.item.classificacao).toFixed(1)
+                  }}/5<v-icon color="#f95738">mdi-star</v-icon>
+                </div>
+              </template>
             </v-data-table>
             
           </v-card>
@@ -91,9 +103,9 @@ export default {
         { text: "Duração", value: "duracao" },
         { text: "Categoria", value: "categoria" },
         { text: "Dificuldade", value: "dificuldade" },
-        { text: "Treinador", value: "treinador" },
+        { text: "Criador", value: "criador" },
         { text: "Publicado em", value: "data" },
-        { text: "Avaliação", value: "avaliacao" },
+        { text: "Classificação", value: "classificacao"},
         { text: "Código", value: "codigo" }
       ],
       rows: [
@@ -105,6 +117,7 @@ export default {
       .get(process.env.VUE_APP_BASELINK+'/api/treinos/listar',{headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.rows = response.data 
+        console.log(JSON.stringify(this.rows))
       })
   },
   methods: {
@@ -120,9 +133,6 @@ export default {
             this.$router.push("/administrador/treinos/");
           }
         }) 
-    },
-    verTreino(){
-
     },
   },
 };

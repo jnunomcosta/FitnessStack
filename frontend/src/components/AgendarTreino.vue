@@ -103,29 +103,16 @@
         </v-col>
         <v-col cols="12" md="1"> </v-col>
         <v-col cols="12" md="3" class="mt-16">
-          <!-- <v-combobox
-            v-model="select"
-            :items="items"
-            label="Treino"
-            multiple
-            color="#f95738"
-            dense
-          ></v-combobox> -->
+       
           <v-autocomplete
                     label="Código Treino*"
                     v-model="select"
                     :items="items"
+                    color="#f95738"
                     required
                   >
                   </v-autocomplete>
-          <!-- <v-text-field
-                  v-model="select"
-                  label="Treino"
-                  prepend-icon="mdi-calendar"
-                  color="#f95738"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field> -->
+          
           <template>
             <v-menu
               ref="menu"
@@ -147,12 +134,12 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="date_1" no-title scrollable>
+              <v-date-picker v-model="date_1" color="#7189ff" no-title scrollable>
                 <v-spacer></v-spacer>
-                <v-btn text color="#f95738" @click="menu_1 = false">
+                <v-btn text color="#7189ff" @click="menu_1 = false">
                   Cancelar
                 </v-btn>
-                <v-btn text color="#f95738" @click="$refs.menu.save(date_1)">
+                <v-btn text color="#7189ff" @click="$refs.menu.save(date_1)">
                   OK
                 </v-btn>
               </v-date-picker>
