@@ -23,15 +23,14 @@
             </h1>
           </v-card-text>
         </v-cols>
-        <v-cols  class= "mr-8" cols="12" md="6">
-            <iframe src="https://open.spotify.com/embed/playlist/28nRTAuO50OzDEoP8ioyjz?theme=0" 
+        <v-cols  v-if="playlist!=''" class= "mr-8" cols="12" md="6">
+            <iframe :src="playlist" 
             width="100%" height="80" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </v-cols>
+        <v-cols  v-else class= "mr-8" cols="12" md="6">
         </v-cols>
         </v-row>
         </v-card>
-
-
-
 
         <v-carousel
           ref="carousel"
@@ -260,7 +259,10 @@ export default {
       duracao_serie: 0,
       duracao_descanso_reverso: 0,
       duracao_serie_reverso: 0,
+      //playlist: "",
+      //https://open.spotify.com/embed/playlist/37i9dQZF1DX6bJVMtDYJHx" 
 
+      playlist: "https://open.spotify.com/embed/playlist/37i9dQZF1DX6bJVMtDYJHx",
       treino: {
         nome: "",
         duracao: "",
@@ -399,10 +401,34 @@ export default {
       )
       .then((response) => {
         this.treino = response.data;
+
+      
+      
         console.log("heijsfidjs" + JSON.stringify(this.treino));
       })
 
       .finally(() => (this.loading = false));
+    /*
+    axios
+      .get(
+        process.env.VUE_APP_BASELINK +
+          "/api/utilizador/getPlaylist
+        { headers: { token: localStorage.getItem("token") } }
+      )
+      .then((response) => {
+        if (response.status==200){
+          var s = response.data;
+        this.playlist = s.split('?');
+        this.playlist + "?theme=0";
+        console.log(this.playlist);
+        }
+      })
+
+      //https://open.spotify.com/embed/playlist/37i9dQZF1DX6bJVMtDYJHx" 
+      
+      playlist: "https://open.spotify.com/playlist/37i9dQZF1DX6bJVMtDYJHx?theme=0",
+
+      .finally(() => (this.loading = false));*/
   },
 };
 </script>

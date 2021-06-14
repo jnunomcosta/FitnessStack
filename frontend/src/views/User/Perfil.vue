@@ -245,6 +245,58 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <v-dialog v-model="dialog7" persistent max-width="400px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="#f95738"
+                    dark
+                    small
+                    class="ml-1 mb-1"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon dense> mdi-music </v-icon>
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span>Alterar playlist</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="12">
+                          Digite o link da nova playlist.
+                          <v-form >
+                          <v-text-field
+                            v-model="input_playlist"
+                            color="#f95738"
+                            prepend-icon="mdi-music"
+                            
+                            required
+                          ></v-text-field>
+                          </v-form>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="#f95738" text @click="dialog7 = false">
+                      Sair
+                    </v-btn>
+                    <v-btn
+                      color="#f95738"
+                      dark
+                      @click="validatePlaylist()"
+                    >
+                      Atualizar
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
             </v-container>
           </v-card>
           <v-alert
@@ -267,6 +319,10 @@
           >
             Erro ao atualizar informação
           </v-alert>
+
+          
+
+
         </v-col>
 
         <v-col cols="12" md="4">
@@ -484,6 +540,7 @@ export default {
     dialog4: false,
     dialog5: false,
     dialog6: false,
+        dialog7: false,
     imagem_input: null,
     username: "",
     new_username: "",
@@ -494,6 +551,7 @@ export default {
     input_muscular: "",
     input_gorda: "",
     input_altura: "",
+    input_playlist: "",
 
     minPeso: 30,
     maxPeso: 200,
@@ -514,6 +572,7 @@ export default {
       genero: false,
       foto_perfil: "",
       info_fisica: [],
+      playlist: ""
     },
   }),
   mounted() {
@@ -529,6 +588,9 @@ export default {
             (this.utilizador.altura * this.utilizador.altura)) *
           10000;
         this.imc = parseFloat(valor).toFixed(1);
+
+
+        this.input_playlist= this.utilizador.playlist;
       })
       .finally(() => (this.loading = false));
   },
@@ -589,6 +651,16 @@ export default {
           this.dialog4 = false;
         }
       }      
+    },
+    validatePlaylist(){
+      if (this.input_playlist.match("https://open.spotify.com/playlist/(.*)[^/]")) {
+          //var list = str.split('/');
+          //var string_final = list[0] + "//" + list[2] + "/embed/" + list[3] + "/" + list[4];
+
+      }
+      else {
+          this.dialog7 = false;
+        }
     },
     pesagem_altura(new_peso, new_muscular, new_gorda, new_altura) {
       var data = new Date(),
