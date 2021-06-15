@@ -22,7 +22,7 @@ import ft.backend.utils.*;
 import ft.backend.entities.*;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RequestMapping(value = "/api/treinos")
 public class TreinoController {
     
@@ -223,7 +223,13 @@ public class TreinoController {
         ret.put("codigo", codigo);
         ret.put("data", t.getData_criacao());
         ret.put("dificuldade", t.getDificuldade());
-        ret.put("duracao", t.getDuracao());
+        //ret.put("duracao", t.getDuracao());
+        if(t.getDuracao()/60<1){
+            ret.put("duracao", (int) t.getDuracao()+"s");
+        }
+        else{
+            ret.put("duracao", (int) t.getDuracao()/60 + "min");
+        }
 
         if(t.getCriador_u()!=null){
             ret.put("criador", t.getCriador_u().getUsername());

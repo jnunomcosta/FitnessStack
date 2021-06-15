@@ -52,11 +52,8 @@
                   ><b>Dificuldade:</b>
                   {{ treino.dificuldade }}</v-list-item-title
                 >
-                <v-list-item-title class="mb-4" v-if="treino.duracao/60 < 1"
-                  ><b>Duração:</b> {{ treino.duracao }}s</v-list-item-title
-                >
-                <v-list-item-title class="mb-4" v-else
-                  ><b>Duração:</b> {{ parseFloat(treino.duracao/60).toFixed(0) }}min</v-list-item-title
+                <v-list-item-title class="mb-4"
+                  ><b>Duração:</b> {{ treino.duracao }}</v-list-item-title
                 >
                 <v-list-item-title class="mb-4"
                   ><b>Código:</b> {{ $route.params.codigo }}</v-list-item-title

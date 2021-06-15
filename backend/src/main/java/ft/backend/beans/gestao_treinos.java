@@ -199,7 +199,12 @@ public class gestao_treinos {
         Treino t = tDao.findbyCodigo(codigo);
         JSONObject obj = new JSONObject();
         obj.put("nome",t.getNome());
-        obj.put("duracao",t.getDuracao());
+        if(t.getDuracao()/60<1){
+            obj.put("duracao", (int) t.getDuracao()+"s");
+        }
+        else{
+            obj.put("duracao", (int) t.getDuracao()/60 + "min");
+        }
         obj.put("dificuldade",t.getDificuldade());
         obj.put("codigo",t.getCodigo());
         return obj;

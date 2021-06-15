@@ -20,7 +20,7 @@ import ft.backend.entities.Treinador;
 import ft.backend.entities.Utilizador;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RequestMapping(value = "/api/register")
 public class RegisterController {
     

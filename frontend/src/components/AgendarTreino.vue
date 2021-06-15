@@ -88,12 +88,8 @@
                   </v-toolbar>
                   <v-card-text>
                     <h4>Dificuldade: {{ treino_info.dificuldade }}</h4>
-                    <h4 v-if="treino_info.duracao / 60 < 1">
-                      Duração: {{ treino_info.duracao }}s
-                    </h4>
-                    <h4 v-else>
-                      Duração:
-                      {{ parseFloat(treino_info.duracao / 60).toFixed(0) }}min
+                    <h4>
+                      Duração: {{ treino_info.duracao }}
                     </h4>
                   </v-card-text>
                   <v-card-actions>

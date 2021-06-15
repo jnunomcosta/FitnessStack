@@ -19,7 +19,8 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
+//@CrossOrigin(origins = "*",allowCredentials = "true",methods = {RequestMethod.GET,RequestMethod.POST}, maxAge = 3600,allowedHeaders = "Content-Type, Accept, X-Requested-With, remember-me, Authorization, token")
 @RequestMapping(value = "/api/user")
 public class UtilizadorController {
 

@@ -47,7 +47,7 @@ public class Utilizador implements Serializable {
 	@Column(name="Username", nullable=false, length=512)	
 	private String username;
 
-	@Column(name="Playlist", nullable=false, length=512)	
+	@Column(name="Playlist", nullable=true, length=512)	
 	private String playlist;
 
 	@OneToMany(targetEntity=Marcacao.class, fetch=FetchType.LAZY, cascade = {CascadeType.ALL})	

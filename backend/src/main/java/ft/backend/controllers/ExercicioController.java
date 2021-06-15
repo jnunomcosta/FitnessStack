@@ -15,7 +15,7 @@ import ft.backend.beans.gestao_verificacoes;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RequestMapping(value = "/api/exercicio")
 public class ExercicioController {
     
