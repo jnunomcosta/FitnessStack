@@ -76,12 +76,8 @@
             
           </v-card>
         </v-container>
-        
       </v-col>
-      
-    
     </v-row>
-    
   </div>
 </template>
 

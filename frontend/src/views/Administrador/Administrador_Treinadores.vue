@@ -478,8 +478,9 @@ export default {
             this.success = true;
             setTimeout(() => {
               this.success = false;
+              this.$router.go();
+
             }, 5000);
-            this.$router.go();
           }
         })
         .catch((error) => {

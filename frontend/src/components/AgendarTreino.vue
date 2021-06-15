@@ -5,6 +5,29 @@
         >Agenda de Treinos</v-card-title
       >
       <v-divider></v-divider>
+
+      <v-alert class="ma-4"
+            border="left"
+            v-if="success"
+            text
+            dismissible
+            elevation="2"
+            type="success"
+          >
+            Treino agendado com sucesso
+          </v-alert>
+          <v-alert
+            class="ma-4"
+            border="left"
+            v-if="error"
+            text
+            dismissible
+            elevation="2"
+            type="error"
+          >
+            Erro ao agendar treino
+          </v-alert>
+
       <v-row class="pa-10">
         <v-col cols="12" md="8">
           <template>
@@ -216,6 +239,8 @@ export default {
       (v) => !!v || "Campo obrigatório",
       (v) => Math.abs(new Date(v) - new Date()) > 0 || "Data inválida",
     ],
+    error: false,
+    success: false,
     select: "",
     items: [],
     time: null,
@@ -338,7 +363,22 @@ export default {
           headers: { token: localStorage.getItem("token") },
         })
         .then((response) => {
-          console.log(response);
+          const status = JSON.parse(response.status);
+          
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
         });
       axios
         .get(

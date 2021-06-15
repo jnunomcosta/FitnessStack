@@ -7,7 +7,7 @@
           <v-window-item :value="1">
             <v-row class="mt-10">
               <v-col cols="12" md="8">
-                <v-card-text class="mt-16 pt-8" style="margin-bottom: 180px">
+                <v-card-text class="mt-16 pt-8" style="margin-bottom: 350px">
                   <h1 class="titulo text-center" style="color: #f95738">
                     Entre no Fitness Stack
                   </h1>
@@ -594,3 +594,10 @@ export default {
   },
 };
 </script>
+
+
+<style>
+.login {
+  background-color: white !important;
+}
+</style>

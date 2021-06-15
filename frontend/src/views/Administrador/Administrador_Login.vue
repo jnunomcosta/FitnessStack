@@ -6,7 +6,7 @@
       <v-content>
         <v-row class="mt-10">
           <v-col cols="12" md="8">
-            <v-card-text class="mt-16 pt-10" style="margin-bottom: 180px">
+            <v-card-text class="mt-16 pt-10" style="margin-bottom: 350px">
               <h1 class="text-center titulo" style="color: #7189ff">
                 Entre no Fitness Stack
               </h1>
@@ -137,3 +137,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.admin_login {
+  background-color: white !important;
+}
+</style>

@@ -28,6 +28,28 @@
             >
           </v-toolbar>
 
+          <v-alert class="mx-16 my-8"
+            border="left"
+            v-if="success"
+            text
+            dismissible
+            elevation="2"
+            type="success"
+          >
+            Treino agendado com sucesso
+          </v-alert>
+          <v-alert
+            class="mx-16 my-8"
+            border="left"
+            v-if="error"
+            text
+            dismissible
+            elevation="2"
+            type="error"
+          >
+            Erro ao agendar treino
+          </v-alert>
+
           <v-row
             justify="space-around"
             style="margin-top: 70px; margin-left: 100px; margin-right: 100px"
@@ -282,7 +304,8 @@
                 <v-card-title>{{ utilizador.nome }} </v-card-title>
                 <v-card-subtitle> {{ utilizador.username }} </v-card-subtitle>
                 <v-divider class="mx-4"></v-divider>
-                <v-card-text class="py-4 black--text">{{
+                <v-card-text class="py-4 black--text"><v-icon small class="mr-1">mdi-email</v-icon
+              >{{
                   utilizador.email
                 }}</v-card-text>
                 <v-btn
@@ -387,6 +410,8 @@ export default {
       (v) => !!v || "Campo obrigatório",
       (v) => Math.abs(new Date(v) - new Date()) > 0 || "Data inválida",
     ],
+    success: false,
+    error: false,
     utilizador: null,
     imc: 0,
     select: "",
@@ -676,7 +701,22 @@ export default {
           headers: { token: localStorage.getItem("token") },
         })
         .then((response) => {
-          console.log(response);
+          const status = JSON.parse(response.status);
+          
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
         });
       axios
         .get(

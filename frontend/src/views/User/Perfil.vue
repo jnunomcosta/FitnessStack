@@ -432,7 +432,7 @@
                       </v-btn>
                       <v-btn
                         color="#f95738"
-                        text
+                        dark
                         @click="validateForm(
                             input_peso,
                             input_muscular,
@@ -707,7 +707,7 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          console.log(response);
+          const status = JSON.parse(response.status);
           this.utilizador.m_gorda = new_gorda;
           this.utilizador.m_muscular = new_muscular;
           this.utilizador.peso = new_peso;
@@ -717,8 +717,23 @@ export default {
               (this.utilizador.altura * this.utilizador.altura)) *
             10000;
           this.imc = parseFloat(valor).toFixed(1);
+          
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+              this.$router.go()
+            }, 5000);
+          }
         })
-        .finally(() => console.log("hi")); //msg erro a mudar email));*/
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
     pesagem(new_peso, new_muscular, new_gorda) {
       var data = new Date(),
@@ -740,7 +755,7 @@ export default {
           { headers: { token: localStorage.getItem("token") } }
         )
         .then((response) => {
-          console.log(response);
+          const status = JSON.parse(response.status);
           this.utilizador.m_gorda = new_gorda;
           this.utilizador.m_muscular = new_muscular;
           this.utilizador.peso = new_peso;
@@ -749,6 +764,22 @@ export default {
               (this.utilizador.altura * this.utilizador.altura)) *
             10000;
           this.imc = parseFloat(valor).toFixed(1);
+
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+              this.$router.go()
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
         });
     },
     setEmail(new_email) {

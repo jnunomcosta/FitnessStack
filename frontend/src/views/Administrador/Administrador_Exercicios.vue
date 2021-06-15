@@ -174,8 +174,8 @@ export default {
             this.successDelete = true;
             setTimeout(() => {
               this.successDelete = false;
+              this.$router.go();
             }, 5000);
-            this.$router.go();
           } 
         })
          .catch((error) => {
