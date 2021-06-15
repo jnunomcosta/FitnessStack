@@ -83,7 +83,6 @@
 
                   <!-- <InfoTreinador /> -->
                   <v-dialog
-                  v-model="dialog"
                     transition="dialog-bottom-transition"
                     max-width="700"
                   >
@@ -99,12 +98,12 @@
                         <v-icon>mdi-text-box-search</v-icon>
                       </v-btn>
                     </template>
-                    <template >
+                    <template v-slot:default="dialog">
                       <v-card>
                         <v-toolbar color="#f95738" dark
                           ><h3>{{ title.nome }}</h3>
                           <v-spacer></v-spacer>
-                          <v-btn icon @click="dialog = false"
+                          <v-btn icon @click="dialog.value = false"
                             ><v-icon>mdi-close</v-icon></v-btn
                           >
                         </v-toolbar>
@@ -215,7 +214,6 @@
                                     {
                                       solicitar(title.username, input_c);
                                       dialog2 = false;
-                                      dialog = false;
                                     }
                                   "
                                 >
@@ -262,7 +260,6 @@ export default {
       success: false,
       error: false,
       input_c: "",
-      dialog: false,
       dialog2: false,
       titles: [],
       page: 1,
