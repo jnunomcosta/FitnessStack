@@ -79,43 +79,7 @@
         
       </v-col>
       
-      
-      <v-dialog v-model="dialogDelete" persistent max-width="300">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            fab
-            dark
-            large
-            color="#f95738"
-            fixed
-            right
-            bottom
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title class="error white--text">
-            Apagar Administrador(es)
-          </v-card-title>
-          <v-card-text class="mt-4"
-            >Deseja apagar o(s) administrador(es)? Esta ação é
-            irreversível!</v-card-text
-          >
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="error" text @click="dialogDelete = false">
-              Cancelar
-            </v-btn>
-            <v-btn color="error" dark @click="confirmar_apagar()">
-              Confirmar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-     
+    
     </v-row>
     
   </div>
@@ -161,42 +125,7 @@ export default {
     };
   },
   methods: {
-    confirmar_apagar() {
-      this.apagarAdministrador();
-      this.dialogDelete = false;
-    },
-    apagarExercicio(){
-      let deletbody = [];
-      this.selected.forEach(element => {
-        deletbody.push(element.id);
-      });
-      axios 
-        .delete(process.env.VUE_APP_BASELINK+'/api/admin/deleteAdmin',{headers:{token: localStorage.getItem("token")},data:deletbody})
-        .then(response => {
-          if(response.status == 200){
-            this.successDelete = true;
-            setTimeout(() => {
-              this.successDelete = false;
-            }, 5000);
-            this.$router.go();
-          } 
-        })
-         .catch((error) => {
-          if (error.response != null) {
-            if (error.response.status == "500") {
-              this.forbiddenError = true;
-              setTimeout(() => {
-                this.forbiddenError = false;
-              }, 5000);
-            } else {
-              this.registerServerError = true;
-              setTimeout(() => {
-                this.registerServerError = false;
-              }, 5000);
-            }
-          }
-        });
-    },
+    
   }
 
 };

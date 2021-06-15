@@ -255,9 +255,12 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
-                          <p>
+                          <p v-if="playlist">
                             Playlist atual:
                             <a :href="playlist">{{ playlist }}</a>
+                          </p>
+                          <p v-else>
+                            Playlist atual: Ainda não registou uma playlist
                           </p>
 
                           <p>Digite o link da nova playlist.</p>
@@ -430,15 +433,11 @@
                       <v-btn
                         color="#f95738"
                         text
-                        @click="
-                          validateForm(
+                        @click="validateForm(
                             input_peso,
                             input_muscular,
                             input_gorda,
-                            input_altura
-                          )
-                        "
-                      >
+                            input_altura)">
                         Atualizar
                       </v-btn>
                     </v-card-actions>
