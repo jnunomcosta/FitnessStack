@@ -403,6 +403,7 @@ export default {
             this.success = true;
             setTimeout(() => {
               this.success = false;
+              sessionStorage.setItem("desatualizada",1);
               this.$router.push("/treinos");
             }, 5000);
           }

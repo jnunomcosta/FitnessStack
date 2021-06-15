@@ -672,6 +672,7 @@ export default {
                 setTimeout(() => {
                   this.success = false;
                 }, 5000);
+                this.input_playlist = "";
               }
               this.dialog7 = false;
             })

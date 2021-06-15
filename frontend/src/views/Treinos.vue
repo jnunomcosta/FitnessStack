@@ -203,22 +203,20 @@ export default {
     },
     onButtonClick(props) {
       if(props.favoritos){
-        //console.log("entrei no true")
-        //console.log(props);
         axios
           .post(process.env.VUE_APP_BASELINK+"/api/treinos/desfavoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
           .then(response => {
             console.log(response);
+            sessionStorage.setItem("desatualizada",1);
           })
           props.favoritos = false;
       }
       else {
-        //console.log("parente")
-        //console.log(props)
         axios
           .post(process.env.VUE_APP_BASELINK+"/api/treinos/favoritar",{treino:props.codigo},{headers: { token: localStorage.getItem("token")}})
           .then(response => {
             console.log(response);
+            sessionStorage.setItem("desatualizada",1);
           })
           props.favoritos = true;
       }
@@ -226,7 +224,7 @@ export default {
     },
   },
   mounted() {
-    if(sessionStorage.getItem("treinos_cache")==null){
+    if(sessionStorage.getItem("treinos_cache")==null || sessionStorage.getItem("desatualizada")==1){
       if(this.getUsertype()==0){
       axios
         .get(process.env.VUE_APP_BASELINK+"/api/treinos/listarUtilizador?username="+localStorage.getItem("username"), {
@@ -234,6 +232,7 @@ export default {
         .then((response) => {
           this.treinos = response.data;
           sessionStorage.setItem("treinos_cache",JSON.stringify(this.treinos));
+          sessionStorage.setItem("desatualizada",0);
         })
         .finally(() => (this.loading = false));
     }
@@ -243,6 +242,7 @@ export default {
         .then(response => {
           this.treinos = response.data 
           sessionStorage.setItem("treinos_cache",JSON.stringify(this.treinos));
+          sessionStorage.setItem("desatualizada",0);
         })
         .finally(() => this.loading = false)
     }
