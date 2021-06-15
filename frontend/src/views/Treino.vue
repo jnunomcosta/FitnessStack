@@ -203,20 +203,23 @@
                         <v-col md="9">
                           <div>
                             <v-carousel
-                              :show-arrows="false"
+                              :show-arrows="item.fotos.length>1"
                               class="mt-6"
-                              height="400"
-                              width="700"
+                              width="auto"
+                                  height="400"
                             >
                               <v-carousel-item
                                 v-for="(item1, i1) in item.fotos"
                                 :key="i1"
                               >
                                 <template v-if="item1.includes('photo')">
-                                  <img :src="linkfoto() + item1" />
+                                  <img width="auto"
+                                  height="400" contain :src="linkfoto() + item1" />
                                 </template>
                                 <template v-else>
-                                  <video controls>
+                                  <video width="auto"
+                                        height="400"
+                                        contain controls>
                                     <source
                                       :src="linkfoto() + item1"
                                       type="video/mp4"
@@ -288,7 +291,7 @@
                   >
                   <v-btn
                     color="#f95738"
-                    text
+                    dark
                     @click="dialog1 = false"
                     v-on:click="submit()"
                   >

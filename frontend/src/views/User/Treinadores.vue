@@ -21,14 +21,14 @@
               dark
             >
               O meu treinador
-              <v-chip small class="ml-2" v-if="!contrato.estado"> Pendente </v-chip>
+              <v-chip small color="white" style="color:black" class="ml-2" v-if="!contrato.estado"> Pendente </v-chip>
             </v-btn>
           </template>
           <template v-slot:default="dialog">
             <v-card>
               <v-toolbar color="#f95738" dark
                 ><h3 class="mr-4">{{ treinador.nome }}</h3>
-                <v-chip v-if="!contrato.estado"> Pendente </v-chip>
+                <v-chip color="white" style="color:black" v-if="!contrato.estado"> Pendente </v-chip>
                 <v-chip color="green" v-else>Ativo</v-chip>
                 <v-spacer></v-spacer>
 
@@ -139,7 +139,7 @@
                     >
                     <v-btn
                       color="#f95738"
-                      text
+                      dark
                       @click="dialog1 = false"
                       v-on:click="submit()"
                     >

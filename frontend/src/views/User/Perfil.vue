@@ -260,7 +260,7 @@
                             <a :href="playlist">{{ playlist }}</a>
                           </p>
                           <p v-else>
-                            Playlist atual: Ainda não registou uma playlist
+                            Playlist atual: <span style="color:#F44336">Ainda não registou uma playlist.</span>
                           </p>
 
                           <p>Digite o link da nova playlist.</p>
