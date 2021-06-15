@@ -103,12 +103,12 @@
                       v-bind="attrs"
                       v-on="on"
                       color="#f95738"
-                      text
+                      dark
                     >
                       Avaliar Treinador
                     </v-btn>
                   </template>
-                  <v-card>
+                  <v-card class="pa-2">
                     <v-card-title>
                       <span class="text-center"
                         >Dê-nos o seu feedback acerca deste treinador!</span
