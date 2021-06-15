@@ -102,4 +102,17 @@ public class AdministradorController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         
     }
+
+    // @DeleteMapping(value="/deleteAdmin")
+    // public ResponseEntity<String> deleteAdmin(@RequestHeader String token,@RequestBody String exs){
+    //     if(verify.verifyAdmin(token) != null){
+    //         JSONArray arr = new JSONArray(exs);
+    //         for(int i=0;i<arr.length();i++){
+    //             int cod = arr.getInt(i);
+    //             ga.deleteAdmin(cod);
+    //         }
+    //         return ResponseEntity.ok().body(null);
+    //     }
+    //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    // }
 }

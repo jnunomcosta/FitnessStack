@@ -39,7 +39,7 @@ public class ExercicioController {
 
             Exercicio e = new Exercicio();
             e.setNome(obj.getString("nome"));
-            e.setDescricao("descricao");
+            e.setDescricao(obj.getString("descricao"));
             e.setDuracao_media(obj.getFloat("duracao_media"));
             e.setMaterial_necessario(obj.getString("material_necessario"));
 

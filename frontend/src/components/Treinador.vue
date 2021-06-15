@@ -1,5 +1,26 @@
 <template>
   <div>
+    <v-alert
+      border="left"
+      v-if="success"
+      text
+      dismissible
+      elevation="2"
+      type="success"
+    >
+      Solicitação enviada com sucesso
+    </v-alert>
+    <v-alert
+      border="left"
+      v-if="error"
+      text
+      dismissible
+      elevation="2"
+      type="error"
+    >
+      Erro ao enviar solicitação
+    </v-alert>
+
     <v-toolbar dense rounded class="mx-6" style="margin-top: 40px">
       <v-text-field
         v-model="searchValue"
@@ -62,6 +83,7 @@
 
                   <!-- <InfoTreinador /> -->
                   <v-dialog
+                  v-model="dialog"
                     transition="dialog-bottom-transition"
                     max-width="700"
                   >
@@ -77,12 +99,12 @@
                         <v-icon>mdi-text-box-search</v-icon>
                       </v-btn>
                     </template>
-                    <template v-slot:default="dialog">
+                    <template >
                       <v-card>
                         <v-toolbar color="#f95738" dark
                           ><h3>{{ title.nome }}</h3>
                           <v-spacer></v-spacer>
-                          <v-btn icon @click="dialog.value = false"
+                          <v-btn icon @click="dialog = false"
                             ><v-icon>mdi-close</v-icon></v-btn
                           >
                         </v-toolbar>
@@ -111,7 +133,8 @@
 
                             <v-card-text>
                               <v-row align="center" class="mx-0">
-                                {{ title.email }}</v-row>
+                                {{ title.email }}</v-row
+                              >
 
                               <v-row align="center" class="mx-0 mt-6 mb-4">
                                 <v-rating
@@ -139,69 +162,68 @@
                             </v-card-text>
                           </v-col>
                         </row>
-            
+
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                        <v-dialog
-                          v-model="dialog2"
-                          persistent
-                          max-width="500px"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                              v-show="treinador==null"
-                              color="#f95738"
-                              text
-                              v-bind="attrs"
-                              v-on="on"
-                            >
-                              Solicitar contrato
-                            </v-btn>
-                          </template>
-                          <v-card>
-                            <v-card-title>
-                              <span
-                                >Escreva uma mensagem ao treinador</span
-                              >
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-                                <v-row>
-                                  <v-col cols="12" sm="6" md="12">
-                                    <v-text-field
-                                      v-model="input_c"
-                                      color="#f95738"
-                                      label="Mensagem"
-                                      required
-                                    ></v-text-field>
-                                  </v-col>
-                                </v-row>
-                              </v-container>
-                            </v-card-text>
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
+                          <v-dialog
+                            v-model="dialog2"
+                            persistent
+                            max-width="500px"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
                               <v-btn
+                                v-show="treinador == null"
                                 color="#f95738"
                                 text
-                                @click="dialog2 = false"
-                              >
-                                Sair
-                              </v-btn>
-                              <v-btn
-                                color="#f95738"
-                                dark
-                                @click="
-                                  {
-                                    solicitar(title.username, input_c);
-                                    dialog2 = false;
-                                  }
-                                "
+                                v-bind="attrs"
+                                v-on="on"
                               >
                                 Solicitar contrato
                               </v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
+                            </template>
+                            <v-card>
+                              <v-card-title>
+                                <span>Escreva uma mensagem ao treinador</span>
+                              </v-card-title>
+                              <v-card-text>
+                                <v-container>
+                                  <v-row>
+                                    <v-col cols="12" sm="6" md="12">
+                                      <v-text-field
+                                        v-model="input_c"
+                                        color="#f95738"
+                                        label="Mensagem"
+                                        required
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+                                </v-container>
+                              </v-card-text>
+                              <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                  color="#f95738"
+                                  text
+                                  @click="dialog2 = false"
+                                >
+                                  Sair
+                                </v-btn>
+                                <v-btn
+                                  color="#f95738"
+                                  dark
+                                  v-on:click="
+                                    {
+                                      solicitar(title.username, input_c);
+                                      dialog2 = false;
+                                      dialog = false;
+                                    }
+                                  "
+                                >
+                                  Solicitar contrato
+                                </v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </v-dialog>
                         </v-card-actions>
                       </v-card>
                     </template>
@@ -213,19 +235,19 @@
         </v-col>
       </v-row>
       <v-row v-else-if="total == 0">
-      <v-col class="text-center">
-        <h5 style="padding-top: 150px; padding-bottom: 400px; color: #5b5b5b">
-          Não existem treinadores registados
-        </h5>
-      </v-col>
-    </v-row>
-    <v-row v-else>
-      <v-col class="text-center">
-        <h5 style="padding-top: 150px; padding-bottom: 400px; color: #5b5b5b">
-          Não foi encontrado nenhum treinador
-        </h5>
-      </v-col>
-    </v-row>
+        <v-col class="text-center">
+          <h5 style="padding-top: 150px; padding-bottom: 400px; color: #5b5b5b">
+            Não existem treinadores registados
+          </h5>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col class="text-center">
+          <h5 style="padding-top: 150px; padding-bottom: 400px; color: #5b5b5b">
+            Não foi encontrado nenhum treinador
+          </h5>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -237,7 +259,10 @@ export default {
   name: "Treinador",
   data() {
     return {
+      success: false,
+      error: false,
       input_c: "",
+      dialog: false,
       dialog2: false,
       titles: [],
       page: 1,
@@ -248,11 +273,11 @@ export default {
       total_treinadores: 0,
       treinador: null,
       contrato: {
-      utilizador: "",
-      estado: false,
-      treinador: "",
-      comentario: "",
-    },
+        utilizador: "",
+        estado: false,
+        treinador: "",
+        comentario: "",
+      },
     };
   },
   mounted() {
@@ -264,7 +289,6 @@ export default {
       })
       .then((response) => {
         this.contrato = response.data;
-        //console.log(JSON.stringify(this.contrato));
 
         axios
           .get(
@@ -275,9 +299,8 @@ export default {
           )
           .then((responsetreinador) => {
             this.treinador = responsetreinador.data;
-            
           });
-      })
+      });
   },
   computed: {
     url() {
@@ -359,14 +382,24 @@ export default {
           },
           { headers: { token: localStorage.getItem("token") } }
         )
-
         .then((response) => {
-          console.log("sucesso" + response.status);
-
-          //console.log("dkansdjnsadjnsa" + JSON.stringify(response.data));
+          const status = JSON.parse(response.status);
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
+              this.$router.go();
+            }, 5000);
+          }
         })
-        .finally(() => console.log("jo"));
-        this.$router.go();
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
+          }
+        });
     },
   },
 };

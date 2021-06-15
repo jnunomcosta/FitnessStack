@@ -18,7 +18,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn class="mx-6" v-bind="attrs" v-on="on" color="#f95738" dark>
-              As minhas solicitações
+              As minhas solicitações <v-chip v-if="titles.length!=0" class="ml-2" small color="#7189ff">{{ titles.length }}</v-chip>
             </v-btn>
           </template>
           <template v-slot:default="dialog">
@@ -48,6 +48,7 @@ import NavBar from "@/components/NavBar_Logged.vue";
 import SideBar from "@/components/SideBar_Treinador.vue";
 import Aluno from "@/components/Aluno.vue";
 import AlunoSolicitacao from "@/components/AlunoSolicitacao.vue";
+import axios from "axios";
 
 export default {
   name: "Alunos",
@@ -60,9 +61,22 @@ export default {
   data: () => ({
     dialog: false,
     dialog2: false,
+    titles: [],
   }),
   created() {
     document.title = "Alunos";
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      const response = await axios.get(this.url, {headers: {'token': localStorage.getItem("token")}});
+      this.titles = response.data;   
+    },
+  },
+  computed: {
+    url() {
+      return process.env.VUE_APP_BASELINK+"/api/treinador/getAlunosPendentes"
+    },
   },
 };
 </script>

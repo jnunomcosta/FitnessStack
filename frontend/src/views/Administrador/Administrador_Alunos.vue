@@ -9,6 +9,40 @@
         <h1 style="padding-top: 100px; text-align: center; font-size: 40px">
           Procure um aluno
         </h1>
+
+        <v-alert
+          border="left"
+          v-if="successDelete"
+          text
+          dismissible
+          elevation="2"
+          type="success"
+        >
+          Aluno(s) eliminado(s) com sucesso
+        </v-alert>
+
+        <v-alert
+          border="left"
+          v-if="registerServerError"
+          text
+          dismissible
+          elevation="2"
+          type="error"
+        >
+          Erro do servidor
+        </v-alert>
+
+      <v-alert
+          border="left"
+          v-if="forbiddenError"
+          text
+          dismissible
+          elevation="2"
+          type="error"
+        >
+          Não é permitido apagar este(s) aluno(s)
+        </v-alert>
+
         <v-container>
           <v-row align="center" justify="space-around">
             <v-col cols="12" md="8">
@@ -45,19 +79,41 @@
         
       </v-col>
       
-      <v-btn
-        fab
-        dark
-        large
-        color="#f95738"
-        fixed
-        right
-        bottom
-        v-bind="attrs"
-        v-on:click="apagarUtilizador()"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
+      <v-dialog v-model="dialogDelete" persistent max-width="300">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            fab
+            dark
+            large
+            color="#f95738"
+            fixed
+            right
+            bottom
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title class="error white--text">
+            Apagar Aluno(s)
+          </v-card-title>
+          <v-card-text class="mt-4"
+            >Deseja apagar o(s) aluno(s)? Esta ação é
+            irreversível!</v-card-text
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" text @click="dialogDelete = false">
+              Cancelar
+            </v-btn>
+            <v-btn color="error" dark @click="confirmar_apagar()">
+              Confirmar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
      
     </v-row>
     
@@ -93,6 +149,10 @@ export default {
   },
   data() {
     return {
+      dialogDelete: false,
+      successDelete: false,
+      registerServerError: false,
+      forbiddenError: false,
       singleSelect: false,
       selected: [],
       search: "",
@@ -106,6 +166,10 @@ export default {
     };
   },
   methods: {
+    confirmar_apagar() {
+      this.apagarUtilizador();
+      this.dialogDelete = false;
+    },
     apagarUtilizador(){
       let deletbody = [];
       this.selected.forEach(element => {
@@ -114,11 +178,29 @@ export default {
       axios 
         .delete(process.env.VUE_APP_BASELINK + '/api/user/deleteUtilizador',{headers:{token: localStorage.getItem("token")},data:deletbody})
         .then(response => {
-          //ERRO 500 -> nao conseguiu eliminar, pode ter feito um comentario ou ter marcacoes ou um treinador associado
-          if(response.status == 200){
-            this.$router.push("/administrador/alunos/");
+         if(response.status == 200){
+            this.successDelete = true;
+            setTimeout(() => {
+              this.successDelete = false;
+            }, 5000);
+            this.$router.go();
+          } 
+        })
+        .catch((error) => {
+          if (error.response != null) {
+            if (error.response.status == "500") {
+              this.forbiddenError = true;
+              setTimeout(() => {
+                this.forbiddenError = false;
+              }, 5000);
+            } else {
+              this.registerServerError = true;
+              setTimeout(() => {
+                this.registerServerError = false;
+              }, 5000);
+            }
           }
-        })  
+        });
     },
   },
 };

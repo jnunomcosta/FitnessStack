@@ -21,6 +21,7 @@
               dark
             >
               O meu treinador
+              <v-chip small class="ml-2" v-if="!contrato.estado"> Pendente </v-chip>
             </v-btn>
           </template>
           <template v-slot:default="dialog">

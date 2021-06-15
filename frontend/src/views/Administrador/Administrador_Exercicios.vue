@@ -18,7 +18,7 @@
           elevation="2"
           type="success"
         >
-          Treinador(es) eliminado(s) com sucesso
+          Exercício(s) eliminado(s) com sucesso
         </v-alert>
 
         <v-alert
@@ -32,6 +32,16 @@
           Erro do servidor
         </v-alert>
 
+      <v-alert
+          border="left"
+          v-if="forbiddenError"
+          text
+          dismissible
+          elevation="2"
+          type="error"
+        >
+          Não é permitido apagar este(s) exercício(s)
+        </v-alert>
         <v-container>
           <v-row align="center" justify="space-around">
             <v-col cols="12" md="8">
@@ -65,20 +75,6 @@
         </v-container>
         
       </v-col>
-
-      <v-btn
-        fab
-        dark
-        large
-        color="#f95738"
-        fixed
-        right
-        bottom
-        v-bind="attrs"
-        v-on:click="apagarTreinador()"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
 
       <v-dialog v-model="dialogDelete" persistent max-width="300">
         <template v-slot:activator="{ on, attrs }">
@@ -138,14 +134,15 @@ export default {
   },
   data() {
     return {
+      dialogDelete: false,
       successDelete: false,
       registerServerError: false,
+      forbiddenError: false,
       singleSelect: false,
       selected: [],
       search: "",
       columns: [
         { text: "Nome do Exercicio", value: "nome" },
-        { text: "Duração", value: "duracao" },
         { text: "Material Necessário", value: "material" },
         { text: "Descrição", value: "descricao" }
       ],
@@ -154,12 +151,17 @@ export default {
   },
   mounted() {
     axios
-      .get(process.env.VUE_APP_BASELINK+'/api/exercicio/listar',{headers: {'token': localStorage.getItem("token")}})
+      .get(process.env.VUE_APP_BASELINK+'/api/exercicio/listar',{ headers: {'token': localStorage.getItem("token")}})
       .then(response => {
         this.rows = response.data 
+        console.log(JSON.stringify(this.rows))
       })
   },
   methods: {
+    confirmar_apagar() {
+      this.apagarExercicio();
+      this.dialogDelete = false;
+    },
     apagarExercicio(){
       let deletbody = [];
       this.selected.forEach(element => {
@@ -168,11 +170,29 @@ export default {
       axios 
         .delete(process.env.VUE_APP_BASELINK+'/api/exercicio/deleteExercicios',{headers:{token: localStorage.getItem("token")},data:deletbody})
         .then(response => {
-          //ERRO 500 e porque o exercicio esta num treino!
           if(response.status == 200){
-            this.$router.push("/administrador/exercicios/");
+            this.successDelete = true;
+            setTimeout(() => {
+              this.successDelete = false;
+            }, 5000);
+            this.$router.go();
+          } 
+        })
+         .catch((error) => {
+          if (error.response != null) {
+            if (error.response.status == "500") {
+              this.forbiddenError = true;
+              setTimeout(() => {
+                this.forbiddenError = false;
+              }, 5000);
+            } else {
+              this.registerServerError = true;
+              setTimeout(() => {
+                this.registerServerError = false;
+              }, 5000);
+            }
           }
-        }) 
+        });
     },
   },
 };

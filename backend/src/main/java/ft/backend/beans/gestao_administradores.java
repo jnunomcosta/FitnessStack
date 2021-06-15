@@ -122,4 +122,11 @@ public class gestao_administradores {
 
         return res;
     }
+
+
+    // public boolean deleteAdmin(String codigo){
+    //     Administrador a = administradorDAO.findAdmin_Username(codigo);
+    //     administradorDAO.delete(a);
+    //     return true;
+    // }
 }

@@ -9,7 +9,7 @@
         <SideBar />
       </v-col>
       <v-col cols="12" md="5" style="padding-top: 100px">
-        <v-card class="pb-8">
+        <v-card class="pb-8 mb-4">
           <v-card-text>
             <h1
               class="text-center py-2"
@@ -20,10 +20,11 @@
           </v-card-text>
           <v-divider></v-divider>
           <v-card-text>
-            <v-form class="pt-4 px-16 mx-8">
+            <v-form ref="treino_form" class="pt-4 px-16 mx-8">
               <v-text-field
                 label="Nome do Treino"
                 v-model="input.nome_treino"
+                :rules="formRules"
                 type="text"
                 required
                 color="#f95738"
@@ -31,30 +32,54 @@
               <v-text-field
                 label="Descrição"
                 v-model="input.descricao"
+                :rules="formRules"
                 type="text"
                 color="#f95738"
+                required
               />
               <v-combobox
                 v-model="select_categorias"
                 :items="categorias"
                 label="Categorias"
+                :rules="formRules"
                 multiple
                 chips
                 required
                 color="#f95738"
               >
               </v-combobox>
-              <v-combobox
+              <v-select
                 v-model="select_dificuldade"
                 :items="dificuldades"
                 label="Dificuldade"
+                :rules="formRules"
                 required
                 color="#f95738"
               >
-              </v-combobox>
+              </v-select>
             </v-form>
           </v-card-text>
         </v-card>
+        <v-alert
+          border="left"
+          v-if="success"
+          text
+          dismissible
+          elevation="2"
+          type="success"
+        >
+          Treino registado com sucesso
+        </v-alert>
+        <v-alert
+          border="left"
+          v-if="error"
+          text
+          dismissible
+          elevation="2"
+          type="error"
+        >
+          Erro ao registar treino
+        </v-alert>
       </v-col>
       <v-col cols="12" md="5" style="padding-top: 100px">
         <v-card v-scroll.self="onScroll" class="overflow-y-auto">
@@ -110,7 +135,9 @@
     <v-row style="padding-bottom: 60px">
       <v-col cols="12" md="12">
         <div class="text-center my-10">
-          <v-btn v-on:click="confirmar()" color="#f95738" dark>Confirmar</v-btn>
+          <v-btn @click="validateTreino()" color="#f95738" dark
+            >Confirmar</v-btn
+          >
         </div>
       </v-col>
     </v-row>
@@ -133,84 +160,94 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Adicionar Bloco</span>
+          <span class="headline">Novo bloco</span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-autocomplete
-                  label="Exercício*"
-                  v-model="exercicio"
-                  :items="items"
-                  color="#f95738"
-                  required
-                >
-                </v-autocomplete>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="series"
-                  color="#f95738"
-                  label="Séries*"
-                  type="number"
-                  @click:append-outer="increment"
-                  @click:prepend="decrement"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-combobox
-                  v-model="modo"
-                  :items="['Repetições', 'Duração']"
-                  label="Modo"
-                  color="#f95738"
-                  required
-                >
-                </v-combobox>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                  v-model="valor_modo"
-                  label="Duração (segundos)*"
-                  color="#f95738"
-                  type="number"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" sm="4">
-                <v-text-field
-                  v-if="modo == 'Repetições'"
-                  v-model="n_repeticoes"
-                  label="Repetições (unidades)*"
-                  color="#f95738"
-                  type="number"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="valor_descanso"
-                  color="#f95738"
-                  label="Descanso (segundos)*"
-                  type="number"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
+            <v-form ref="bloco_form">
+              <v-row>
+                <v-col cols="12">
+                  <v-autocomplete
+                    label="Exercício"
+                    v-model="exercicio"
+                    :rules="formRules"
+                    :items="items"
+                    color="#f95738"
+                    required
+                  >
+                  </v-autocomplete>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="series"
+                    color="#f95738"
+                    :rules="seriesRules"
+                    :min="minSeries"
+                    :max="maxSeries"
+                    label="Séries"
+                    type="number"
+                    @click:append-outer="increment"
+                    @click:prepend="decrement"
+                    required
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-combobox
+                    v-model="modo"
+                    :items="['Repetições', 'Duração']"
+                    :rules="formRules"
+                    label="Modo"
+                    color="#f95738"
+                    required
+                  >
+                  </v-combobox>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                    v-model="valor_modo"
+                    :rules="duracaoRules"
+                    :min="minDuracao"
+                    :max="maxDuracao"
+                    label="Duração (segundos)"
+                    color="#f95738"
+                    type="number"
+                    required
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                    v-if="modo == 'Repetições'"
+                    v-model="n_repeticoes"
+                    :rules="repsRules"
+                    label="Repetições (unidades)"
+                    color="#f95738"
+                    type="number"
+                    required
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="valor_descanso"
+                    :rules="duracaoRules"
+                    color="#f95738"
+                    label="Descanso (segundos)"
+                    type="number"
+                    required
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-form>
           </v-container>
-          <small>* campos obrigatórios</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="#f95738" text @click="dialog = false"> Fechar </v-btn>
-          <v-btn
-            color="#f95738"
-            text
-            v-on:click="criar()"
-            @click="dialog = false"
-          >
-            Criar
+          <v-btn color="#f95738" dark v-on:click="validateBloco()">
+            Adicionar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -239,6 +276,27 @@ export default {
   },
   data() {
     return {
+      success: false,
+      error: false,
+      formRules: [(v) => !!v || "Campo obrigatório"],
+      seriesRules: [
+        (v) => !!v || "Campo obrigatório",
+        (v) => (v >= 0 && v <= 100) || "0 a 100",
+      ],
+      minSeries: 0,
+      maxSeries: 100,
+      duracaoRules: [
+        (v) => !!v || "Campo obrigatório",
+        (v) => (v >= 0 && v <= 86400) || "0 a 86400",
+      ],
+      minDuracao: 0,
+      maxDuracao: 86400,
+      repsRules: [
+        (v) => !!v || "Campo obrigatório",
+        (v) => (v >= 0 && v <= 10000) || "0 a 10000",
+      ],
+      minReps: 0,
+      maxReps: 10000,
       dialog: false,
       items: [],
       exercicio: "",
@@ -255,13 +313,19 @@ export default {
         categorias: "",
         dificuldade: "",
       },
-
       select_categorias: [],
       categorias: ["Pernas", "Braços", "Peito", "Cardio", "Força"],
       select_dificuldade: "",
       dificuldades: ["Iniciante", "Intermédio", "Avançado"],
       blocos: [],
     };
+  },
+  watch: {
+    select_categorias(val) {
+      if (val.length > 3) {
+        this.$nextTick(() => this.select_categorias.pop());
+      }
+    },
   },
   mounted() {
     axios
@@ -276,6 +340,17 @@ export default {
       });
   },
   methods: {
+    validateBloco() {
+      if (this.$refs.bloco_form.validate()) {
+        this.criar();
+        this.dialog = false;
+      }
+    },
+    validateTreino() {
+      if (this.$refs.treino_form.validate()) {
+        this.confirmar();
+      }
+    },
     getDuracao() {
       var duracao = 0.0;
       for (var i = 0; i < this.blocos.length; i++) {
@@ -313,6 +388,7 @@ export default {
         duracao_treino: this.getDuracao(),
         exercicios: exs,
       };
+      console.log(post_body)
       axios
         .post(
           process.env.VUE_APP_BASELINK + "/api/treinos/novoTreino",
@@ -322,13 +398,21 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          if (response.status == "200") {
-            if (localStorage.getItem("usertype") == 0) {
+          const status = JSON.parse(response.status);
+          if (status == "200") {
+            this.success = true;
+            setTimeout(() => {
+              this.success = false;
               this.$router.push("/treinos");
-            } else if (localStorage.getItem("usertype") == 1) {
-              this.$router.push("/treinador/treinos");
-            }
+            }, 5000);
+          }
+        })
+        .catch((error) => {
+          if (error.response != null) {
+            this.error = true;
+            setTimeout(() => {
+              this.error = false;
+            }, 5000);
           }
         });
     },

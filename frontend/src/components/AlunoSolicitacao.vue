@@ -20,7 +20,6 @@
               height="150px"
             >
             </v-img>
-            <!--<v-card-title v-text="title.body"></v-card-title>-->
             <v-card-title> {{ title.utilizador }} </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -29,7 +28,6 @@
 
             </v-card-actions>
           </v-card>
-          <v-card v-intersect="infiniteScrolling"></v-card>
         </v-sheet>
       </v-col>
     </v-row>

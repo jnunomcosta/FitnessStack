@@ -51,6 +51,17 @@
           Erro do servidor
         </v-alert>
 
+        <v-alert
+          border="left"
+          v-if="forbiddenError"
+          text
+          dismissible
+          elevation="2"
+          type="error"
+        >
+          Não é permitido apagar este(s) treinador(es)
+        </v-alert>
+
         <v-container>
           <v-row align="center" justify="space-around">
             <v-col cols="12" md="8">
@@ -325,6 +336,7 @@ export default {
       successDelete: false,
       registerAuthError: false,
       registerServerError: false,
+      forbiddenError: false,
       nameRules: [(v) => !!v || "Campo obrigatório"],
       birthdateRules: [
         (v) => !!v || "Campo obrigatório",
@@ -412,9 +424,9 @@ export default {
         .catch((error) => {
           if (error.response != null) {
             if (error.response.status == "500") {
-              this.registerServerError = true;
+              this.forbiddenError = true;
               setTimeout(() => {
-                this.registerServerError = false;
+                this.forbiddenError = false;
               }, 5000);
             } else {
               this.registerServerError = true;

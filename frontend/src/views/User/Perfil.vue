@@ -103,14 +103,14 @@
                         <v-col cols="12" sm="6" md="12">
                           Digite o novo email.
                           <v-form ref="emailForm">
-                          <v-text-field
-                            v-model="input_email"
-                            color="#f95738"
-                            :rules="emailRules"
-                            prepend-icon="mdi-email"
-                            label="Email"
-                            required
-                          ></v-text-field>
+                            <v-text-field
+                              v-model="input_email"
+                              color="#f95738"
+                              :rules="emailRules"
+                              prepend-icon="mdi-email"
+                              label="Email"
+                              required
+                            ></v-text-field>
                           </v-form>
                         </v-col>
                       </v-row>
@@ -121,11 +121,7 @@
                     <v-btn color="#f95738" text @click="dialog2 = false">
                       Sair
                     </v-btn>
-                    <v-btn
-                      color="#f95738"
-                      dark
-                      @click="validateEmail()"
-                    >
+                    <v-btn color="#f95738" dark @click="validateEmail()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -153,29 +149,29 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" md="12">
-                          <v-form ref="passwordForm"> 
-                          Digite a palavra-passe antiga.
-                          <v-text-field
-                            type="password"
-                            v-model="old_password"
-                            :rules="passwordRules"
-                            color="#f95738"
-                            prepend-icon="mdi-lock"
-                            counter
-                            label="Palavra-Passe Antiga"
-                            required
-                          ></v-text-field>
-                          Digite a palavra-passe nova.
-                          <v-text-field
-                            type="password"
-                            v-model="new_password"
-                            :rules="passwordRules"
-                            color="#f95738"
-                            counter
-                            prepend-icon="mdi-lock-question"
-                            label="Palavra-Passe Nova"
-                            required
-                          ></v-text-field>
+                          <v-form ref="passwordForm">
+                            Digite a palavra-passe antiga.
+                            <v-text-field
+                              type="password"
+                              v-model="old_password"
+                              :rules="passwordRules"
+                              color="#f95738"
+                              prepend-icon="mdi-lock"
+                              counter
+                              label="Palavra-Passe Antiga"
+                              required
+                            ></v-text-field>
+                            Digite a palavra-passe nova.
+                            <v-text-field
+                              type="password"
+                              v-model="new_password"
+                              :rules="passwordRules"
+                              color="#f95738"
+                              counter
+                              prepend-icon="mdi-lock-question"
+                              label="Palavra-Passe Nova"
+                              required
+                            ></v-text-field>
                           </v-form>
                         </v-col>
                       </v-row>
@@ -186,11 +182,7 @@
                     <v-btn color="#f95738" text @click="dialog3 = false">
                       Sair
                     </v-btn>
-                    <v-btn
-                      color="#f95738"
-                      dark
-                      @click="validatePassword()"
-                    >
+                    <v-btn color="#f95738" dark @click="validatePassword()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -218,15 +210,15 @@
                   <v-card-text>
                     <v-container>
                       <v-form ref="avatarForm">
-                      <v-file-input
-                        id="imagem"
-                        v-model="imagem_input"
-                        :rules="avatarRules"
-                        color="#f95738"
-                        label="Imagem de Perfil"
-                        name="imagem_perfil"
-                        prepend-icon="mdi-camera"
-                      />
+                        <v-file-input
+                          id="imagem"
+                          v-model="imagem_input"
+                          :rules="avatarRules"
+                          color="#f95738"
+                          label="Imagem de Perfil"
+                          name="imagem_perfil"
+                          prepend-icon="mdi-camera"
+                        />
                       </v-form>
                     </v-container>
                   </v-card-text>
@@ -235,11 +227,7 @@
                     <v-btn color="#f95738" text @click="dialog4 = false">
                       Sair
                     </v-btn>
-                    <v-btn
-                      color="#f95738"
-                      dark
-                      @click="validateAvatar()"
-                    >
+                    <v-btn color="#f95738" dark @click="validateAvatar()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
@@ -267,18 +255,21 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="12">
-                          <p>Playlist atual: <a :href="playlist">{{ playlist }}</a></p>
+                          <p>
+                            Playlist atual:
+                            <a :href="playlist">{{ playlist }}</a>
+                          </p>
 
                           <p>Digite o link da nova playlist.</p>
                           <v-form ref="playlistForm">
-                          <v-text-field
-                            v-model="input_playlist"
-                            color="#f95738"
-                            :rules="playlistRules"
-                            prepend-icon="mdi-music"
-                            placeholder="https://open.spotify.com/playlist/XXXXXXXXXX"
-                            required
-                          ></v-text-field>
+                            <v-text-field
+                              v-model="input_playlist"
+                              color="#f95738"
+                              :rules="playlistRules"
+                              prepend-icon="mdi-music"
+                              placeholder="https://open.spotify.com/playlist/XXXXXXXXXX"
+                              required
+                            ></v-text-field>
                           </v-form>
                         </v-col>
                       </v-row>
@@ -289,17 +280,12 @@
                     <v-btn color="#f95738" text @click="dialog7 = false">
                       Sair
                     </v-btn>
-                    <v-btn
-                      color="#f95738"
-                      dark
-                      @click="validatePlaylist()"
-                    >
+                    <v-btn color="#f95738" dark @click="validatePlaylist()">
                       Atualizar
                     </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-
             </v-container>
           </v-card>
           <v-alert
@@ -461,7 +447,6 @@
               </v-dialog>
             </div>
           </v-card>
-
         </v-col>
 
         <v-col cols="12" md="5">
@@ -474,7 +459,6 @@
               <line-chart />
             </div>
           </v-card>
-
         </v-col>
       </v-row>
     </div>
@@ -516,9 +500,7 @@ export default {
         /^[a-zA-Z0-9.-]{2,}$/.test(v) ||
         "Nome de utilizador inválido",
     ],
-    emailRules: [
-      (v) => v == "" || /.+@.+/.test(v) || "Email inválido",
-    ],
+    emailRules: [(v) => v == "" || /.+@.+/.test(v) || "Email inválido"],
     passwordRules: [
       (v) => !!v || "Campo obrigatório",
       (v) =>
@@ -526,9 +508,10 @@ export default {
         "A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
     ],
     playlistRules: [
-      //(v) =>
-        ///^https://open.spotify.com/playlist/(.*)[^/]$/.test(v) ||
-        //"A palavra-passe deve ter no mínimo 8 caracteres, pelo menos 1 maiúscula, 1 minúscula e 1 número",
+      (v) => !!v || "Campo obrigatório",
+      (v) =>
+        v.match("https://open.spotify.com/playlist/(.*)[^/]") ||
+        "Playlist inválida",
     ],
     avatarRules: [
       (value) =>
@@ -576,7 +559,6 @@ export default {
       genero: false,
       foto_perfil: "",
       info_fisica: [],
-      
     },
   }),
   mounted() {
@@ -592,23 +574,20 @@ export default {
             (this.utilizador.altura * this.utilizador.altura)) *
           10000;
         this.imc = parseFloat(valor).toFixed(1);
+      });
+
+    axios
+      .get(process.env.VUE_APP_BASELINK + "/api/user/getPlaylist", {
+        headers: { token: localStorage.getItem("token") },
       })
-      
-      axios
-      .get(
-        process.env.VUE_APP_BASELINK +
-          "/api/user/getPlaylist",
-        { headers: { token: localStorage.getItem("token") } }
-      )
       .then((response) => {
-        if (response.status==200){
-        this.playlist = response.data.playlist;
-        console.log(this.response.data)
+        if (response.status == 200) {
+          this.playlist = response.data.playlist;
+          console.log(this.response.data);
 
-        console.log(this.playlist)
-
+          console.log(this.playlist);
         }
-      })
+      });
   },
   methods: {
     validateForm(input_peso, input_muscular, input_gorda, input_altura) {
@@ -629,8 +608,7 @@ export default {
         if (this.new_username != "") {
           this.setUsername(this.new_username);
           this.dialog1 = false;
-        }
-        else {
+        } else {
           this.dialog1 = false;
         }
       }
@@ -640,8 +618,7 @@ export default {
         if (this.input_email != "") {
           this.setEmail(this.input_email);
           this.dialog2 = false;
-        }
-        else {
+        } else {
           this.dialog2 = false;
         }
       }
@@ -651,50 +628,63 @@ export default {
         if (this.old_password != this.new_password) {
           this.setPassword(this.old_password, this.new_password);
           this.dialog3 = false;
-        }
-        else {
+        } else {
           this.dialog3 = false;
         }
-      }      
+      }
     },
     validateAvatar() {
       if (this.$refs.avatarForm.validate()) {
         if (this.imagem_input != null) {
           this.setImagem(this.imagem_input);
           this.dialog4 = false;
-        }
-        else {
+        } else {
           this.dialog4 = false;
         }
-      }      
-    },
-    validatePlaylist(){
-      if (this.input_playlist.match("https://open.spotify.com/playlist/(.*)[^/]")) {
-        console.log("fafasfas")
-          var list = this.input_playlist.split('/');
-          var string_final = list[0] + "//" + list[2] + "/embed/" + list[3] + "/" + list[4];
-
-        axios
-        .post(
-          process.env.VUE_APP_BASELINK + "/api/user/changePlaylist",
-          {
-            nova_playlist: string_final
-          },
-          { headers: { token: localStorage.getItem("token") } }
-        )
-        .then((response) => {
-          this.playlist = string_final;
-          console.log(response);
-        })
-
-
-
-
-
       }
-      else {
-          this.dialog7 = false;
+    },
+    validatePlaylist() {
+      if (this.$refs.playlistForm.validate()) {
+        if (
+          this.input_playlist.match(
+            "https://open.spotify.com/playlist/(.*)[^/]"
+          )
+        ) {
+          console.log("fafasfas");
+          var list = this.input_playlist.split("/");
+          var string_final =
+            list[0] + "//" + list[2] + "/embed/" + list[3] + "/" + list[4];
+
+          axios
+            .post(
+              process.env.VUE_APP_BASELINK + "/api/user/changePlaylist",
+              {
+                nova_playlist: string_final,
+              },
+              { headers: { token: localStorage.getItem("token") } }
+            )
+            .then((response) => {
+              const status = JSON.parse(response.status);
+              this.playlist = string_final;
+
+              if (status == "200") {
+                this.success = true;
+                setTimeout(() => {
+                  this.success = false;
+                }, 5000);
+              }
+              this.dialog7 = false;
+            })
+            .catch((error) => {
+              if (error.response != null) {
+                this.error = true;
+                setTimeout(() => {
+                  this.error = false;
+                }, 5000);
+              }
+            });
         }
+      }
     },
     pesagem_altura(new_peso, new_muscular, new_gorda, new_altura) {
       var data = new Date(),
@@ -759,8 +749,7 @@ export default {
               (this.utilizador.altura * this.utilizador.altura)) *
             10000;
           this.imc = parseFloat(valor).toFixed(1);
-        })
-        .finally(() => console.log("hi")); //msg erro a mudar email));*/
+        });
     },
     setEmail(new_email) {
       axios
@@ -776,7 +765,7 @@ export default {
           this.utilizador.email = new_email;
 
           if (status == "200") {
-          this.success = true;
+            this.success = true;
             setTimeout(() => {
               this.success = false;
             }, 5000);
@@ -807,7 +796,7 @@ export default {
             this.utilizador.username = new_username;
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", new_username);
-            
+
             this.success = true;
             setTimeout(() => {
               this.success = false;
